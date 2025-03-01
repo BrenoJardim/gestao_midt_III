@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestão Midt</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
 
     <style>
@@ -55,6 +57,7 @@
         padding: 20px;
         box-shadow: 2px 0 5px rgba(13, 13, 25, 0.1);
         border-right: 1px solid #ccc;
+        overflow-y: auto;
     }
 
     .navigation {
@@ -118,8 +121,10 @@
         width: 80%;
         padding: 20px;
         overflow-y: auto;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
-
     .icon {
     width: 24px; 
     height: 24px; 
@@ -130,61 +135,115 @@
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
         }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
+        
+        th, td {
+            padding: 12px;
             text-align: left;
         }
-
+        
         th {
-            background-color: #f2f2f2;
-            font-weight: bold;
+            background: #4CAF50;
+            color: white;
         }
-
+        
         tr:nth-child(even) {
-            background-color: #f2f2f2;
+            background: #f2f2f2;
+        }
+        
+        tr:hover {
+            background: #ddd;
         }
 
         /* Adicionando estilos para o formulário de filtro */
         .filter-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
         }
-
+        
         .filter-form label {
             font-weight: bold;
-            margin-right: 10px;
         }
-
-        .filter-form select,
-        .filter-form input[type="date"],
-        .filter-form input[type="submit"] {
+        
+        .filter-form input, .filter-form select {
             padding: 8px;
-            border-radius: 5px;
             border: 1px solid #ccc;
-            margin-right: 10px;
+            border-radius: 5px;
+            flex: 1;
+            min-width: 150px;
         }
-
-        .filter-form input[type="submit"] {
-            background-color: #4CAF50;
+        
+        .filter-form button {
+            background: #4CAF50;
             color: white;
             border: none;
+            padding: 10px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: 0.3s;
+        }
+        
+        .filter-form button:hover {
+            background: #45a049;
         }
 
-        .filter-form input[type="submit"]:hover {
-            background-color: #45a049;
+        button[type="submit"] {
+            background: #4CAF50; /* Verde vibrante */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
         }
+        
+        button[type="submit"]:hover {
+            background: #45a049; /* Tom um pouco mais escuro no hover */
+            transform: scale(1.05); /* Pequeno aumento no tamanho ao passar o mouse */
+        }
+        
+        button[type="submit"]:active {
+            background: #3e8e41; /* Cor mais escura quando pressionado */
+            transform: scale(0.98); /* Pequeno efeito de clique */
+        }
+        
+
 
         /* Estilos para os totais de vendas e lucros */
         .total-section {
-            margin-top: 20px;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
         }
+
+        .card span {
+            display: block;
+            font-size: 20px;
+            margin-top: 5px;
+        }
+        
+        .card.total-vendas {
+            border-left: 5px solid #4CAF50;
+            color: #4CAF50;
+        }
+        
+        .card.total-lucros {
+            border-left: 5px solid #FFA500;
+            color: #FFA500;
+        }
+        
 
         .total-item {
             display: flex;
@@ -199,21 +258,102 @@
             color: #4CAF50; /* Cor verde para os valores */
         }
 
-        
+        .help-button {
+        margin-left: auto; /* Alinha o botão à direita */
+        padding: 10px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        margin-right: 20px
+    }
+
+    .help-button:hover {
+        background-color: #45a049;
+    }
+
+    .modal {
+        display: none; 
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5); 
+        padding-top: 60px;
+    }
+
+    .modal-content {
+        background-color: #fefefe;
+        margin: 5% auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+        max-width: 600px; 
+        border-radius: 10px; 
+    }
+
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+        @media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+    }
+    .content {
+        width: 100%;
+    }
+    }
+
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="logo">
-            <img src="/images/icone.png" alt="Logo da Empresa">
+                <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
-        <h1>Gestão Midt</h1>
+        <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
+        <button class="help-button" id="help-button">?</button>
     </div>
     <div class="container">
         <div class="sidebar">
             <div class="logoside">
-                <img src="/images/logo.jpeg" alt="Logo da Empresa">
+                <img src="/images/logo.jpeg" alt="Logo da Empresa" id="minha-imagem">
+            </div>
+            <!-- Modal -->
+            <div id="helpModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h4>Teclas de Atalho:</h4>
+                    <ul>
+                        <li><strong>Cadastro de Produtos</strong>: <em>Ctrl + Shift + 1</em></li>
+                        <li><strong>Cadastro de Clientes</strong>: <em>Ctrl + Shift + 2</em></li>
+                        <li><strong>Cadastro de Fornecedores</strong>: <em>Ctrl + Shift + 3</em></li>
+                        <li><strong>Venda Balcão</strong>: <em>Ctrl + Shift + 4</em></li>
+                        <li><strong>Listar Vendas</strong>: <em>Ctrl + Shift + 5</em></li>
+                        <li><strong>Compras</strong>: <em>Ctrl + Shift + 6</em></li>
+                        <li><strong>Adição de Sítio</strong>: <em>Ctrl + Shift + 7</em></li>
+                        <li><strong>Listar Compras</strong>: <em>Ctrl + Shift + 8</em></li>
+                        <li><strong>Financeiro</strong>: <em>Ctrl + Shift + 9</em></li>
+                    </ul>
+                </div>
             </div>
             <!-- Botão expansível para Cadastros -->
             <div class="expandable-header">
@@ -275,55 +415,65 @@
             </ul>           
         </div>
         <div class="content">
-            <h2>Relatório de Vendas</h2>
-            <!-- Formulário de filtro -->
-            <form class="filter-form" action="/relatorio_vendas" method="POST">
-                <label for="date">Data:</label>
-                <input type="date" id="date" name="data_inicio">
-                <label for="date">até</label>
-                <input type="date" id="date" name="data_fim">
-                <input type="submit" value="Filtrar">
+            <form id="filtroForm" method="POST">
+                <label for="data_inicio">Data Início:</label>
+                <input type="date" id="data_inicio" name="data_inicio">
+            
+                <label for="data_fim">Data Fim:</label>
+                <input type="date" id="data_fim" name="data_fim">
+            
+                <label for="cliente">Cliente:</label>
+                <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente">
+            
+                <label for="produto">Produto:</label>
+                <input type="text" id="produto" name="produto" placeholder="Nome do produto">
+            
+                <label for="forma_pagamento">Forma de Pagamento:</label>
+                <select id="forma_pagamento" name="forma_pagamento">
+                    <option value="">Todas</option>
+                    <option value="Debito">Débito</option>
+                    <option value="Credito">Crédito</option>
+                    <option value="A vista">À Vista</option>
+                    <option value="Pix">Pix</option>
+                </select>
+            
+                <button type="button" id="gerarRelatorioBtn">Filtrar</button>
+                <button id="exportExcelBtn" style="display: none;">Exportar para Excel</button>
             </form>
-            <!-- Tabela de vendas -->
-            <table>
+           <!-- Exibição dos resultados -->
+            <h2>Relatório de Vendas</h2>
+            <p>Total de Vendas: R$ <span id="total_vendas">{{ total_vendas }}</span></p>
+            <p>Total de Lucros: R$ <span id="total_lucros">{{ total_lucros }}</span></p>
+
+            <table id="tabelaRelatorio" border="1">
                 <thead>
                     <tr>
                         <th>Data</th>
                         <th>Cliente</th>
                         <th>Produto</th>
                         <th>Quantidade</th>
-                        <th>Valor Total</th>
+                        <th>Valor</th>
+                        <th>Forma de Pagamento</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- As linhas da tabela de vendas serão preenchidas dinamicamente pelo servidor -->
                     {% for venda in vendas %}
                     <tr>
-                        <td>{{ venda[1] }}</td> <!-- Data -->
-                        <td>{{ venda[2] }}</td> <!-- Cliente -->
-                        <td>{{ venda[3] }}</td> <!-- Produto -->
-                        <td>{{ venda[4] }}</td> <!-- Quantidade -->
-                        <td>{{ venda[7] }}</td> <!-- Valor Total -->
+                        <td>{{ venda[1] }}</td>
+                        <td>{{ venda[2] }}</td>
+                        <td>{{ venda[3] }}</td>
+                        <td>{{ venda[4] }}</td>
+                        <td>R$ {{ venda[7] }}</td>
+                        <td>{{ venda[8] }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <!-- Totais de vendas e lucros -->
-            <div class="total-section">
-                <div class="total-item">
-                    <span>Total de Vendas:</span>
-                    <span class="total-value">R$ {{ total_vendas }}</span>
-                </div>
-                <div class="total-item">
-                    <span>Total de Lucros:</span>
-                    <span class="total-value">R$ {{ total_lucros }}</span>
-                </div>
-            </div>
         </div>
     </div>
     
     <script>
-        const expandableBtns = document.querySelectorAll('.expandable-header');
+         const expandableBtns = document.querySelectorAll('.expandable-header');
         expandableBtns.forEach(btn => {
             btn.addEventListener('click', function () {
                 const body = this.nextElementSibling;
@@ -335,6 +485,202 @@
                 }
             });
         });
+
+        $(document).ready(function() {
+        // Definir as teclas de atalho (Ctrl + Shift + number)
+        $(document).keydown(function(event) {
+            if (event.ctrlKey && event.shiftKey) {
+                switch (event.which) {
+                    case 49: // Ctrl + Shift + 1
+                        window.location.href = "/cadastro_produtos";
+                        break;
+                    case 50: // Ctrl + Shift + 2
+                        window.location.href = "/cadastro_clientes";
+                        break;
+                    case 51: // Ctrl + Shift + 3
+                        window.location.href = "/cadastro_fornecedores";
+                        break;
+                    case 52: // Ctrl + Shift + 4
+                        window.location.href = "/venda_balcao";
+                        break;
+                    case 53: // Ctrl + Shift + 5
+                        window.location.href = "/listar_vendas";
+                        break;
+                    case 54: // Ctrl + Shift + 6
+                        window.location.href = "/compras";
+                        break;
+                    case 55: // Ctrl + Shift + 7
+                        window.location.href = "/adicao_sitio";
+                        break;
+                    case 56: // Ctrl + Shift + 8
+                        window.location.href = "/listar_compras";
+                        break;
+                    case 57: // Ctrl + Shift + 9
+                        window.location.href = "/financeiro";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+    });
+
+    // Redirecionar ao clicar na imagem
+    document.getElementById('minha-imagem').addEventListener('click', function() {
+            window.location.href = 'http://127.0.0.1:5000/inicio';
+        });
+
+        // Redirecionar ao clicar no texto
+        document.getElementById('texto-link').addEventListener('click', function() {
+            window.location.href = 'http://127.0.0.1:5000/inicio';
+        });
+
+
+        // Mostrar e esconder o modal
+        var modal = document.getElementById("helpModal");
+            var btn = document.getElementById("help-button");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // Redirecionar ao clicar na imagem
+            document.getElementById('minha-imagem').addEventListener('click', function() {
+                window.location.href = 'http://127.0.0.1:5000/inicio';
+            });
+
+            // Redirecionar ao clicar no texto
+            document.getElementById('texto-link').addEventListener('click', function() {
+                window.location.href = 'http://127.0.0.1:5000/inicio';
+            });
+
+
+
+
+            $(document).ready(function() {
+                // Evento de clique no botão "Filtrar"
+                $("#gerarRelatorioBtn").click(function() {
+                    // Coleta os dados do formulário
+                    const filtroData = {
+                        data_inicio: $("#data_inicio").val(),
+                        data_fim: $("#data_fim").val(),
+                        cliente: $("#cliente").val(),
+                        produto: $("#produto").val(),
+                        forma_pagamento: $("#forma_pagamento").val()
+                    };
+
+                    // Envia os dados via AJAX
+                    $.ajax({
+                        url: "/relatorio_vendas",
+                        method: "POST",
+                        data: filtroData,
+                        headers: {
+                            "X-Requested-With": "XMLHttpRequest" // Indica que é uma requisição AJAX
+                        },
+                        success: function(response) {
+                            // Atualiza a tabela com os dados filtrados
+                            $("#tabelaRelatorio tbody").html(response.tabela);
+
+                            // Atualiza os totais de vendas e lucros
+                            $("#total_vendas").text("R$ " + response.total_vendas);
+                            $("#total_lucros").text("R$ " + response.total_lucros);
+
+                            // Mostra o botão "Exportar para Excel"
+                            $("#exportExcelBtn").show();
+                        },
+                        error: function(xhr, status, error) {
+                            alert("Erro ao filtrar o relatório: " + error);
+                        }
+                    });
+                });
+                
+            });
+
+            document.getElementById("exportExcelBtn").addEventListener("click", function () {
+                let tabela = document.getElementById("tabelaRelatorio");
+            
+                // Criar um novo objeto de planilha
+                let wb = XLSX.utils.book_new();
+                
+                // Criar uma planilha com base na tabela
+                let ws = XLSX.utils.table_to_sheet(tabela);
+            
+                // Ajustar estilos do cabeçalho
+                const range = XLSX.utils.decode_range(ws["!ref"]);
+            
+                // Criar estilo de borda
+                function createBorder() {
+                    return { 
+                        top: { style: "thin" }, 
+                        bottom: { style: "thin" }, 
+                        left: { style: "thin" }, 
+                        right: { style: "thin" } 
+                    };
+                }
+            
+                for (let C = range.s.c; C <= range.e.c; C++) {
+                    let cell_address = XLSX.utils.encode_cell({ r: 0, c: C }); // Cabeçalho na linha 0
+                    if (ws[cell_address]) {
+                        ws[cell_address].s = {
+                            font: { bold: true, sz: 12, color: { rgb: "FFFFFF" } }, // Negrito, maior e branco
+                            alignment: { horizontal: "center", vertical: "center" }, // Centralizar
+                            fill: { fgColor: { rgb: "4F81BD" } }, // Fundo azul
+                            border: createBorder()
+                        };
+                    }
+                }
+            
+                // Ajuste da largura das colunas
+                let colWidths = [
+                    { wch: 15 }, // Data
+                    { wch: 20 }, // Cliente
+                    { wch: 25 }, // Produto
+                    { wch: 10 }, // Quantidade
+                    { wch: 15 }, // Valor
+                    { wch: 20 }  // Forma de Pagamento
+                ];
+                ws["!cols"] = colWidths;
+            
+                // Aplicar estilos às células de dados
+                for (let R = 1; R <= range.e.r; R++) {
+                    for (let C = range.s.c; C <= range.e.c; C++) {
+                        let cell_address = XLSX.utils.encode_cell({ r: R, c: C });
+                        if (ws[cell_address]) {
+                            ws[cell_address].s = {
+                                alignment: { horizontal: C === 4 ? "right" : "left", vertical: "center" }, // Alinhar valor à direita
+                                border: createBorder(),
+                                fill: { fgColor: { rgb: R % 2 === 0 ? "D9E1F2" : "FFFFFF" } } // Linhas alternadas (zebrado)
+                            };
+            
+                            // Formatação de moeda na coluna "Valor"
+                            if (C === 4) {
+                                ws[cell_address].z = '"R$"#,##0.00';
+                            }
+                        }
+                    }
+                }
+            
+                // Adicionar a planilha ao livro
+                XLSX.utils.book_append_sheet(wb, ws, "Relatório de Vendas");
+            
+                // Salvar o arquivo Excel
+                XLSX.writeFile(wb, "Relatorio_Vendas.xlsx");
+            });
+            
+            
+            
+            
     </script>
 </body>
 </html>

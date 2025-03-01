@@ -1,15 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Editar Produto - Gestão Midt</title>
+    <title>Página Inicial</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
-
     <style>
-        
+
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -22,7 +20,7 @@
         color: #fff;
         display: flex;
         align-items: center;
-        padding: 0px 0px; 
+        padding: 0px 0px;
     }
 
     .logo img {
@@ -39,7 +37,7 @@
     }
 
     .logoside img {
-        max-width: 100%;  
+        max-width: 100%; 
         max-height: 100%; 
         width: auto;
         height: auto;
@@ -115,7 +113,6 @@
         display: block;
         max-height: 1000px;
     }
-
     .content {
         width: 80%;
         padding: 20px;
@@ -123,9 +120,9 @@
     }
 
     .icon {
-    width: 24px; 
-    height: 24px; 
-    margin-right: 10px;
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
     }
 
     .form-container {
@@ -143,79 +140,55 @@
         font-weight: bold;
     }
 
-    input[type="text"],
-    input[type="number"],
-    input[type="submit"] {
-        width: 100%;
-        padding: 10px;
+
+    input[type="text"] {
+        padding: 12px;
         border: 1px solid #ccc;
         border-radius: 5px;
+        width: calc(100% - 24px); /* Para considerar o padding */
         font-size: 16px;
-        transition: border-color 0.3s ease;
+        margin-bottom: 10px; /* Espaço abaixo do input */
+        transition: border-color 0.3s;
     }
 
-    input[type="text"]:focus,
-    input[type="number"]:focus {
-        border-color: #333;
+    input[type="text"]:focus {
+        border-color: #4CAF50; /* Cor do foco */
+        outline: none; /* Remove outline padrão */
     }
 
-    input[type="submit"] {
-        background-color: #333;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #555;
-    }
-
-    button[type="submit"] {
-        padding: 15px 30px;
-        font-size: 18px;
+    button {
+        padding: 12px 20px;
+        font-size: 16px;
         border: none;
         border-radius: 5px;
         background-color: #4CAF50;
         color: white;
         cursor: pointer;
+        transition: background-color 0.3s;
     }
 
-    button[type="submit"]:hover {
-        background-color: #45a049;
+    button:hover {
+        background-color: #45a049; /* Cor de hover */
     }
 
-    .cancel {
-        padding: 15px 30px;
-        font-size: 18px;
-        border: none;
-        border-radius: 5px;
-        background-color: #c42a2a;
-        color: white;
-        cursor: pointer;
-        text-decoration: none;
+    #resultado-clima {
+        margin-top: 20px; /* Espaço acima do resultado */
+        padding: 15px;
+        border: 1px solid #ccc; /* Borda para o resultado */
+        border-radius: 5px; /* Bordas arredondadas */
+        background-color: #f0f0f0; /* Fundo leve */
     }
 
-    .label-forma-pagamento {
-    font-weight: bold;
-    margin-bottom: 10px;
-    display: block;
+    .clima-dia {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
     }
 
-    .select-forma-pagamento {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: 100%;
-        font-size: 16px;
-        background-color: #f9f9f9;
-        transition: border-color 0.3s ease;
-    }
-
-    .select-forma-pagamento:focus {
-        outline: none;
-        border-color: #007bff;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+    .clima-dia img {
+        width: 50px; /* Tamanho do ícone do clima */
+        height: 50px; /* Tamanho do ícone do clima */
+        margin-right: 10px; /* Espaço entre ícone e texto */
     }
 
     .help-button {
@@ -375,39 +348,14 @@
             </ul>           
         </div>
         <div class="content">
-            <div class="vendb">
-                <h2 class="tit">Editar Venda</h2>
-                <form action="/editar_venda/{{ venda[0] }}" method="POST">
-                    <div class="form-group">
-                        <label for="cliente">Cliente:</label>
-                        <input type="text" id="cliente" name="cliente" value="{{ venda[2] }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="produto">Produto:</label>
-                        <input type="text" id="produto" name="produto" value="{{ venda[3] }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="quantidade">Quantidade:</label>
-                        <input type="number" id="quantidade" name="quantidade" value="{{ venda[4] }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="total">Total:</label>
-                        <input type="number" id="total" name="total" value="{{ venda[7] }}" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="forma_pagamento" class="label-forma-pagamento">Forma de Pagamento:</label>
-                        <select id="forma_pagamento" name="forma_pagamento" required class="select-forma-pagamento">
-                            <option value="dinheiro" {% if venda[8] == 'dinheiro' %} selected {% endif %}>Dinheiro</option>
-                            <option value="debito" {% if venda[8] == 'debito' %} selected {% endif %}>Débito</option>
-                            <option value="credito" {% if venda[8] == 'credito' %} selected {% endif %}>Crédito</option>
-                            <option value="pix" {% if venda[8] == 'pix' %} selected {% endif %}>Pix</option>
-                        </select>
-
-                    </div>
-                    <button type="submit">Salvar</button>
-                    <a class="cancel" href="/listar_vendas">Cancelar</a>
-                </form>
+            <h1>Bem-vindo ao Sistema ERP GestãoMidt</h1>
+            <h2>Informações do Clima</h2>
+            <div class="form-container">
+                <input type="text" id="cidade" placeholder="Digite o nome da cidade">
+                <button id="buscar-clima">Buscar Clima</button>
+                <button id="usar-localizacao">Usar Minha Localização</button>
             </div>
+            <div id="resultado-clima"></div>
         </div>
     </div>
 
@@ -424,7 +372,86 @@
                 }
             });
         });
+        
+        $(document).ready(function() {
+        // Quando a página carrega, tenta obter a localização automaticamente
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var latitude = position.coords.latitude;
+                var longitude = position.coords.longitude;
 
+                $.getJSON(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, function(data) {
+                    var cidade = data.address.city || data.address.town || data.address.village;
+                    buscarClima(cidade);  // Chama a função para buscar o clima
+                }).fail(function() {
+                    $('#resultado-clima').html('<p>Erro ao obter a localização.</p>');
+                });
+            }, function() {
+                $('#resultado-clima').html('<p>Geolocalização não permitida.</p>');
+            });
+        } else {
+            $('#resultado-clima').html('<p>Geolocalização não é suportada por este navegador.</p>');
+        }
+
+        // Função para buscar o clima com base na cidade
+        function buscarClima(cidade) {
+            if (cidade) {
+                $.getJSON(`/api/clima?cidade=${cidade}`, function(data) {
+                    $('#resultado-clima').html(`
+                        <p>Cidade: ${data.cidade}</p>
+                        <p>Temperatura Atual: ${data.temperatura}°C</p>
+                        <img src="${data.icone_url}" alt="Ícone do clima atual">
+                        <p>Temperatura Máxima: ${data.temperatura_maxima}°C</p>
+                        <p>Temperatura Mínima: ${data.temperatura_minima}°C</p>
+                        <p>Previsão de Chuva: ${data.previsao_chuva ? 'Sim' : 'Não'}</p>
+                        <h3>Previsão para os Próximos Dias</h3>
+                        <ul>
+                            ${data.previsao_dias.map(dia => `
+                                <li>
+                                    <strong>${dia.data}</strong>: ${dia.temperatura_maxima}°C / ${dia.temperatura_minima}°C - ${dia.descricao}
+                                    <img src="${dia.icone_url}" alt="Ícone do clima">
+                                </li>
+                            `).join('')}
+                        </ul>
+                    `);
+                }).fail(function() {
+                    $('#resultado-clima').html('<p>Erro ao buscar informações do clima.</p>');
+                });
+            } else {
+                $('#resultado-clima').html('<p>Por favor, digite o nome da cidade ou use a localização.</p>');
+            }
+        }
+
+        // Evento para buscar o clima quando clicar no botão "Buscar Clima"
+        $('#buscar-clima').click(function() {
+            var cidade = $('#cidade').val();
+            buscarClima(cidade);
+        });
+
+        // Evento para buscar o clima quando clicar no botão "Usar Minha Localização"
+        $('#usar-localizacao').click(function() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var latitude = position.coords.latitude;
+                    var longitude = position.coords.longitude;
+
+                    $.getJSON(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, function(data) {
+                        var cidade = data.address.city || data.address.town || data.address.village;
+                        buscarClima(cidade);
+                    }).fail(function() {
+                        $('#resultado-clima').html('<p>Erro ao obter a localização.</p>');
+                    });
+                }, function() {
+                    $('#resultado-clima').html('<p>Geolocalização não permitida.</p>');
+                });
+            } else {
+                $('#resultado-clima').html('<p>Geolocalização não é suportada por este navegador.</p>');
+            }
+        });
+    });
+    </script>
+
+    <script>
         $(document).ready(function() {
         // Definir as teclas de atalho (Ctrl + Shift + number)
         $(document).keydown(function(event) {
@@ -466,12 +493,12 @@
 
     // Redirecionar ao clicar na imagem
     document.getElementById('minha-imagem').addEventListener('click', function() {
-            window.location.href = 'http://127.0.0.1:5000/inicio';
+            window.location.href = 'inicio';
         });
 
         // Redirecionar ao clicar no texto
         document.getElementById('texto-link').addEventListener('click', function() {
-            window.location.href = 'http://127.0.0.1:5000/inicio';
+            window.location.href = 'inicio';
         });
 
 
@@ -496,14 +523,14 @@
 
             // Redirecionar ao clicar na imagem
             document.getElementById('minha-imagem').addEventListener('click', function() {
-                window.location.href = 'http://127.0.0.1:5000/inicio';
+                window.location.href = 'inicio';
             });
 
             // Redirecionar ao clicar no texto
             document.getElementById('texto-link').addEventListener('click', function() {
-                window.location.href = 'http://127.0.0.1:5000/inicio';
+                window.location.href = 'inicio';
             });
     </script>
 </body>
-
 </html>
+

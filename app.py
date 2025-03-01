@@ -1,21 +1,77 @@
-from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash
+from flask import Flask, render_template, request, redirect, url_for, send_from_directory, jsonify, flash, send_file
+import requests
 import sqlite3
+import pandas as pd
 import random
 import string
 import os
+import io
 from datetime import datetime
 from decimal import Decimal
+
+
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
+# Chave de API da WeatherAPI
+API_KEY = "932acc0d13a24a3187313255242609"
+
 users = {
     'admin': 'admin123',
+    'test': 'test123',
     'SchimidtCereais': '01052044'
 }
 
 # Simulação de um usuário logado (você pode substituir isso por uma lógica real de autenticação)
 usuario_logado = False
+
+# Endpoint para obter informações do clima de uma cidade
+@app.route('/api/clima', methods=['GET'])
+def clima():
+    cidade = request.args.get('cidade')
+    url = f'https://api.weatherapi.com/v1/forecast.json?key={API_KEY}&q={cidade}&days=3'
+
+    response = requests.get(url)
+    if response.status_code == 200:
+        data = response.json()
+
+        # Extraia as informações necessárias da resposta
+        resultado = {
+            "cidade": data['location']['name'],
+            "temperatura": data['current']['temp_c'],  # Temperatura em Celsius
+            "temperatura_maxima": data['forecast']['forecastday'][0]['day']['maxtemp_c'],
+            "temperatura_minima": data['forecast']['forecastday'][0]['day']['mintemp_c'],
+            "previsao_chuva": 'rain' in data['current'] and data['current']['rain'] > 0,  # Verifica se há previsão de chuva
+            "icone_url": f"http:{data['current']['condition']['icon']}",  # Adiciona o ícone atual
+            "previsao_dias": []
+        }
+
+        # Adiciona a previsão para os próximos 3 dias
+        for dia in data['forecast']['forecastday']:
+            resultado['previsao_dias'].append({
+                "data": dia['date'],
+                "temperatura_maxima": dia['day']['maxtemp_c'],
+                "temperatura_minima": dia['day']['mintemp_c'],
+                "descricao": dia['day']['condition']['text'],
+                "icone_url": f"http:{dia['day']['condition']['icon']}"  # Adiciona o ícone para cada dia
+            })
+
+        return jsonify(resultado)
+    else:
+        return jsonify({"error": "Cidade não encontrada"}), 404
+
+
+
+
+    
+
+@app.route('/inicio')
+def inicio():
+    # Renderize a nova página inicial
+    return render_template('inicio.html')
+
+
 
 # Rota padrão para a página inicial
 @app.route('/')
@@ -28,19 +84,15 @@ def index():
         # Se o usuário não estiver logado, redirecione para a tela de login
         return redirect(url_for('login'))
 
-# Rota para a tela de login
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        # Aqui você pode verificar as credenciais do usuário e fazer o login
-        # Por simplicidade, vamos apenas simular o login definindo usuario_logado como True
+        # Simulação de autenticação
         global usuario_logado
         usuario_logado = True
-        # Após o login bem-sucedido, redirecione para a página inicial
-        return redirect(url_for('venda_balcao'))
-    else:
-        # Se a solicitação for GET, renderize a página de login
-        return render_template('login.html')
+        return redirect(url_for('inicio'))  # Redirecione para a nova tela
+    return render_template('login.html')
+
 
 @app.route('/erp_dashboard')
 def erp_dashboard():
@@ -596,49 +648,76 @@ def cadastro_adicao_sitio():
         # Aqui você precisa retornar uma resposta válida
         return jsonify({'success': 'Adição cadastrada com sucesso!'})
     
-# Rota para a página de relatório de vendas
 @app.route('/relatorio_vendas', methods=['GET', 'POST'])
 def relatorio_vendas():
     if request.method == 'POST':
-        # Obter os filtros enviados pelo formulário
-        data_inicio = request.form.get('data_inicio')
-        data_fim = request.form.get('data_fim')
-    
-        # Adicionar instruções de registro para verificar os valores dos filtros
-        print("Data de início:", data_inicio)
-        print("Data de fim:", data_fim)
-      
-        # Conectar ao banco de dados
-        conn = sqlite3.connect('erp.db')
-        cursor = conn.cursor()
-        
-        # Construir a consulta SQL com base nos filtros
-        query = "SELECT * FROM vendas WHERE 1=1"
-        params = []
-        if data_inicio:
-            query += f" AND data >= ?"
-            params.append(data_inicio)
-        if data_fim:
-            query += f" AND data <= ?"
-            params.append(data_fim)
-        
-        # Executar a consulta
-        cursor.execute(query, params)
-        vendas = cursor.fetchall()
-        
-        # Calcular o total de vendas e o total de lucros
-        total_vendas = sum(venda[7] for venda in vendas)
-        total_lucros = sum(venda[9] for venda in vendas)
-        
-        # Fechar a conexão com o banco de dados
-        conn.close()
-        
-        # Renderizar o template com os dados
-        return render_template('relatorio_vendas.html', vendas=vendas, total_vendas=total_vendas, total_lucros=total_lucros)
-    
-    # Se o método for GET, renderizar o formulário vazio
+        try:
+            # Coleta os dados do filtro
+            data_inicio = request.form.get('data_inicio')
+            data_fim = request.form.get('data_fim')
+            cliente = request.form.get('cliente')
+            produto = request.form.get('produto')
+            forma_pagamento = request.form.get('forma_pagamento')
+
+            # Conectar ao banco de dados
+            conn = sqlite3.connect('erp.db')
+            cursor = conn.cursor()
+
+            # Construir a consulta SQL com base nos filtros
+            query = "SELECT * FROM vendas WHERE 1=1"
+            params = []
+
+            if data_inicio:
+                query += " AND data >= ?"
+                params.append(data_inicio)
+            if data_fim:
+                query += " AND data <= ?"
+                params.append(data_fim)
+            if cliente:
+                query += " AND cliente = ?"
+                params.append(cliente)
+            if produto:
+                query += " AND produto = ?"
+                params.append(produto)
+            if forma_pagamento and forma_pagamento != "":
+                query += " AND forma_pagamento = ?"
+                params.append(forma_pagamento)
+
+            # Executar a consulta
+            cursor.execute(query, params)
+            vendas = cursor.fetchall()
+
+            # Calcular o total de vendas e o total de lucros
+            total_vendas = sum(venda[7] for venda in vendas)  # Coluna 'total'
+            total_lucros = sum(venda[9] for venda in vendas)  # Coluna 'lucro'
+
+            # Fechar a conexão com o banco de dados
+            conn.close()
+
+            # Verificar se a requisição é AJAX
+            if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
+                # Renderizar a tabela em HTML
+                tabela_html = render_template('tabela_relatorio.html', vendas=vendas)
+
+                # Retornar os dados em JSON
+                return jsonify({
+                    "tabela": tabela_html,
+                    "total_vendas": total_vendas,
+                    "total_lucros": total_lucros
+                })
+            else:
+                # Renderizar o template completo para requisições não-AJAX
+                return render_template('relatorio_vendas.html', vendas=vendas, total_vendas=total_vendas, total_lucros=total_lucros)
+
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+    # Renderizar o template inicial para requisições GET
     return render_template('relatorio_vendas.html')
 
+
+
+    
 # Rota para a página de adição do sítio
 @app.route('/adicao_sitio', methods=['GET', 'POST'])
 def adicao_sitio():
@@ -980,5 +1059,9 @@ def fluxo_caixa():
     return render_template('fluxo_caixa.html', registro_financeiro=registro_financeiro)
 
 
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+

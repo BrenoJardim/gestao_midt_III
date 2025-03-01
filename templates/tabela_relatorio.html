@@ -1,0 +1,10 @@
+{% for venda in vendas %}
+<tr>
+    <td>{{ venda[1] }}</td> <!-- Data -->
+    <td>{{ venda[2] }}</td> <!-- Cliente -->
+    <td>{{ venda[3] }}</td> <!-- Produto -->
+    <td>{{ venda[4] }}</td> <!-- Quantidade -->
+    <td>R$ {{ venda[7] }}</td> <!-- Valor -->
+    <td>{{ venda[8] }}</td> <!-- Forma de Pagamento -->
+</tr>
+{% endfor %}
