@@ -6,7 +6,7 @@ import random
 import string
 import os
 import io
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 
 
@@ -61,15 +61,283 @@ def clima():
     else:
         return jsonify({"error": "Cidade não encontrada"}), 404
 
-
-
-
-    
-
 @app.route('/inicio')
 def inicio():
-    # Renderize a nova página inicial
-    return render_template('inicio.html')
+    try:
+        # Conectar ao banco de dados
+        conn = sqlite3.connect('erp.db')
+        cursor = conn.cursor()
+
+        # Consultar os totais de vendas e lucros
+        cursor.execute("SELECT SUM(total), SUM(lucro) FROM vendas")
+        result = cursor.fetchone()
+
+        total_vendas = result[0] if result[0] else 0.0  # Se o resultado for None, define como 0
+        total_lucros = result[1] if result[1] else 0.0
+
+        # Calcular lucro total com base nas vendas e lucro
+        lucro_total = total_vendas - total_lucros
+
+        # Consultar as últimas vendas
+        cursor.execute("SELECT data, cliente, produto, total FROM vendas ORDER BY data DESC LIMIT 5")
+        ultimas_vendas = cursor.fetchall()
+
+        # Fechar a conexão com o banco de dados
+        conn.close()
+
+        # Renderizar a página inicial, passando as variáveis para o template
+        return render_template('inicio.html', total_vendas=round(total_vendas, 2), total_lucros=round(lucro_total, 2), vendas=ultimas_vendas)
+
+    except Exception as e:
+        # Caso ocorra algum erro, retorna uma mensagem de erro
+        return jsonify({"error": str(e)}), 500
+    
+# Função para conectar ao banco
+def get_db_connection():
+    conn = sqlite3.connect('erp.db')
+    conn.row_factory = sqlite3.Row
+    return conn
+    
+# Rota para atualizar a meta
+@app.route("/api/meta", methods=["GET"])
+def get_meta():
+    conn = get_db_connection()
+    meta = conn.execute("SELECT valor FROM configuracoes WHERE chave = 'meta_mensal'").fetchone()
+    
+    if meta:
+        valor_meta = float(meta["valor"])
+    else:
+        valor_meta = 20000  # Define o valor padrão se não houver meta no banco
+        conn.execute("INSERT INTO configuracoes (chave, valor) VALUES ('meta_mensal', ?)", (valor_meta,))
+        conn.commit()
+    
+    conn.close()
+    return jsonify({"meta": valor_meta})
+
+# Rota para atualizar a meta
+@app.route("/api/meta", methods=["POST"])
+def update_meta():
+    data = request.get_json()
+    nova_meta = data.get("meta")
+
+    if nova_meta is None or not isinstance(nova_meta, (int, float)):
+        return jsonify({"success": False, "erro": "Valor inválido para meta"}), 400
+
+    conn = get_db_connection()
+    conn.execute(
+        "INSERT INTO configuracoes (chave, valor) VALUES ('meta_mensal', ?) "
+        "ON CONFLICT(chave) DO UPDATE SET valor = ?",
+        (nova_meta, nova_meta)
+    )
+    conn.commit()
+    conn.close()
+
+    return jsonify({"success": True, "meta": nova_meta, "mensagem": "Meta atualizada com sucesso!"})
+
+@app.route('/vendas_dia', methods=['GET'])
+def vendas_dia():
+    try:
+        # Obter a data atual no formato YYYY-MM-DD
+        data_atual = datetime.now().strftime('%Y-%m-%d')
+        
+        # Conectar ao banco de dados
+        conn = sqlite3.connect('erp.db')
+        cursor = conn.cursor()
+
+        # Se a coluna 'data' for do tipo TIMESTAMP, precisamos converter usando DATE()
+        cursor.execute("SELECT SUM(total) FROM vendas WHERE DATE(data) = ?", (data_atual,))
+        total_vendas_dia = cursor.fetchone()[0]
+
+        # Se não houver vendas no dia, definimos o valor como 0
+        total_vendas_dia = total_vendas_dia if total_vendas_dia is not None else 0.0
+
+        # Fechar a conexão com o banco de dados
+        conn.close()
+
+        # Retornar os dados em formato JSON
+        return jsonify({
+            "total_vendas_dia": total_vendas_dia
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+@app.route('/faturamento_mes', methods=['GET'])
+def faturamento_mes():
+    try:
+        # Pega o mês atual
+        mes_atual = datetime.now().strftime('%Y-%m')
+
+        # Conectar ao banco de dados
+        conn = sqlite3.connect('erp.db')
+        cursor = conn.cursor()
+
+        # Consulta SQL para pegar o faturamento do mês
+        query = "SELECT * FROM vendas WHERE strftime('%Y-%m', data) = ?"
+        cursor.execute(query, (mes_atual,))
+        vendas_mes = cursor.fetchall()
+
+        # Calcular o total de faturamento do mês
+        total_faturamento_mes = format(round(sum(venda[7] for venda in vendas_mes), 2), ".2f")
+
+        # Fechar a conexão com o banco de dados
+        conn.close()
+
+        # Retornar os dados em JSON
+        return jsonify({
+            "total_faturamento_mes": total_faturamento_mes
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/lucro_mes', methods=['GET'])
+def lucro_mes():
+    try:
+        # Pega o mês atual
+        mes_atual = datetime.now().strftime('%Y-%m')
+
+        # Conectar ao banco de dados
+        conn = sqlite3.connect('erp.db')
+        cursor = conn.cursor()
+
+        # Consulta SQL para pegar o lucro do mês
+        query = "SELECT * FROM vendas WHERE strftime('%Y-%m', data) = ?"
+        cursor.execute(query, (mes_atual,))
+        vendas_mes = cursor.fetchall()
+
+        # Calcular o total de lucros do mês
+        total_lucro_mes = format(round(sum(venda[9] for venda in vendas_mes), 2), ".2f")
+
+        # Fechar a conexão com o banco de dados
+        conn.close()
+
+        # Retornar os dados em JSON
+        return jsonify({
+            "total_lucro_mes": total_lucro_mes
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.route('/custos_produtos', methods=['GET'])
+def custos_produtos():
+    try:
+        # Pega o mês atual
+        mes_atual = datetime.now().strftime('%Y-%m')
+
+        # Conectar ao banco de dados
+        conn = sqlite3.connect('erp.db')
+        cursor = conn.cursor()
+
+        # Consulta SQL para pegar as vendas do mês
+        query = "SELECT * FROM vendas WHERE strftime('%Y-%m', data) = ?"
+        cursor.execute(query, (mes_atual,))
+        vendas_mes = cursor.fetchall()
+
+        # Calcular o total de custos de produtos do mês (faturamento - lucro)
+        total_custos_produtos = sum((venda[7] - venda[9]) for venda in vendas_mes)  # Faturamento (índice 5) - Lucro (índice 9)
+
+        # Fechar a conexão com o banco de dados
+        conn.close()
+
+        # Retornar os dados em JSON
+        return jsonify({
+            "total_custos_produtos": format(total_custos_produtos, ".2f")
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+# Rota para vendas e custos dos últimos 7 dias
+@app.route('/dados_grafico_vendas')
+def dados_grafico_vendas():
+    try:
+        conn = sqlite3.connect('erp.db')
+        cursor = conn.cursor()
+
+        # Gerar os últimos 7 dias no formato correto
+        datas = [(datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d') for i in range(6, -1, -1)]
+
+        vendas = []
+        custos = []
+
+        for data in datas:
+            # Buscar vendas do dia
+            cursor.execute("SELECT SUM(total) FROM vendas WHERE strftime('%Y-%m-%d', data) = ?", (data,))
+            total_vendas = cursor.fetchone()[0]
+            total_vendas = total_vendas if total_vendas is not None else 0.0
+
+            # Buscar custos do dia (Faturamento - Lucro)
+            cursor.execute("SELECT SUM(total - lucro) FROM vendas WHERE strftime('%Y-%m-%d', data) = ?", (data,))
+            total_custos = cursor.fetchone()[0]
+            total_custos = total_custos if total_custos is not None else 0.0
+
+            vendas.append(total_vendas)
+            custos.append(total_custos)
+
+        conn.close()
+
+        return jsonify({
+            "labels": datas,
+            "vendas": vendas,
+            "custos": custos
+        })
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+
+@app.route('/dados_grafico_contas')
+def dados_grafico_contas():
+    try:
+        conn = sqlite3.connect('erp.db')
+        cursor = conn.cursor()
+
+        # Buscar saldo de "Dinheiro" (avista = 1)
+        cursor.execute('''
+        SELECT SUM(avista)
+        FROM transacoes
+    ''')
+        saldo_dinheiro = cursor.fetchone()[0]
+        saldo_dinheiro = saldo_dinheiro if saldo_dinheiro is not None else 0.0
+        print(f"Saldo Dinheiro: {saldo_dinheiro}")  # Debug
+
+        # Buscar saldo de "Conta Banco" (soma de debito, credito e pix)
+        cursor.execute('''
+        SELECT SUM(debito + credito + pix)
+        FROM transacoes
+    ''')
+        saldo_conta_banco = cursor.fetchone()[0]
+        saldo_conta_banco = saldo_conta_banco if saldo_conta_banco is not None else 0.0
+        print(f"Saldo Conta Banco: {saldo_conta_banco}")  # Debug
+
+        conn.close()
+
+        return jsonify({
+            "contas": ["Dinheiro", "Conta Banco"],
+            "saldos": [saldo_dinheiro, saldo_conta_banco]
+        })
+
+    except Exception as e:
+        print(f"Erro: {str(e)}")  
+        return jsonify({"error": str(e)}), 500
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -93,11 +361,6 @@ def login():
         return redirect(url_for('inicio'))  # Redirecione para a nova tela
     return render_template('login.html')
 
-
-@app.route('/erp_dashboard')
-def erp_dashboard():
-    # Aqui você renderiza a página principal do seu ERP após o login bem-sucedido
-    return 'Página principal do seu ERP'
 
 # Função para conectar ao banco de dados
 def conectar_bd():
@@ -688,8 +951,10 @@ def relatorio_vendas():
             vendas = cursor.fetchall()
 
             # Calcular o total de vendas e o total de lucros
-            total_vendas = sum(venda[7] for venda in vendas)  # Coluna 'total'
-            total_lucros = sum(venda[9] for venda in vendas)  # Coluna 'lucro'
+            total_vendas = format(round(sum(venda[7] for venda in vendas), 2), ".2f")
+            total_lucros = format(round(sum(venda[9] for venda in vendas), 2), ".2f")
+
+
 
             # Fechar a conexão com o banco de dados
             conn.close()
@@ -1057,9 +1322,6 @@ def fluxo_caixa():
     
     # Renderize o template HTML e passe os clientes recuperados
     return render_template('fluxo_caixa.html', registro_financeiro=registro_financeiro)
-
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

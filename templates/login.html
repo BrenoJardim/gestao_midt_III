@@ -6,72 +6,110 @@
     <title>Login - GestãoMidt</title>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: Arial, sans-serif;
             background-color: #131325;
-            margin: 0;
-            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
 
         .container {
-            width: 300px;
-            background: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 320px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            text-align: center;
+            color: white;
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
         }
 
-        .logo {
-            text-align: center;
-            margin-bottom: 20px;
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo img {
-            width: 100px;
-        }
-
-        form {
-            display: flex;
-            flex-direction: column;
+            width: 80px;
         }
 
         .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            font-weight: bold;
+            margin-bottom: 15px;
         }
 
         input[type="text"],
         input[type="password"] {
-            width: calc(100% - 20px);
+            width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-            margin-right: 10px;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 16px;
+        }
+
+        input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
         }
 
         button {
-            padding: 10px;
-            background-color: #131325;
-            color: #fff;
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(90deg, #ff416c, #ff4b2b);
             border: none;
-            border-radius: 3px;
+            border-radius: 5px;
+            color: white;
+            font-size: 16px;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         button:hover {
-            background-color: #131325;
+            background: linear-gradient(90deg, #ff4b2b, #ff416c);
+            transform: scale(1.05);
+        }
+
+        /* Partículas no fundo */
+        .particles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: floatUp 5s infinite linear;
+        }
+
+        @keyframes floatUp {
+            from { transform: translateY(100vh); opacity: 1; }
+            to { transform: translateY(-10vh); opacity: 0; }
         }
     </style>
 </head>
-
 <body>
+    <div class="particles"></div>
     <div class="container">
         <div class="logo">
             <img src="../images/logo_gestaomidt.jpg" alt="GestãoMidt">
@@ -80,15 +118,34 @@
         <form action="/login" method="post">
             <h3>Login</h3>
             <div class="form-group">
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" name="username" required>
+                <input type="text" id="username" name="username" placeholder="Usuário" required>
             </div>
             <div class="form-group">
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="Senha" required>
             </div>
             <button type="submit">Entrar</button>
         </form>
     </div>
+    
+    <script>
+        // Gerando partículas animadas no fundo
+        function createParticle() {
+            const particle = document.createElement("div");
+            particle.classList.add("particle");
+            document.querySelector(".particles").appendChild(particle);
+            
+            const size = Math.random() * 5 + 2;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            particle.style.left = `${Math.random() * 100}vw`;
+            particle.style.animationDuration = `${Math.random() * 3 + 2}s`;
+            
+            setTimeout(() => {
+                particle.remove();
+            }, 5000);
+        }
+
+        setInterval(createParticle, 200);
+    </script>
 </body>
 </html>

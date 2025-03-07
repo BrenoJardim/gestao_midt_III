@@ -11,16 +11,6 @@
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
 <style>
 
-    html, body {
-        height: 100%;
-        overflow-x: hidden; /* Para evitar rolagem horizontal */
-    }
-
-    body {
-        overflow: hidden;
-    }
-    
-    
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -154,15 +144,11 @@
         max-height: 1000px;
     }
     .content {
-        background-color: #f2f2f2;
-        padding: 5px 20px 20px 20px;
+        background-color: #f2f2f2; /* Cinza claro */
+        padding: 20px;
         overflow-y: auto;
-        overflow-x: hidden; /* Evita que o conteúdo cause rolagem horizontal */
         min-height: 100vh;
-        width: 100%;
-        box-sizing: border-box; /* Evita que padding aumente a largura total */
     }
-    
 
     .icon {
         width: 24px;
@@ -177,6 +163,10 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
+    .form-group {
+        margin-bottom: 20px;
+    }
+
     label {
         font-weight: bold;
     }
@@ -187,6 +177,7 @@
         border-radius: 5px;
         width: calc(100% - 24px); 
         font-size: 16px;
+        margin-bottom: 10px; 
         transition: border-color 0.3s;
     }
 
@@ -211,6 +202,7 @@
     }
 
     #resultado-clima {
+        margin-top: 20px; 
         padding: 15px;
         border: 1px solid #ccc; 
         border-radius: 5px; 
@@ -220,6 +212,7 @@
     .clima-dia {
         display: flex;
         align-items: center;
+        margin-bottom: 10px;
     }
 
     .clima-dia img {
@@ -305,14 +298,14 @@
 
     #abrir-modal-clima img {
         width: 24px;
-        height: 30px;
+        height: 24px;
     }
 
     .dashboard-cards {
         display: grid;
         grid-template-columns: repeat(4, 1fr); /* 4 colunas */
         gap: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
     
     /* Estilo das caixas informativas */
@@ -378,185 +371,183 @@
         bottom: 10px;
     }
     
-    /* Seção dos gráficos */
-    .charts-container {
-        display: grid;
-        grid-template-columns: 2fr 1fr; /* Esquerda = 2 partes, Direita = 1 parte */
-        gap: 20px;
-        align-items: stretch;
-    }
+    
 
-    /* Container esquerdo com os gráficos */
-    .charts-left {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        min-height: 75vh;  /* Altura mínima */
-        max-height: 75vh;  /* Altura máxima ajustável conforme a necessidade */
-    }
+/* Seção dos gráficos */
+.charts-container {
+    display: grid;
+    grid-template-columns: 2fr 1fr; /* Esquerda = 2 partes, Direita = 1 parte */
+    gap: 20px;
+    align-items: stretch;
+}
 
-    #grafico-vendas {
-        min-height: 40vh;  /* Altura mínima */
-        max-height: 40vh;  /* Altura máxima ajustável conforme a necessidade */
-    }
+/* Container esquerdo com os gráficos */
+.charts-left {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
 
-    /* Container do gráfico à direita */
-    .chart-meta {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: auto;  /* Remover 100% */
-        min-height: 75vh;  /* Altura mínima */
-        max-height: 75vh;  /* Altura máxima ajustável conforme a necessidade */
-        border-radius: 12px;
-        background-color: #f5f5f5;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
+/* Container do gráfico à direita */
+.chart-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 640px;
+    border-radius: 12px;
+    background-color: #f5f5f5;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    padding: 20px;
+}
+
+.meta-info {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.meta-text {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 5px 0;
+    color: #333;
+}
+
+.meta-text span {
+    font-size: 20px;
+    color: #007bff; /* Cor azul para valores destacados */
+}
+
+/* Estilo do botão de definir meta */
+.btn-definir-meta {
+    padding: 10px 15px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-definir-meta:hover {
+    background-color: #0056b3;
+}
+
+/* Modal para definição da meta */
+.modal-meta {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
+    display: none; /* Esconde o modal por padrão */
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+}
+
+.modal-content input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0; /* Adicionando margem entre o input e os botões */
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}
+
+.modal-content button {
+    padding: 10px;
+    margin-top: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+}
+
+.modal-content button:hover {
+    background-color: #0056b3;
+}
+
+.modal-content button:focus {
+    outline: none;
+}
+
+
+
+#nova-meta {
+    padding: 10px;
+    width: 100%;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+.btn-confirmar-meta, .btn-cancelar-meta {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.btn-confirmar-meta:hover {
+    background-color: #45a049;
+}
+
+.btn-cancelar-meta {
+    background-color: #f44336;
+}
+
+.btn-cancelar-meta:hover {
+    background-color: #e53935;
+}
+
+
+/* Estilo dos gráficos */
+.chart {
+    position: relative;
+    flex-grow: 1;
+    border-radius: 12px; /* Borda arredondada */
+    background-color: #ffffff; /* Fundo branco para os gráficos */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+
+/* Efeito de hover nos gráficos */
+.chart:hover {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
+    transform: translateY(-5px); /* Efeito de elevação */
+}
+
+
+    /* Responsividade */
+@media (max-width: 1024px) {
+    .dashboard-cards {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard-cards {
+        grid-template-columns: 1fr; /* 1 coluna para telas pequenas */
         
     }
-
-    .meta-info {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .meta-text {
-        font-size: 18px;
-        font-weight: bold;
-        margin: 5px 0;
-        color: #333;
-    }
-
-    .meta-text span {
-        font-size: 20px;
-        color: #007bff; /* Cor azul para valores destacados */
-    }
-
-    /* Estilo do botão de definir meta */
-    .btn-definir-meta {
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-
-    .btn-definir-meta:hover {
-        background-color: #0056b3;
-    }
-
-    /* Modal para definição da meta */
-    .modal-meta {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-        display: none; /* Esconde o modal por padrão */
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        width: 300px;
-    }
-
-    .modal-content input {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0; /* Adicionando margem entre o input e os botões */
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
-
-    .modal-content button {
-        padding: 10px;
-        margin-top: 10px;
-        width: 100%;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #007bff;
-        color: white;
-    }
-
-    .modal-content button:hover {
-        background-color: #0056b3;
-    }
-
-    .modal-content button:focus {
-        outline: none;
-    }
-
-    #nova-meta {
-        padding: 10px;
-        width: 100%;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .btn-confirmar-meta, .btn-cancelar-meta {
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-top: 10px;
-        cursor: pointer;
-    }
-
-    .btn-confirmar-meta:hover {
-        background-color: #45a049;
-    }
-
-    .btn-cancelar-meta {
-        background-color: #f44336;
-    }
-
-    .btn-cancelar-meta:hover {
-        background-color: #e53935;
-    }
-
-    /* Estilo dos gráficos */
-    .chart {
-        position: relative;
-        flex-grow: 1;
-        border-radius: 12px; /* Borda arredondada */
-        background-color: #ffffff; /* Fundo branco para os gráficos */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-        transition: box-shadow 0.3s, transform 0.3s;
-    }
-
-    /* Efeito de hover nos gráficos */
-    .chart:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
-        transform: translateY(-5px); /* Efeito de elevação */
-    }
-
-
-        /* Responsividade */
-    @media (max-width: 1024px) {
-        .dashboard-cards {
-            grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
-        }
-    }
-
-    @media (max-width: 600px) {
-        .dashboard-cards {
-            grid-template-columns: 1fr; /* 1 coluna para telas pequenas */
-            
-        }
-    }
+}
 
     </style>
 </head>
@@ -662,7 +653,8 @@
                 <div class="card card-white">Faturamento do Mês: R$ <span id="faturamento-mes">0,00</span></div>
                 <div class="card card-white">Custos dos Produtos: R$ <span id="custos-produtos">0,00</span></div>
                 <div class="card card-blue">Lucro do Mês: R$ <span id="lucro-mes">0,00</span></div>
-            </div>             
+            </div>            
+            
             <div class="charts-container">
                 <!-- Esquerda -->
                 <div class="charts-left">
@@ -673,8 +665,9 @@
                         <canvas id="grafico-contas"></canvas>
                     </div>
                 </div>
+            
                 <!-- Direita (Meta do mês) -->
-                <div class="chart chart-meta"height="30">
+                <div class="chart chart-meta">
                     <div class="meta-info">
                         <p class="meta-text">Meta do Mês: R$ <span id="meta-total">20,000</span></p>
                         <p class="meta-text">Faturamento Atual: R$ <span id="faturamento-atual">12,500</span></p>
@@ -683,6 +676,7 @@
                     </div>
                     <canvas id="grafico-meta"></canvas>
                 </div>
+                
                 <!-- Modal de definição da meta -->
                 <div id="modal-meta" class="modal-meta">
                     <div class="modal-content">
@@ -691,9 +685,13 @@
                         <button id="btn-confirmar-meta" class="btn-confirmar-meta">Confirmar</button>
                         <button id="btn-cancelar-meta" class="btn-cancelar-meta">Cancelar</button>
                     </div>
-                </div>  
+                </div>
+                
+                
             </div>            
         </div>
+
+
             <!-- Modal do Clima -->
             <div id="modalClima" class="modal">
                 <div class="modal-content">
@@ -801,77 +799,47 @@
 </script>
 
 <script>
-    $(document).ready(function() {
-    // Definir as teclas de atalho (Ctrl + Shift + number)
-    $(document).keydown(function(event) {
-        if (event.ctrlKey && event.shiftKey) {
-            switch (event.which) {
-                case 49: // Ctrl + Shift + 1
-                    window.location.href = "/cadastro_produtos";
-                    break;
-                case 50: // Ctrl + Shift + 2
-                    window.location.href = "/cadastro_clientes";
-                    break;
-                case 51: // Ctrl + Shift + 3
-                    window.location.href = "/cadastro_fornecedores";
-                    break;
-                case 52: // Ctrl + Shift + 4
-                    window.location.href = "/venda_balcao";
-                    break;
-                case 53: // Ctrl + Shift + 5
-                    window.location.href = "/listar_vendas";
-                    break;
-                case 54: // Ctrl + Shift + 6
-                    window.location.href = "/compras";
-                    break;
-                case 55: // Ctrl + Shift + 7
-                    window.location.href = "/adicao_sitio";
-                    break;
-                case 56: // Ctrl + Shift + 8
-                    window.location.href = "/listar_compras";
-                    break;
-                case 57: // Ctrl + Shift + 9
-                    window.location.href = "/financeiro";
-                    break;
-                default:
-                    break;
+        $(document).ready(function() {
+        // Definir as teclas de atalho (Ctrl + Shift + number)
+        $(document).keydown(function(event) {
+            if (event.ctrlKey && event.shiftKey) {
+                switch (event.which) {
+                    case 49: // Ctrl + Shift + 1
+                        window.location.href = "/cadastro_produtos";
+                        break;
+                    case 50: // Ctrl + Shift + 2
+                        window.location.href = "/cadastro_clientes";
+                        break;
+                    case 51: // Ctrl + Shift + 3
+                        window.location.href = "/cadastro_fornecedores";
+                        break;
+                    case 52: // Ctrl + Shift + 4
+                        window.location.href = "/venda_balcao";
+                        break;
+                    case 53: // Ctrl + Shift + 5
+                        window.location.href = "/listar_vendas";
+                        break;
+                    case 54: // Ctrl + Shift + 6
+                        window.location.href = "/compras";
+                        break;
+                    case 55: // Ctrl + Shift + 7
+                        window.location.href = "/adicao_sitio";
+                        break;
+                    case 56: // Ctrl + Shift + 8
+                        window.location.href = "/listar_compras";
+                        break;
+                    case 57: // Ctrl + Shift + 9
+                        window.location.href = "/financeiro";
+                        break;
+                    default:
+                        break;
+                }
             }
-        }
-    });
-});
-
-// Redirecionar ao clicar na imagem
-document.getElementById('minha-imagem').addEventListener('click', function() {
-        window.location.href = 'inicio';
+        });
     });
 
-    // Redirecionar ao clicar no texto
-    document.getElementById('texto-link').addEventListener('click', function() {
-        window.location.href = 'inicio';
-    });
-
-
-    // Mostrar e esconder o modal
-    var modal = document.getElementById("helpModal");
-        var btn = document.getElementById("help-button");
-        var span = document.getElementsByClassName("close")[0];
-
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Redirecionar ao clicar na imagem
-        document.getElementById('minha-imagem').addEventListener('click', function() {
+    // Redirecionar ao clicar na imagem
+    document.getElementById('minha-imagem').addEventListener('click', function() {
             window.location.href = 'inicio';
         });
 
@@ -879,209 +847,127 @@ document.getElementById('minha-imagem').addEventListener('click', function() {
         document.getElementById('texto-link').addEventListener('click', function() {
             window.location.href = 'inicio';
         });
+
+
+        // Mostrar e esconder o modal
+        var modal = document.getElementById("helpModal");
+            var btn = document.getElementById("help-button");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // Redirecionar ao clicar na imagem
+            document.getElementById('minha-imagem').addEventListener('click', function() {
+                window.location.href = 'inicio';
+            });
+
+            // Redirecionar ao clicar no texto
+            document.getElementById('texto-link').addEventListener('click', function() {
+                window.location.href = 'inicio';
+            });
         
 </script>
 <script>
-
- // Atualizar gráfico de vendas x custos
-fetch('/dados_grafico_vendas')
-.then(response => response.json())
-.then(data => {
-    const ctxVendas = document.getElementById("grafico-vendas").getContext("2d");
-
-    new Chart(ctxVendas, {
-        type: "bar",
-        data: {
-            labels: data.labels,
-            datasets: [
-                { label: "Vendas", data: data.vendas, backgroundColor: "#4CAF50" },
-                { label: "Custos", data: data.custos, backgroundColor: "#FF5733" }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,  // Impede que a altura seja ajustada automaticamente
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Vendas x Custos - Últimos 7 Dias", // Título do gráfico
-                    font: {
-                        size: 18,
-                        weight: "bold"
-                    },
-                    padding: {
-                        top: 10,
-                        bottom: 20
-                    },
-                    color: "#333"
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return `R$ ${tooltipItem.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return `R$ ${value.toLocaleString('pt-BR')}`;
-                        }
-                    }
-                }
-            }
-        }
-    });
-})
-.catch(error => console.error("Erro ao carregar os dados do gráfico:", error));
-
-// Buscar os dados da API
-fetch('/dados_grafico_contas')
-    .then(response => response.json())
-    .then(data => {
-        const ctxContas = document.getElementById("grafico-contas").getContext("2d");
-
-        // Criar o gráfico atualizado
-        new Chart(ctxContas, {
+            // Dados fictícios para o gráfico de vendas x custos
+        const ctxVendas = document.getElementById("grafico-vendas").getContext("2d");
+        const graficoVendas = new Chart(ctxVendas, {
             type: "bar",
             data: {
-                labels: data.contas,
+                labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
+                datasets: [
+                    { label: "Vendas", data: [500, 700, 650, 800, 750, 900, 850], backgroundColor: "#4CAF50" },
+                    { label: "Custos", data: [300, 400, 350, 500, 450, 600, 550], backgroundColor: "#FF5733" }
+                ]
+            },
+            options: { responsive: true }
+        });
+
+        // Dados fictícios para as contas bancárias
+        const ctxContas = document.getElementById("grafico-contas").getContext("2d");
+        const graficoContas = new Chart(ctxContas, {
+            type: "bar",
+            data: {
+                labels: ["Banco 1", "Banco 2", "Dinheiro"],
                 datasets: [{
-                    label: "Saldo das Contas",
-                    data: data.saldos,
-                    backgroundColor: ["#4CAF50", "#2196F3"], // Verde e Azul
-                    borderColor: ["#388E3C", "#1565C0"], // Tons mais escuros para bordas
-                    borderWidth: 2,
-                    borderRadius: 8
+                    label: "Saldo",
+                    data: [8000, 5000, 3000], // Substitua pelos saldos reais
+                    backgroundColor: ["#4CAF50", "#FF9800", "#2196F3"],
+                    borderRadius: 5
                 }]
             },
             options: {
+                indexAxis: "y", // Barras horizontais
                 responsive: true,
-                maintainAspectRatio: false,  // Impede que a altura seja ajustada automaticamente
-                plugins: {
-                    title: {
-                        display: true,
-                        text: "Caixa Atual", // Título do gráfico
-                        font: {
-                            size: 18,
-                            weight: "bold"
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        },
-                        color: "#333"
-                    },
-                    legend: {
-                        display: false // Ocultar legenda para não poluir o gráfico
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return `R$ ${tooltipItem.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-                            }
-                        }
-                    }
-                },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return `R$ ${value.toLocaleString('pt-BR')}`;
-                            }
-                        }
-                    }
+                    x: { beginAtZero: true }
                 }
             }
         });
-    })
-    .catch(error => console.error("Erro ao carregar os dados do gráfico:", error));
+        
 
-    let metaMensal = 20000;
-    let faturamentoAtual = 0; // Inicialmente zero, será atualizado com valor real
-    
-    const ctxMeta = document.getElementById("grafico-meta").getContext("2d");
-    const graficoMeta = new Chart(ctxMeta, {
-        type: "doughnut",
-        data: {
-            labels: ["Faturado", "Faltando"],
-            datasets: [{
-                data: [faturamentoAtual, metaMensal - faturamentoAtual],
-                backgroundColor: ["#007bff", "#808080"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: "bottom" },
-                title: {
-                    display: true,
-                    text: "Meta de Faturamento Mensal", // Adiciona título ao gráfico
-                    font: {
-                        size: 18,
-                        weight: "bold"
-                    },
-                    padding: {
-                        top: 10,
-                        bottom: 20
-                    }
-                }
-            }
+        let metaMensal = 20000;
+let faturamentoAtual = 12500; // Substituir por valor real do sistema
+
+const ctxMeta = document.getElementById("grafico-meta").getContext("2d");
+const graficoMeta = new Chart(ctxMeta, {
+    type: "doughnut",
+    data: {
+        labels: ["Faturado", "Faltando"],
+        datasets: [{
+            data: [faturamentoAtual, metaMensal - faturamentoAtual],
+            backgroundColor: ["#007bff", "#e0e0e0"]
+        }]
+    },
+    options: {
+        responsive: true,
+        plugins: {
+            legend: { position: "bottom" }
         }
-    });
-    
-    // ** Função para carregar o faturamento do mês **
-    function carregarFaturamento() {
-        fetch("/faturamento_mes")
-            .then(response => response.json())
-            .then(data => {
-                faturamentoAtual = parseFloat(data.total_faturamento_mes);
-                atualizarExibicaoMeta();
-                atualizarGrafico();
-            })
-            .catch(err => console.error("Erro ao carregar faturamento:", err));
     }
-    
-    // ** Função para carregar a meta do banco **
-    function carregarMeta() {
-        fetch("/api/meta")
-            .then(response => response.json())
-            .then(data => {
-                metaMensal = data.meta;
-                atualizarExibicaoMeta();
-                atualizarGrafico();
-            })
-            .catch(err => console.error("Erro ao carregar meta:", err));
-    }
-    
-    // ** Atualiza os valores exibidos na tela **
-function atualizarExibicaoMeta() {
-    document.getElementById("meta-total").textContent = metaMensal.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-    document.getElementById("faturamento-atual").textContent = faturamentoAtual.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-    document.getElementById("faltando").textContent = Math.max(0, metaMensal - faturamentoAtual).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+});
+
+// ** Função para carregar a meta do banco **
+function carregarMeta() {
+    fetch("/api/meta")
+        .then(response => response.json())
+        .then(data => {
+            metaMensal = data.meta;
+            atualizarExibicaoMeta();
+            atualizarGrafico();
+        })
+        .catch(err => console.error("Erro ao carregar meta:", err));
 }
 
-    // ** Atualizar gráfico de meta **
-    function atualizarGrafico() {
-        graficoMeta.data.datasets[0].data = [faturamentoAtual, Math.max(0, metaMensal - faturamentoAtual)];
-        graficoMeta.update();
-    }
-    
-  // Exibir o modal para definir a meta
+// ** Atualiza os valores exibidos na tela **
+function atualizarExibicaoMeta() {
+    document.getElementById("meta-total").textContent = metaMensal.toFixed(2);
+    document.getElementById("faltando").textContent = Math.max(0, metaMensal - faturamentoAtual).toFixed(2);
+}
+
+// ** Atualizar gráfico de meta **
+function atualizarGrafico() {
+    graficoMeta.data.datasets[0].data = [faturamentoAtual, Math.max(0, metaMensal - faturamentoAtual)];
+    graficoMeta.update();
+}
+
+// ** Exibir o modal para definir a meta **
 document.getElementById("btn-definir-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "flex";  // Exibe o modal
+    document.getElementById("modal-meta").style.display = "flex"; // Exibe o modal
 });
 
-// Fechar o modal ao clicar no botão de cancelar
-document.getElementById("btn-cancelar-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
-});
-
-// Atualizar meta no banco de dados
+// ** Atualizar meta no banco de dados **
 document.getElementById("btn-confirmar-meta").addEventListener("click", () => {
     const novaMeta = parseFloat(document.getElementById("nova-meta").value);
 
@@ -1109,53 +995,22 @@ document.getElementById("btn-confirmar-meta").addEventListener("click", () => {
     })
     .catch(err => console.error("Erro ao atualizar meta:", err));
 });
-    
-    // ** Carregar dados ao iniciar a página **
-    carregarMeta();
-    carregarFaturamento();
-    
-// Função para atualizar os valores do dashboard
-function atualizarDashboard() {
-    // Atualizar as vendas do dia
-    fetch('/vendas_dia')
-    .then(response => response.json())
-    .then(data => {
-        console.log("Vendas do dia:", data);
-        document.getElementById('vendas-dia').textContent = "R$ " + parseFloat(data.total_vendas_dia).toFixed(2);
-    })
-    .catch(error => console.error('Erro ao obter vendas do dia:', error));
 
-    // Atualizar o faturamento do mês
-    fetch('/faturamento_mes')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('faturamento-mes').textContent = "R$ " + data.total_faturamento_mes;
-        })
-        .catch(error => console.error('Erro ao atualizar faturamento do mês:', error));
+// ** Fechar o modal ao clicar no botão de cancelar **
+document.getElementById("btn-cancelar-meta").addEventListener("click", () => {
+    document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
+});
 
-    // Atualizar o lucro do mês
-    fetch('/lucro_mes')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('lucro-mes').textContent = "R$ " + data.total_lucro_mes;
-        })
-        .catch(error => console.error('Erro ao atualizar lucro do mês:', error));
+// ** Carregar a meta ao iniciar a página **
+carregarMeta();
 
-    // Atualizar os custos de produtos
-    fetch('/custos_produtos')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('custos-produtos').textContent = "R$ " + data.total_custos_produtos;
-        })
-        .catch(error => console.error('Erro ao atualizar custos dos produtos:', error));
-}
-// Chamar a função para atualizar o dashboard
-atualizarDashboard();
 
-// Atualizar os dados do dashboard a cada 30 segundos
-setInterval(atualizarDashboard, 30000);
+
 
 </script>
+
+    
+
 </body>
 </html>
 

@@ -108,6 +108,12 @@ cursor.execute('''CREATE TABLE IF NOT EXISTS vendas (
                         lucro REAL
                     )''')
 
+# Criando a tabela de Configurações
+cursor.execute('''CREATE TABLE IF NOT EXISTS configuracoes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    chave TEXT UNIQUE NOT NULL CHECK(length(chave) > 0),
+                    valor TEXT NOT NULL
+                )''')
 
 # Salva as alterações e fecha a conexão
 conn.commit()

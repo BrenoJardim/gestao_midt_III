@@ -11,16 +11,6 @@
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
 <style>
 
-    html, body {
-        height: 100%;
-        overflow-x: hidden; /* Para evitar rolagem horizontal */
-    }
-
-    body {
-        overflow: hidden;
-    }
-    
-    
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -154,15 +144,11 @@
         max-height: 1000px;
     }
     .content {
-        background-color: #f2f2f2;
-        padding: 5px 20px 20px 20px;
+        background-color: #f2f2f2; /* Cinza claro */
+        padding: 20px;
         overflow-y: auto;
-        overflow-x: hidden; /* Evita que o conteúdo cause rolagem horizontal */
         min-height: 100vh;
-        width: 100%;
-        box-sizing: border-box; /* Evita que padding aumente a largura total */
     }
-    
 
     .icon {
         width: 24px;
@@ -177,6 +163,10 @@
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
+    .form-group {
+        margin-bottom: 20px;
+    }
+
     label {
         font-weight: bold;
     }
@@ -187,6 +177,7 @@
         border-radius: 5px;
         width: calc(100% - 24px); 
         font-size: 16px;
+        margin-bottom: 10px; 
         transition: border-color 0.3s;
     }
 
@@ -211,6 +202,7 @@
     }
 
     #resultado-clima {
+        margin-top: 20px; 
         padding: 15px;
         border: 1px solid #ccc; 
         border-radius: 5px; 
@@ -220,6 +212,7 @@
     .clima-dia {
         display: flex;
         align-items: center;
+        margin-bottom: 10px;
     }
 
     .clima-dia img {
@@ -305,14 +298,14 @@
 
     #abrir-modal-clima img {
         width: 24px;
-        height: 30px;
+        height: 24px;
     }
 
     .dashboard-cards {
         display: grid;
         grid-template-columns: repeat(4, 1fr); /* 4 colunas */
         gap: 15px;
-        margin-bottom: 10px;
+        margin-bottom: 20px;
     }
     
     /* Estilo das caixas informativas */
@@ -391,13 +384,7 @@
         display: flex;
         flex-direction: column;
         gap: 20px;
-        min-height: 75vh;  /* Altura mínima */
-        max-height: 75vh;  /* Altura máxima ajustável conforme a necessidade */
-    }
-
-    #grafico-vendas {
-        min-height: 40vh;  /* Altura mínima */
-        max-height: 40vh;  /* Altura máxima ajustável conforme a necessidade */
+        width: 100%;
     }
 
     /* Container do gráfico à direita */
@@ -406,14 +393,13 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: auto;  /* Remover 100% */
-        min-height: 75vh;  /* Altura mínima */
-        max-height: 75vh;  /* Altura máxima ajustável conforme a necessidade */
+        height: 100%;
+        min-height: 640px;
         border-radius: 12px;
         background-color: #f5f5f5;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         overflow: hidden;
-        
+        padding: 20px;
     }
 
     .meta-info {
@@ -900,7 +886,6 @@ fetch('/dados_grafico_vendas')
         },
         options: {
             responsive: true,
-            maintainAspectRatio: false,  // Impede que a altura seja ajustada automaticamente
             plugins: {
                 title: {
                     display: true,
@@ -960,7 +945,6 @@ fetch('/dados_grafico_contas')
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,  // Impede que a altura seja ajustada automaticamente
                 plugins: {
                     title: {
                         display: true,

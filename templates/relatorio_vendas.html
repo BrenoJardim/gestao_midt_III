@@ -51,6 +51,31 @@
         height: calc(100vh - 50px);
     }
 
+    .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        justify-content: space-between;
+    }
+    
+    .form-group {
+        flex: 1 1 calc(50% - 15px);
+        display: flex;
+        flex-direction: column;
+    }
+    
+    label {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+    
+    input, select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+
     .sidebar {
         background-color: #ffffff;
         width: 20%;
@@ -126,154 +151,139 @@
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     }
     .icon {
-    width: 24px; 
-    height: 24px; 
-    margin-right: 10px;
+        width: 24px; 
+        height: 24px; 
+        margin-right: 10px;
+        }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    
+    th, td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+    }
+    
+    th {
+        background-color: #007bff;
+        color: white;
+        font-weight: bold;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
     }
 
-        /* Estilos para a tabela de relatório de vendas */
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-        }
-        
-        th, td {
-            padding: 12px;
-            text-align: left;
-        }
-        
-        th {
-            background: #4CAF50;
-            color: white;
-        }
-        
-        tr:nth-child(even) {
-            background: #f2f2f2;
-        }
-        
-        tr:hover {
-            background: #ddd;
-        }
+    .filter-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        padding: 15px;
+        background: #f9f9f9;
+        border-radius: 10px;
+        box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
+    }
 
-        /* Adicionando estilos para o formulário de filtro */
-        .filter-form {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding: 15px;
-            background: #f9f9f9;
-            border-radius: 10px;
-            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-            margin-bottom: 20px;
-        }
-        
-        .filter-form label {
-            font-weight: bold;
-        }
-        
-        .filter-form input, .filter-form select {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            flex: 1;
-            min-width: 150px;
-        }
-        
-        .filter-form button {
-            background: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        
-        .filter-form button:hover {
-            background: #45a049;
-        }
+    .filter-form label {
+        font-weight: bold;
+    }
 
-        button[type="submit"] {
-            background: #4CAF50; /* Verde vibrante */
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease;
-            box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.15);
-        }
-        
-        button[type="submit"]:hover {
-            background: #45a049; /* Tom um pouco mais escuro no hover */
-            transform: scale(1.05); /* Pequeno aumento no tamanho ao passar o mouse */
-        }
-        
-        button[type="submit"]:active {
-            background: #3e8e41; /* Cor mais escura quando pressionado */
-            transform: scale(0.98); /* Pequeno efeito de clique */
-        }
-        
+    .filter-form input, .filter-form select {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        flex: 1;
+        min-width: 150px;
+    }
+            
+    .button-group {
+        width: 100%;
+        display: flex;
+        justify-content: space-between; 
+        margin-top: 15px;
+    }
 
-
-        /* Estilos para os totais de vendas e lucros */
-        .total-section {
-            display: flex;
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-
-        .card span {
-            display: block;
-            font-size: 20px;
-            margin-top: 5px;
-        }
-        
-        .card.total-vendas {
-            border-left: 5px solid #4CAF50;
-            color: #4CAF50;
-        }
-        
-        .card.total-lucros {
-            border-left: 5px solid #FFA500;
-            color: #FFA500;
-        }
-        
-
-        .total-item {
-            display: flex;
-            margin-bottom: 10px;
-        }
-
-        .total-item span {
-            font-weight: bold;
-        }
-
-        .total-value {
-            color: #4CAF50; /* Cor verde para os valores */
-        }
-
-        .help-button {
-        margin-left: auto; /* Alinha o botão à direita */
+    .button-group button {
+        background-color: #007bff;
+        color: white;
+        font-size: 16px;
+        font-weight: bold;
         padding: 10px;
-        background-color: #4CAF50;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .button-group button:hover {
+        background-color: #0056b3;
+    }
+
+    #exportExcelBtn {
+        background-color: #28a745;
+    }
+
+    #exportExcelBtn:hover {
+        background-color: #218838;
+    }
+        
+    .total-section {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 20px;
+    }
+
+    .card span {
+        display: block;
+        font-size: 20px;
+        margin-top: 5px;
+    }
+    
+    .card.total-vendas {
+        border-left: 5px solid #4CAF50;
+        color: #4CAF50;
+    }
+    
+    .card.total-lucros {
+        border-left: 5px solid #FFA500;
+        color: #FFA500;
+    }
+        
+    .total-item {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .total-item span {
+        font-weight: bold;
+    }
+
+    .total-value {
+        color: #4CAF50; /* Cor verde para os valores */
+    }
+
+    .help-button {
+        margin-left: auto; /* Alinha o botão à direita */
+        margin-right: 20px; /* Espaço da direita */
+        padding: 10px;
+        background-color: #4CAF50; /* Verde */
         color: white;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s;
-        margin-right: 20px
     }
-
+    
     .help-button:hover {
-        background-color: #45a049;
+        background-color: #45a049; /* Verde um pouco mais escuro ao passar o mouse */
     }
-
+        
     .modal {
         display: none; 
         position: fixed;
@@ -415,37 +425,50 @@
             </ul>           
         </div>
         <div class="content">
-            <form id="filtroForm" method="POST">
-                <label for="data_inicio">Data Início:</label>
-                <input type="date" id="data_inicio" name="data_inicio">
-            
-                <label for="data_fim">Data Fim:</label>
-                <input type="date" id="data_fim" name="data_fim">
-            
-                <label for="cliente">Cliente:</label>
-                <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente">
-            
-                <label for="produto">Produto:</label>
-                <input type="text" id="produto" name="produto" placeholder="Nome do produto">
-            
-                <label for="forma_pagamento">Forma de Pagamento:</label>
-                <select id="forma_pagamento" name="forma_pagamento">
-                    <option value="">Todas</option>
-                    <option value="Debito">Débito</option>
-                    <option value="Credito">Crédito</option>
-                    <option value="A vista">À Vista</option>
-                    <option value="Pix">Pix</option>
-                </select>
-            
-                <button type="button" id="gerarRelatorioBtn">Filtrar</button>
-                <button id="exportExcelBtn" style="display: none;">Exportar para Excel</button>
+            <form id="filtroForm" method="POST" class="form-container">
+                <div class="form-group">
+                    <label for="data_inicio">Data Início:</label>
+                    <input type="date" id="data_inicio" name="data_inicio">
+                </div>
+        
+                <div class="form-group">
+                    <label for="data_fim">Data Fim:</label>
+                    <input type="date" id="data_fim" name="data_fim">
+                </div>
+        
+                <div class="form-group">
+                    <label for="cliente">Cliente:</label>
+                    <input type="text" id="cliente" name="cliente" placeholder="Nome do cliente">
+                </div>
+        
+                <div class="form-group">
+                    <label for="produto">Produto:</label>
+                    <input type="text" id="produto" name="produto" placeholder="Nome do produto">
+                </div>
+        
+                <div class="form-group">
+                    <label for="forma_pagamento">Forma de Pagamento:</label>
+                    <select id="forma_pagamento" name="forma_pagamento">
+                        <option value="">Todas</option>
+                        <option value="Debito">Débito</option>
+                        <option value="Credito">Crédito</option>
+                        <option value="A vista">À Vista</option>
+                        <option value="Pix">Pix</option>
+                    </select>
+                </div>
+        
+                <div class="button-group">
+                    <button type="button" id="gerarRelatorioBtn">Filtrar</button>
+                    <button id="exportExcelBtn" style="display: none;">Exportar para Excel</button>
+                </div>
             </form>
-           <!-- Exibição dos resultados -->
+        
+            <!-- Exibição dos resultados -->
             <h2>Relatório de Vendas</h2>
-            <p>Total de Vendas: R$ <span id="total_vendas">{{ total_vendas }}</span></p>
-            <p>Total de Lucros: R$ <span id="total_lucros">{{ total_lucros }}</span></p>
-
-            <table id="tabelaRelatorio" border="1">
+            <p><strong>Total de Vendas:</strong> <span id="total_vendas">{{ total_vendas }}</span></p>
+            <p><strong>Total de Lucros:</strong> <span id="total_lucros">{{ total_lucros }}</span></p>
+        
+            <table id="tabelaRelatorio">
                 <thead>
                     <tr>
                         <th>Data</th>
@@ -469,7 +492,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-        </div>
+        </div>        
     </div>
     
     <script>
