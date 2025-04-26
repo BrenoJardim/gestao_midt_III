@@ -1314,29 +1314,61 @@ def excluir_venda(venda_id):
 def compras():
     return render_template('compras.html')
 
-# Rota para fluxo de caixa
 @app.route('/fluxo_caixa')
 def fluxo_caixa():
-    # Abra uma conexão com o banco de dados
     conn = conectar_bd()
     cursor = conn.cursor()
     
-    # Execute uma consulta de teste
-    cursor.execute('SELECT * FROM registro_financeiro LIMIT 30')  # Limita a consulta para retornar apenas 5 clientes
-    test_data = cursor.fetchall()
-    print(test_data)  # Verifica se há dados retornados pela consulta de teste
+    # Obter parâmetros de filtro da URL
+    filtro_tipo = request.args.get('tipo', 'todos')
+    filtro_periodo = request.args.get('periodo', 'todos')
     
-    # Execute a consulta para obter todos os clientes
-    cursor.execute('SELECT * FROM registro_financeiro')
+    # Consulta base
+    query = 'SELECT * FROM registro_financeiro'
+    conditions = []
+    params = []
     
-    # Obtenha todos os resultados da consulta
-    registro_financeiro = cursor.fetchall()
+    # Aplicar filtro de tipo
+    if filtro_tipo == 'entradas':
+        conditions.append("tipo = 'Reforço'")
+    elif filtro_tipo == 'saidas':
+        conditions.append("tipo = 'Sangria'")
+    # Se for 'todos', não aplica filtro de tipo
     
-    # Feche a conexão com o banco de dados
+    # Aplicar filtro de período
+    today = datetime.now().date()
+    if filtro_periodo == 'hoje':
+        conditions.append("date(data) = date(?)")
+        params.append(today.isoformat())
+    elif filtro_periodo == 'mes':
+        conditions.append("strftime('%m', data) = strftime('%m', ?) AND strftime('%Y', data) = strftime('%Y', ?)")
+        params.extend([today.isoformat(), today.isoformat()])
+    # Se for 'todos', não aplica filtro de período
+    
+    # Construir a consulta final
+    if conditions:
+        query += " WHERE " + " AND ".join(conditions)
+    
+    query += " ORDER BY data DESC"
+    
+    # Executar consulta
+    cursor.execute(query, params)
+    registros = cursor.fetchall()
+    
+    # Calcular totais
+    total_entradas = sum(reg[3] for reg in registros if reg[1] == 'Reforço')
+    total_saidas = sum(reg[3] for reg in registros if reg[1] == 'Sangria')
+    saldo = total_entradas - total_saidas
+    
     conn.close()
     
-    # Renderize o template HTML e passe os clientes recuperados
-    return render_template('fluxo_caixa.html', registro_financeiro=registro_financeiro)
+    return render_template('fluxo_caixa.html', 
+                         registro_financeiro=registros,
+                         total_entradas=total_entradas,
+                         total_saidas=total_saidas,
+                         saldo=saldo,
+                         filtro_tipo=filtro_tipo,
+                         filtro_periodo=filtro_periodo)
 
 if __name__ == '__main__':
     app.run(debug=True)

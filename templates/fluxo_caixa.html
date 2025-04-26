@@ -7,8 +7,23 @@
     <title>Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
+
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --warning-color: #f39c12;
+        --dark-color: #131325;
+        --light-color: #ecf0f1;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
         
     body {
         font-family: Arial, sans-serif;
@@ -117,9 +132,9 @@
     }
 
     .content {
-        width: 80%;
-        padding: 20px;
-        overflow-y: auto;
+        flex: 1;
+        padding: 30px;
+        background-color: #f5f7fa;
     }
 
     .icon {
@@ -128,25 +143,245 @@
     margin-right: 10px;
     }
 
-    .fluxo-caixa-table {
-    width: 100%;
-    border-collapse: collapse;
+     /* Estilos para o fluxo de caixa */
+     .cash-flow-container {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
     }
 
-    .fluxo-caixa-table th,
-    .fluxo-caixa-table td {
-        padding: 10px;
+    .cash-flow-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .cash-flow-header h2 {
+        margin: 0;
+        color: var(--dark-color);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    .cash-flow-actions {
+        display: flex;
+        gap: 10px;
+    }
+
+    .filter-btn {
+        padding: 8px 15px;
+        background: white;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .filter-btn:hover {
+        background: #f5f5f5;
+    }
+
+    .filter-btn.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    .cash-flow-table-container {
+        overflow-x: auto;
+    }
+
+    .cash-flow-table {
+        width: 100%;
+        border-collapse: collapse;
+        min-width: 800px;
+    }
+
+    .cash-flow-table th {
+        background-color: var(--dark-color);
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+        padding: 15px;
         text-align: left;
-        border-bottom: 1px solid #ddd;
     }
 
-    .fluxo-caixa-table th {
-        background-color: #f2f2f2;
-        font-weight: bold;
+    .cash-flow-table td {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
     }
 
-    .fluxo-caixa-table tr:hover {
-        background-color: #f5f5f5;
+    .cash-flow-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .cash-flow-table tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+    }
+
+    /* Estilos para tipos de transação */
+    .transaction-type {
+        display: inline-block;
+        padding: 4px 8px;
+        border-radius: 4px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .transaction-sangria {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: var(--danger-color);
+    }
+
+    .transaction-reforco {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: var(--secondary-color);
+    }
+
+    /* Estilos para valores */
+    .transaction-value {
+        font-weight: 700;
+    }
+
+    .positive-value {
+        color: var(--secondary-color);
+    }
+
+    .negative-value {
+        color: var(--danger-color);
+    }
+
+    /* Estilos para datas */
+    .transaction-date {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    /* Resumo do fluxo */
+    .cash-flow-summary {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        gap: 20px;
+    }
+
+    .summary-card {
+        flex: 1;
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 20px;
+        box-shadow: var(--box-shadow);
+    }
+
+    .summary-card h3 {
+        margin-top: 0;
+        margin-bottom: 10px;
+        font-size: 1rem;
+        color: var(--text-light);
+    }
+
+    .summary-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+
+    .summary-income {
+        color: var(--secondary-color);
+    }
+
+    .summary-expense {
+        color: var(--danger-color);
+    }
+
+    .summary-balance {
+        color: var(--primary-color);
+    }
+
+    .cash-flow-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 20px;
+        align-items: center;
+    }
+    
+    .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: #f5f5f5;
+        padding: 8px 12px;
+        border-radius: 8px;
+    }
+    
+    .filter-group span {
+        font-size: 14px;
+        color: #555;
+        margin-right: 5px;
+    }
+    
+    .filter-btn {
+        padding: 6px 12px;
+        border: 1px solid #ddd;
+        border-radius: 20px;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 14px;
+    }
+    
+    .filter-btn:hover {
+        background: #f0f0f0;
+    }
+    
+    .filter-btn.active {
+        background: var(--primary-color);
+        color: white;
+        border-color: var(--primary-color);
+    }
+
+    /* Responsividade */
+    @media (max-width: 1024px) {
+        .sidebar {
+            transform: translateX(-100%);
+            position: fixed;
+            top: 70px;
+            left: 0;
+            height: calc(100vh - 70px);
+            z-index: 900;
+        }
+        
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        
+        .content {
+            margin-left: 0;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .cash-flow-summary {
+            flex-direction: column;
+        }
+        
+        .cash-flow-header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .cash-flow-actions {
+            width: 100%;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
     }
 
     .help-button {
@@ -305,35 +540,102 @@
                 <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
             </ul>           
         </div>
-        <div class="content">
-            <h2>Fluxo de Caixa</h2>
-            <!-- Tabela para exibir o fluxo de caixa -->
-            <table class="fluxo-caixa-table">
-                <thead>
-                    <tr>
-                        <th>Tipo</th>
-                        <th>Descrição</th>
-                        <th>Valor</th>
-                        <th>Pagamento</th>
-                        <th>Data</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <!-- Aqui serão exibidas as linhas com os dados de sangria e reforço -->
-                    {% for registro_financeiro in registro_financeiro %}
-                    <tr>
-                        <td>{{ registro_financeiro[1] }}</td>
-                        <td>{{ registro_financeiro[2] }}</td>
-                        <td>R${{ registro_financeiro[3] }}</td>
-                        <td>{{ registro_financeiro[4] }}</td>
-                        <td>{{ registro_financeiro[5] }}</td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-        </div>
-    </div>
 
+
+
+
+
+
+
+
+
+        <div class="content">
+            <div class="cash-flow-summary">
+                <div class="summary-card">
+                    <h3><i class="fas fa-arrow-down"></i> Entradas</h3>
+                    <div class="summary-value summary-income">R$ {{ "%.2f"|format(total_entradas) }}</div>
+                </div>
+                <div class="summary-card">
+                    <h3><i class="fas fa-arrow-up"></i> Saídas</h3>
+                    <div class="summary-value summary-expense">R$ {{ "%.2f"|format(total_saidas) }}</div>
+                </div>
+                <div class="summary-card">
+                    <h3><i class="fas fa-balance-scale"></i> Balanço</h3>
+                    <div class="summary-value summary-balance">R$ {{ "%.2f"|format(saldo) }}</div>
+                </div>
+            </div>
+            
+            <div class="cash-flow-container">
+                <div class="cash-flow-header">
+                    <h2><i class="fas fa-file-invoice-dollar"></i> Fluxo de Caixa</h2>
+                    <div class="cash-flow-actions">
+                        <!-- Grupo de filtros por tipo -->
+                        <div class="filter-group">
+                            <span>Filtrar por tipo:</span>
+                            <button class="filter-btn" data-tipo="todos">Todos</button>
+                            <button class="filter-btn" data-tipo="entradas">Entradas</button>
+                            <button class="filter-btn" data-tipo="saidas">Saídas</button>
+                        </div>
+                        
+                        <!-- Grupo de filtros por período -->
+                        <div class="filter-group">
+                            <span>Filtrar por período:</span>
+                            <button class="filter-btn" data-periodo="todos">Todos</button>
+                            <button class="filter-btn" data-periodo="hoje">Hoje</button>
+                            <button class="filter-btn" data-periodo="mes">Este Mês</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="cash-flow-table-container">
+                    <table class="cash-flow-table">
+                        <thead>
+                            <tr>
+                                <th>Tipo</th>
+                                <th>Descrição</th>
+                                <th>Valor</th>
+                                <th>Método</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for registro in registro_financeiro %}
+                            <tr>
+                                <td>
+                                    <span class="transaction-type {% if registro[1] == 'Sangria' %}transaction-sangria{% else %}transaction-reforco{% endif %}">
+                                        {{ registro[1] }}
+                                    </span>
+                                </td>
+                                <td>{{ registro[2] }}</td>
+                                <td>
+                                    <span class="transaction-value {% if registro[1] == 'Sangria' %}negative-value{% else %}positive-value{% endif %}">
+                                        R$ {{ registro[3] }}
+                                    </span>
+                                </td>
+                                <td>{{ registro[4] }}</td>
+                                <td class="transaction-date">{{ registro[5] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </div>
     <script>
         const expandableBtns = document.querySelectorAll('.expandable-header');
         expandableBtns.forEach(btn => {
@@ -426,6 +728,75 @@
             document.getElementById('texto-link').addEventListener('click', function() {
                 window.location.href = 'http://127.0.0.1:5000/inicio';
             });
+
+
+
+
+
+            document.addEventListener('DOMContentLoaded', function() {
+                // Filtros da tabela
+                const filterButtons = document.querySelectorAll('.filter-btn');
+                
+                filterButtons.forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        // Determinar se é um botão de tipo ou período
+                        const isTipoBtn = this.hasAttribute('data-tipo');
+                        const isPeriodoBtn = this.hasAttribute('data-periodo');
+                        
+                        // Obter filtros atuais da URL
+                        const urlParams = new URLSearchParams(window.location.search);
+                        let tipo = urlParams.get('tipo') || 'todos';
+                        let periodo = urlParams.get('periodo') || 'todos';
+                        
+                        // Atualizar apenas o filtro correspondente ao botão clicado
+                        if (isTipoBtn) {
+                            tipo = this.dataset.tipo;
+                        }
+                        if (isPeriodoBtn) {
+                            periodo = this.dataset.periodo;
+                        }
+                        
+                        // Atualizar URL com os parâmetros de filtro
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('tipo', tipo);
+                        url.searchParams.set('periodo', periodo);
+                        window.location.href = url.toString();
+                    });
+                });
+                
+                // Marcar botões ativos baseados nos filtros atuais
+                const urlParams = new URLSearchParams(window.location.search);
+                const currentTipo = urlParams.get('tipo') || 'todos';
+                const currentPeriodo = urlParams.get('periodo') || 'todos';
+                
+                // Remover classe active de todos os botões
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                
+                // Ativar botões correspondentes aos filtros atuais
+                document.querySelectorAll(`.filter-btn[data-tipo="${currentTipo}"]`).forEach(btn => {
+                    btn.classList.add('active');
+                });
+                
+                document.querySelectorAll(`.filter-btn[data-periodo="${currentPeriodo}"]`).forEach(btn => {
+                    btn.classList.add('active');
+                });
+                
+                // Formatar valores monetários
+                document.querySelectorAll('.summary-value').forEach(el => {
+                    const value = parseFloat(el.textContent.replace('R$', '').trim());
+                    el.textContent = 'R$ ' + value.toFixed(2).replace('.', ',');
+                });
+            });
+
+
+
+
+            
+
+
+            
     </script>
 </body>
 
