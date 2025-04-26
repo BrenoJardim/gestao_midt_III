@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>Cadastro de Produtos - Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Estilos Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
-<style>
+    <style>
 
     body {
         font-family: Arial, sans-serif;
@@ -23,52 +20,25 @@
         color: #fff;
         display: flex;
         align-items: center;
-        padding: 0px 20px;
+        padding: 0px 0px;
     }
-    
-    .header {
-        background-color: #131325;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        padding: 0px 20px;
-    }
-    
-    .right-buttons {
-        display: flex;
-        align-items: center;
-        margin-left: auto; 
-    }
-    
-    .weather-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-    
-    .weather-icon {
-        width: 24px;
-        height: 24px;
-    }
-    
 
     .logo img {
         width: 80px;
         height: auto;
-        margin-right: 10px; 
+        margin-right: 10px;
     }
 
     .logoside {
         display: flex;
-        justify-content: center; 
-        align-items: center; 
-        height: 180px; 
+        justify-content: center; /* Para centralizar horizontalmente */
+        align-items: center; /* Para centralizar verticalmente */
+        height: 180px; /* Defina a altura desejada */
     }
 
     .logoside img {
-        max-width: 100%; 
-        max-height: 100%; 
+        max-width: 100%; /* Para que a imagem tenha no máximo a largura da sidebar */
+        max-height: 100%; /* Para que a imagem tenha no máximo a altura da sidebar */
         width: auto;
         height: auto;
     }
@@ -143,17 +113,17 @@
         display: block;
         max-height: 1000px;
     }
+
     .content {
-        background-color: #f2f2f2; /* Cinza claro */
+        width: 80%;
         padding: 20px;
         overflow-y: auto;
-        min-height: 100vh;
     }
 
     .icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 10px;
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
     }
 
     .form-container {
@@ -171,57 +141,59 @@
         font-weight: bold;
     }
 
-    input[type="text"] {
-        padding: 12px;
+    input[type="text"],
+    input[type="number"],
+    input[type="submit"] {
+        width: 100%;
+        padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
-        width: calc(100% - 24px); 
         font-size: 16px;
-        margin-bottom: 10px; 
-        transition: border-color 0.3s;
+        transition: border-color 0.3s ease;
     }
 
-    input[type="text"]:focus {
-        border-color: #4CAF50; 
-        outline: none; 
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+        border-color: #333;
     }
 
-    button {
-        padding: 12px 20px;
-        font-size: 16px;
+    input[type="submit"] {
+        background-color: #333;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #555;
+    }
+
+    select {
+    
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    }
+
+    button[type="submit"] {
+        padding: 15px 30px;
+        font-size: 18px;
         border: none;
         border-radius: 5px;
         background-color: #4CAF50;
         color: white;
         cursor: pointer;
-        transition: background-color 0.3s;
     }
 
-    button:hover {
-        background-color: #45a049; 
+    button[type="submit"]:hover {
+        background-color: #45a049;
     }
 
-    #resultado-clima {
-        margin-top: 20px; 
-        padding: 15px;
-        border: 1px solid #ccc; 
-        border-radius: 5px; 
-        background-color: #f0f0f0; 
-    }
-
-    .clima-dia {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .clima-dia img {
-        width: 50px; 
-        height: 50px; 
-        margin-right: 10px; 
-    }
-
-    .help-button, #abrir-modal-clima {
+    .help-button {
+        margin-left: auto; /* Alinha o botão à direita */
         padding: 10px;
         background-color: #4CAF50;
         color: white;
@@ -229,9 +201,10 @@
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s;
+        margin-right: 20px
     }
 
-    .help-button:hover, #abrir-modal-clima:hover {
+    .help-button:hover {
         background-color: #45a049;
     }
 
@@ -271,283 +244,16 @@
         text-decoration: none;
         cursor: pointer;
     }
-
     
-    #modalClima .modal-content {
-        max-width: 500px;
+        @media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
     }
-
-    #modalClima .form-container {
-        margin-bottom: 20px;
+    .content {
+        width: 100%;
     }
-
-    #modalClima #resultado-clima {
-        margin-top: 20px;
     }
-
-    #abrir-modal-clima {
-        background: none; 
-        border: none; 
-        padding: 0; 
-        cursor: pointer;
-        outline: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #abrir-modal-clima img {
-        width: 24px;
-        height: 24px;
-    }
-
-    .dashboard-cards {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-    
-    /* Estilo das caixas informativas */
-    .card {
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        font-weight: bold;
-        font-size: 18px;
-        transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
-        position: relative;
-    }
-    
-    /* Efeito de hover nas caixas */
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Cores das caixas */
-    .card-green {
-        background-color: #4CAF50;
-        color: white;
-        border: 2px solid #388E3C; /* Borda mais escura */
-    }
-    
-    .card-white {
-        background-color: white;
-        color: black;
-        border: 2px solid #ccc; /* Borda suave */
-    }
-    
-    .card-blue {
-        background-color: #007bff;
-        color: white;
-        border: 2px solid #0056b3; /* Borda mais escura */
-    }
-    
-    /* Adicionando um brilho suave nas caixas ao passar o mouse */
-    .card-green:hover {
-        background-color: #45a049;
-        border-color: #388E3C;
-    }
-    
-    .card-blue:hover {
-        background-color: #0056b3;
-        border-color: #003f7f;
-    }
-    
-    .card-white:hover {
-        background-color: #f1f1f1;
-        border-color: #bbb;
-    }
-    
-    /* Adicionando ícones de seta */
-    .card::after {
-        content: " →";
-        font-size: 24px;
-        color: rgba(0, 0, 0, 0.3);
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-    }
-    
-    
-
-/* Seção dos gráficos */
-.charts-container {
-    display: grid;
-    grid-template-columns: 2fr 1fr; /* Esquerda = 2 partes, Direita = 1 parte */
-    gap: 20px;
-    align-items: stretch;
-}
-
-/* Container esquerdo com os gráficos */
-.charts-left {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    width: 100%;
-}
-
-/* Container do gráfico à direita */
-.chart-meta {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    min-height: 640px;
-    border-radius: 12px;
-    background-color: #f5f5f5;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    padding: 20px;
-}
-
-.meta-info {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.meta-text {
-    font-size: 18px;
-    font-weight: bold;
-    margin: 5px 0;
-    color: #333;
-}
-
-.meta-text span {
-    font-size: 20px;
-    color: #007bff; /* Cor azul para valores destacados */
-}
-
-/* Estilo do botão de definir meta */
-.btn-definir-meta {
-    padding: 10px 15px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
-
-.btn-definir-meta:hover {
-    background-color: #0056b3;
-}
-
-/* Modal para definição da meta */
-.modal-meta {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-    display: none; /* Esconde o modal por padrão */
-    justify-content: center;
-    align-items: center;
-}
-
-.modal-content {
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 300px;
-}
-
-.modal-content input {
-    width: 100%;
-    padding: 10px;
-    margin: 10px 0; /* Adicionando margem entre o input e os botões */
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-.modal-content button {
-    padding: 10px;
-    margin-top: 10px;
-    width: 100%;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    background-color: #007bff;
-    color: white;
-}
-
-.modal-content button:hover {
-    background-color: #0056b3;
-}
-
-.modal-content button:focus {
-    outline: none;
-}
-
-
-
-#nova-meta {
-    padding: 10px;
-    width: 100%;
-    font-size: 16px;
-    margin-top: 10px;
-}
-
-.btn-confirmar-meta, .btn-cancelar-meta {
-    padding: 10px 20px;
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
-}
-
-.btn-confirmar-meta:hover {
-    background-color: #45a049;
-}
-
-.btn-cancelar-meta {
-    background-color: #f44336;
-}
-
-.btn-cancelar-meta:hover {
-    background-color: #e53935;
-}
-
-
-/* Estilo dos gráficos */
-.chart {
-    position: relative;
-    flex-grow: 1;
-    border-radius: 12px; /* Borda arredondada */
-    background-color: #ffffff; /* Fundo branco para os gráficos */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    transition: box-shadow 0.3s, transform 0.3s;
-}
-
-/* Efeito de hover nos gráficos */
-.chart:hover {
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
-    transform: translateY(-5px); /* Efeito de elevação */
-}
-
-
-    /* Responsividade */
-@media (max-width: 1024px) {
-    .dashboard-cards {
-        grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
-    }
-}
-
-@media (max-width: 600px) {
-    .dashboard-cards {
-        grid-template-columns: 1fr; /* 1 coluna para telas pequenas */
-        
-    }
-}
 
     </style>
 </head>
@@ -558,12 +264,7 @@
                 <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
         <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
-        <div class="right-buttons">
-            <button id="abrir-modal-clima" class="weather-button">
-                <img src="/images/sun-icon.png" alt="Clima" class="weather-icon">
-            </button>
-            <button class="help-button" id="help-button">?</button>
-        </div>
+        <button class="help-button" id="help-button">?</button>
     </div>
     <div class="container">
         <div class="sidebar">
@@ -648,198 +349,127 @@
             </ul>           
         </div>
         <div class="content">
-            <div class="dashboard-cards">
-                <div class="card card-green">Vendas do Dia: R$ <span id="vendas-dia">0,00</span></div>
-                <div class="card card-white">Faturamento do Mês: R$ <span id="faturamento-mes">0,00</span></div>
-                <div class="card card-white">Custos dos Produtos: R$ <span id="custos-produtos">0,00</span></div>
-                <div class="card card-blue">Lucro do Mês: R$ <span id="lucro-mes">0,00</span></div>
-            </div>            
-            
-            <div class="charts-container">
-                <!-- Esquerda -->
-                <div class="charts-left">
-                    <div class="chart">
-                        <canvas id="grafico-vendas"></canvas>
+            <h2>Cadastro de Produtos</h2>
+            <div class="form-container">
+                <form id="formCadastroProduto" method="POST" action="/cadastro_produtos">
+                    <div class="form-group">
+                        <label for="nome">Nome:</label><br>
+                        <input type="text" id="nome" name="nome" required><br>
                     </div>
-                    <div class="chart">
-                        <canvas id="grafico-contas"></canvas>
+                    <div class="form-group">
+                        <label for="codigo">Código:</label><br>
+                        <input type="text" id="codigo" name="codigo" required><br>
                     </div>
-                </div>
-            
-                <!-- Direita (Meta do mês) -->
-                <div class="chart chart-meta">
-                    <div class="meta-info">
-                        <p class="meta-text">Meta do Mês: R$ <span id="meta-total">20,000</span></p>
-                        <p class="meta-text">Faturamento Atual: R$ <span id="faturamento-atual">12,500</span></p>
-                        <p class="meta-text">Faltando: R$ <span id="faltando">7,500</span></p>
-                        <button id="btn-definir-meta" class="btn-definir-meta">Definir Meta</button>
+                    <div class="form-group">
+                        <label for="custo">Custo:</label><br>
+                        <input type="number" id="custo" name="custo" step="0.01" required><br>
                     </div>
-                    <canvas id="grafico-meta"></canvas>
-                </div>
-                
-                <!-- Modal de definição da meta -->
-                <div id="modal-meta" class="modal-meta">
-                    <div class="modal-content">
-                        <h3>Definir Nova Meta</h3>
-                        <input type="number" id="nova-meta" placeholder="Digite o novo valor da meta" />
-                        <button id="btn-confirmar-meta" class="btn-confirmar-meta">Confirmar</button>
-                        <button id="btn-cancelar-meta" class="btn-cancelar-meta">Cancelar</button>
+                    <div class="form-group">
+                        <label for="valor_venda">Valor de Venda:</label><br>
+                        <input type="number" id="valor_venda" name="valor_venda" step="0.01" required><br>
                     </div>
-                </div>
-                
-                
-            </div>            
-        </div>
-
-
-            <!-- Modal do Clima -->
-            <div id="modalClima" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Informações do Clima</h2>
-                    <div class="form-container">
-                        <input type="text" id="cidade" placeholder="Digite o nome da cidade">
-                        <button id="buscar-clima">Buscar Clima</button>
-                        <button id="usar-localizacao">Usar Minha Localização</button>
+                    <div class="form-group">
+                        <label for="tipo_medida">Tipo de Medida:</label><br>
+                        <select id="tipo_medida" name="tipo_medida" required>
+                            <option value="KG">KG</option>
+                            <option value="Quant">Quant</option>
+                        </select>
                     </div>
-                    <div id="resultado-clima"></div>
-                </div>
+                    <button type="submit">Cadastrar</button>
+                </form>
             </div>
         </div>
     </div>
 
+    <script>
+        const expandableBtns = document.querySelectorAll('.expandable-header');
+        expandableBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const body = this.nextElementSibling;
+                this.classList.toggle('active');
+                if (body.style.maxHeight) {
+                    body.style.maxHeight = null;
+                } else {
+                    body.style.maxHeight = body.scrollHeight + "px";
+                }
+            });
+        });
+
+        
+    </script>
+
 <script>
-    const expandableBtns = document.querySelectorAll('.expandable-header');
-    expandableBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const body = this.nextElementSibling;
-            this.classList.toggle('active');
-            if (body.style.maxHeight) {
-                body.style.maxHeight = null;
-            } else {
-                body.style.maxHeight = body.scrollHeight + "px";
-            }
-        });
-    });
-    
-    document.addEventListener("DOMContentLoaded", function () {
-        // Abrir modal do clima
-        const abrirModalClima = document.getElementById("abrir-modal-clima");
-        const modalClima = document.getElementById("modalClima");
-        const spanClima = modalClima.querySelector(".close");
-    
-        abrirModalClima.addEventListener("click", () => {
-            modalClima.style.display = "block";
-        });
-    
-        spanClima.addEventListener("click", () => {
-            modalClima.style.display = "none";
-        });
-    
-        window.addEventListener("click", (event) => {
-            if (event.target === modalClima) {
-                modalClima.style.display = "none";
-            }
-        });
-    
-        // Buscar clima (código existente)
-        function buscarClima(cidade) {
-            if (cidade) {
-                $.getJSON(`/api/clima?cidade=${cidade}`, function(data) {
-                    $('#resultado-clima').html(`
-                        <p>Cidade: ${data.cidade}</p>
-                        <p>Temperatura Atual: ${data.temperatura}°C</p>
-                        <img src="${data.icone_url}" alt="Ícone do clima atual">
-                        <p>Temperatura Máxima: ${data.temperatura_maxima}°C</p>
-                        <p>Temperatura Mínima: ${data.temperatura_minima}°C</p>
-                        <p>Previsão de Chuva: ${data.previsao_chuva ? 'Sim' : 'Não'}</p>
-                        <h3>Previsão para os Próximos Dias</h3>
-                        <ul>
-                            ${data.previsao_dias.map(dia => `
-                                <li>
-                                    <strong>${dia.data}</strong>: ${dia.temperatura_maxima}°C / ${dia.temperatura_minima}°C - ${dia.descricao}
-                                    <img src="${dia.icone_url}" alt="Ícone do clima">
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `);
-                }).fail(function() {
-                    $('#resultado-clima').html('<p>Erro ao buscar informações do clima.</p>');
-                });
-            } else {
-                $('#resultado-clima').html('<p>Por favor, digite o nome da cidade ou use a localização.</p>');
+    $(document).ready(function() {
+    // Definir as teclas de atalho (Ctrl + Shift + number)
+    $(document).keydown(function(event) {
+        if (event.ctrlKey && event.shiftKey) {
+            switch (event.which) {
+                case 49: // Ctrl + Shift + 1
+                    window.location.href = "/cadastro_produtos";
+                    break;
+                case 50: // Ctrl + Shift + 2
+                    window.location.href = "/cadastro_clientes";
+                    break;
+                case 51: // Ctrl + Shift + 3
+                    window.location.href = "/cadastro_fornecedores";
+                    break;
+                case 52: // Ctrl + Shift + 4
+                    window.location.href = "/venda_balcao";
+                    break;
+                case 53: // Ctrl + Shift + 5
+                    window.location.href = "/listar_vendas";
+                    break;
+                case 54: // Ctrl + Shift + 6
+                    window.location.href = "/compras";
+                    break;
+                case 55: // Ctrl + Shift + 7
+                    window.location.href = "/adicao_sitio";
+                    break;
+                case 56: // Ctrl + Shift + 8
+                    window.location.href = "/listar_compras";
+                    break;
+                case 57: // Ctrl + Shift + 9
+                    window.location.href = "/financeiro";
+                    break;
+                default:
+                    break;
             }
         }
-    
-        $('#buscar-clima').click(function() {
-            const cidade = $('#cidade').val();
-            buscarClima(cidade);
-        });
-    
-        $('#usar-localizacao').click(function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-    
-                    $.getJSON(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, function(data) {
-                        const cidade = data.address.city || data.address.town || data.address.village;
-                        buscarClima(cidade);
-                    }).fail(function() {
-                        $('#resultado-clima').html('<p>Erro ao obter a localização.</p>');
-                    });
-                }, function() {
-                    $('#resultado-clima').html('<p>Geolocalização não permitida.</p>');
-                });
-            } else {
-                $('#resultado-clima').html('<p>Geolocalização não é suportada por este navegador.</p>');
-            }
-        });
     });
-</script>
+});
 
-<script>
-        $(document).ready(function() {
-        // Definir as teclas de atalho (Ctrl + Shift + number)
-        $(document).keydown(function(event) {
-            if (event.ctrlKey && event.shiftKey) {
-                switch (event.which) {
-                    case 49: // Ctrl + Shift + 1
-                        window.location.href = "/cadastro_produtos";
-                        break;
-                    case 50: // Ctrl + Shift + 2
-                        window.location.href = "/cadastro_clientes";
-                        break;
-                    case 51: // Ctrl + Shift + 3
-                        window.location.href = "/cadastro_fornecedores";
-                        break;
-                    case 52: // Ctrl + Shift + 4
-                        window.location.href = "/venda_balcao";
-                        break;
-                    case 53: // Ctrl + Shift + 5
-                        window.location.href = "/listar_vendas";
-                        break;
-                    case 54: // Ctrl + Shift + 6
-                        window.location.href = "/compras";
-                        break;
-                    case 55: // Ctrl + Shift + 7
-                        window.location.href = "/adicao_sitio";
-                        break;
-                    case 56: // Ctrl + Shift + 8
-                        window.location.href = "/listar_compras";
-                        break;
-                    case 57: // Ctrl + Shift + 9
-                        window.location.href = "/financeiro";
-                        break;
-                    default:
-                        break;
-                }
-            }
-        });
+// Redirecionar ao clicar na imagem
+document.getElementById('minha-imagem').addEventListener('click', function() {
+        window.location.href = 'inicio';
     });
 
-    // Redirecionar ao clicar na imagem
-    document.getElementById('minha-imagem').addEventListener('click', function() {
+    // Redirecionar ao clicar no texto
+    document.getElementById('texto-link').addEventListener('click', function() {
+        window.location.href = 'inicio';
+    });
+
+
+    // Mostrar e esconder o modal
+    var modal = document.getElementById("helpModal");
+        var btn = document.getElementById("help-button");
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Redirecionar ao clicar na imagem
+        document.getElementById('minha-imagem').addEventListener('click', function() {
             window.location.href = 'inicio';
         });
 
@@ -847,170 +477,10 @@
         document.getElementById('texto-link').addEventListener('click', function() {
             window.location.href = 'inicio';
         });
-
-
-        // Mostrar e esconder o modal
-        var modal = document.getElementById("helpModal");
-            var btn = document.getElementById("help-button");
-            var span = document.getElementsByClassName("close")[0];
-
-            btn.onclick = function() {
-                modal.style.display = "block";
-            }
-
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-            // Redirecionar ao clicar na imagem
-            document.getElementById('minha-imagem').addEventListener('click', function() {
-                window.location.href = 'inicio';
-            });
-
-            // Redirecionar ao clicar no texto
-            document.getElementById('texto-link').addEventListener('click', function() {
-                window.location.href = 'inicio';
-            });
-        
 </script>
-<script>
-            // Dados fictícios para o gráfico de vendas x custos
-        const ctxVendas = document.getElementById("grafico-vendas").getContext("2d");
-        const graficoVendas = new Chart(ctxVendas, {
-            type: "bar",
-            data: {
-                labels: ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"],
-                datasets: [
-                    { label: "Vendas", data: [500, 700, 650, 800, 750, 900, 850], backgroundColor: "#4CAF50" },
-                    { label: "Custos", data: [300, 400, 350, 500, 450, 600, 550], backgroundColor: "#FF5733" }
-                ]
-            },
-            options: { responsive: true }
-        });
-
-        // Dados fictícios para as contas bancárias
-        const ctxContas = document.getElementById("grafico-contas").getContext("2d");
-        const graficoContas = new Chart(ctxContas, {
-            type: "bar",
-            data: {
-                labels: ["Banco 1", "Banco 2", "Dinheiro"],
-                datasets: [{
-                    label: "Saldo",
-                    data: [8000, 5000, 3000], // Substitua pelos saldos reais
-                    backgroundColor: ["#4CAF50", "#FF9800", "#2196F3"],
-                    borderRadius: 5
-                }]
-            },
-            options: {
-                indexAxis: "y", // Barras horizontais
-                responsive: true,
-                scales: {
-                    x: { beginAtZero: true }
-                }
-            }
-        });
-        
-
-        let metaMensal = 20000;
-let faturamentoAtual = 12500; // Substituir por valor real do sistema
-
-const ctxMeta = document.getElementById("grafico-meta").getContext("2d");
-const graficoMeta = new Chart(ctxMeta, {
-    type: "doughnut",
-    data: {
-        labels: ["Faturado", "Faltando"],
-        datasets: [{
-            data: [faturamentoAtual, metaMensal - faturamentoAtual],
-            backgroundColor: ["#007bff", "#e0e0e0"]
-        }]
-    },
-    options: {
-        responsive: true,
-        plugins: {
-            legend: { position: "bottom" }
-        }
-    }
-});
-
-// ** Função para carregar a meta do banco **
-function carregarMeta() {
-    fetch("/api/meta")
-        .then(response => response.json())
-        .then(data => {
-            metaMensal = data.meta;
-            atualizarExibicaoMeta();
-            atualizarGrafico();
-        })
-        .catch(err => console.error("Erro ao carregar meta:", err));
-}
-
-// ** Atualiza os valores exibidos na tela **
-function atualizarExibicaoMeta() {
-    document.getElementById("meta-total").textContent = metaMensal.toFixed(2);
-    document.getElementById("faltando").textContent = Math.max(0, metaMensal - faturamentoAtual).toFixed(2);
-}
-
-// ** Atualizar gráfico de meta **
-function atualizarGrafico() {
-    graficoMeta.data.datasets[0].data = [faturamentoAtual, Math.max(0, metaMensal - faturamentoAtual)];
-    graficoMeta.update();
-}
-
-// ** Exibir o modal para definir a meta **
-document.getElementById("btn-definir-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "flex"; // Exibe o modal
-});
-
-// ** Atualizar meta no banco de dados **
-document.getElementById("btn-confirmar-meta").addEventListener("click", () => {
-    const novaMeta = parseFloat(document.getElementById("nova-meta").value);
-
-    if (isNaN(novaMeta) || novaMeta <= 0) {
-        alert("Por favor, insira um valor válido para a meta.");
-        return;
-    }
-
-    fetch("/api/meta", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ meta: novaMeta })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            metaMensal = data.meta;
-            atualizarExibicaoMeta();
-            atualizarGrafico();
-            document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
-            alert(data.mensagem);  // Mensagem de sucesso
-        } else {
-            alert("Erro ao atualizar a meta. Tente novamente.");
-        }
-    })
-    .catch(err => console.error("Erro ao atualizar meta:", err));
-});
-
-// ** Fechar o modal ao clicar no botão de cancelar **
-document.getElementById("btn-cancelar-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
-});
-
-// ** Carregar a meta ao iniciar a página **
-carregarMeta();
-
-
-
-
-</script>
-
     
-
+    
+    
 </body>
-</html>
 
+</html>

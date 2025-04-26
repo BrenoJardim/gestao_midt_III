@@ -7,9 +7,26 @@
     <title>Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
     <style>
-        
+    
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --warning-color: #f39c12;
+        --dark-color: #131325;
+        --light-color: #ecf0f1;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        --transition: all 0.3s ease;
+        --sidebar-width: 280px;
+        --header-height: 80px;
+        }
+    
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -47,7 +64,7 @@
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        height: 100%;
     }
 
     .sidebar {
@@ -116,76 +133,10 @@
         max-height: 1000px;
     }
 
-    .content {
-        width: 80%;
-        padding: 20px;
-        overflow-y: auto;
-    }
-
     .icon {
     width: 24px; 
     height: 24px; 
     margin-right: 10px;
-    }
-
-    /* Estilos para a página financeira */
-    .finance-container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-    .finance-container .section {
-        margin-bottom: 20px;
-    }
-
-    .section-header {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
-    }
-
-    .section-content {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        background-color: #f9f9f9;
-    }
-
-    table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
-
-    th,
-    td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-    }
-
-    th {
-        background-color: #f2f2f2;
-        font-weight: bold;
-    }
-
-    tr:nth-child(even) {
-        background-color: #f2f2f2;
-    }
-
-    .cash-container {
-        display: flex;
-        align-items: center;
-        margin-bottom: 10px;
-    }
-
-    .cash-value {
-        font-size: 18px;
-        font-weight: bold;
-        margin-right: 10px;
     }
 
     .btn {
@@ -206,23 +157,7 @@
     .btn:hover {
         background-color: #45a049;
     }
-    /* Estilos para os botões de sangria, reforço e fluxo de caixa */
-    .sangria-btn {
-        background-color: #FF5733; /* Vermelho */
-    }
-
-    .reforco-btn {
-        background-color: #4CAF50; /* Verde */
-    }
-
-    .fluxo-btn {
-        background-color: #131325; /* Preto */
-    }
-
-    /* Efeito hover para os botões */
-    .btn:hover {
-        opacity: 0.8;
-    }
+   
 
     .help-button {
         margin-left: auto; /* Alinha o botão à direita */
@@ -276,16 +211,351 @@
         text-decoration: none;
         cursor: pointer;
     }
-    
-        @media (max-width: 768px) {
+
+
+
+    /* Conteúdo Principal */
+.content {
+    flex: 1;
+    padding: 30px;
+    background-color: #ffffff;
+    overflow-y: auto;
+}
+
+/* Dashboard Financeiro */
+.financial-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+/* Cards de Resumo */
+.summary-cards {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.summary-card {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 25px;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+.summary-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.total-cash {
+    background: linear-gradient(135deg, var(--primary-color), #5dade2);
+    color: white;
+}
+
+.total-cash .amount {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-top: 10px;
+}
+
+/* Estilos específicos para o card de formas de pagamento */
+.payment-methods {
+    background: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+}
+
+.payment-methods:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+}
+
+.payment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+.payment-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--dark-color);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.payment-total {
+    font-weight: 700;
+    color: var(--primary-color);
+    background: rgba(52, 152, 219, 0.1);
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+/* Grid de Métodos de Pagamento */
+.payment-methods-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+/* Cartão de Método Individual */
+.payment-method {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid #eee;
+}
+
+.payment-method:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+    background: white;
+}
+
+.method-icon {
+    margin-right: 15px;
+    font-size: 1.5rem;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: white;
+    flex-shrink: 0;
+}
+
+/* Cores específicas para cada método */
+.cash .method-icon { background-color: #2ecc71; }
+.pix .method-icon { background-color: #32b6a0; }
+.debit .method-icon { background-color: #3498db; }
+.credit .method-icon { background-color: #9b59b6; }
+
+.method-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.method-name {
+    display: block;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 3px;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.method-amount {
+    display: block;
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-bottom: 3px;
+    color: var(--dark-color);
+}
+
+.method-percentage {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    font-weight: 500;
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 15px;
+    border-radius: var(--border-radius);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: var(--box-shadow);
+    transition: var(--transition);
+    text-align: center;
+}
+
+.action-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.action-btn i {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.cash-out {
+    background: linear-gradient(135deg, var(--danger-color), #e67e22);
+}
+
+.cash-in {
+    background: linear-gradient(135deg, var(--secondary-color), #27ae60);
+}
+
+.cash-flow {
+    background: linear-gradient(135deg, var(--primary-color), #2980b9);
+}
+
+/* Tabela */
+.cash-flow-section {
+    background: white;
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    overflow: hidden;
+}
+
+.section-header {
+    padding: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.section-header h2 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--dark-color);
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.cash-flow-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.cash-flow-table th,
+.cash-flow-table td {
+    padding: 15px;
+    text-align: left;
+}
+
+.cash-flow-table thead {
+    background-color: var(--dark-color);
+    color: white;
+}
+
+.cash-flow-table th {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.cash-flow-table tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: var(--transition);
+}
+
+.cash-flow-table tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+.type-col {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.amount-col {
+    font-weight: 700;
+    color: var(--secondary-color);
+}
+
+.date-col {
+    color: var(--text-light);
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
     .sidebar {
-        width: 100%;
-        height: auto;
+        transform: translateX(-100%);
+        z-index: 900;
     }
+    
+    .sidebar.active {
+        transform: translateX(0);
+    }
+    
     .content {
-        width: 100%;
+        margin-left: 0;
     }
+    
+    .summary-cards {
+        grid-template-columns: 1fr;
     }
+}
+
+@media (max-width: 768px) {
+    .payment-methods-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .cash-flow-table th,
+    .cash-flow-table td {
+        padding: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.5rem;
+    }
+    
+    .logo img {
+        height: 40px;
+    }
+    
+    .modal-content {
+        padding: 20px 15px;
+        width: 95%;
+    }
+    
+    .payment-methods-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .payment-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .payment-total {
+        align-self: flex-start;
+    }
+}
+   
 
     </style>
 </head>
@@ -380,48 +650,162 @@
                 <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
             </ul>           
         </div>
+        
+
+
+
+
         <div class="content">
-            <div class="content">
-                <div class="finance-container">
-                    <div class="section">
-                        <div class="section-header">Caixas</div>
-                        <div class="section-content">
-                            <div class="cash-container">
-                                <div class="cash-value">Valor em Caixa: R$ {{ valor_caixa }}</div>
-                                <a href="/sangria_caixa" class="btn sangria-btn">Sangria de Caixa</a>
-                                <a href="/reforco_caixa" class="btn reforco-btn">Reforço de Caixa</a>
-                                <a href="/fluxo_caixa" class="btn fluxo-btn">Fluxo de Caixa</a>
-                            </div>                            
+            <div class="financial-dashboard">
+                <!-- Seção de Resumo Financeiro -->
+                <section class="financial-summary">
+                    <div class="summary-cards">
+                        <div class="summary-card total-cash">
+                            <h3>Total em Caixa</h3>
+                            <p class="amount">R$ {{ valor_caixa }}</p>
                         </div>
-                    </div>
-                    <div class="section">
-                        <div class="section-header">Transações</div>
-                        <div class="section-content">
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th>Débito</th>
-                                        <th>Crédito</th>
-                                        <th>À Vista</th>
-                                        <th>PIX</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for transacao in transacoes %}
-                                    <tr>
-                                        <td>R${{ transacao.debito }}</td>
-                                        <td>R${{ transacao.credito }}</td>
-                                        <td>R${{ transacao.avista }}</td>
-                                        <td>R${{ transacao.pix }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
+                        
+
+
+
+                        <div class="summary-card payment-methods">
+                            <div class="payment-header">
+                                <h3><i class="fas fa-credit-card"></i> Formas de Pagamento</h3>
+                                <div class="payment-total">Total: R$ {{ transacoes[0].avista + transacoes[0].pix + transacoes[0].debito + transacoes[0].credito }}</div>
+                            </div>
+                            <div class="payment-methods-grid">
+                                <div class="payment-method cash">
+                                    <div class="method-icon">
+                                        <i class="fas fa-money-bill-wave"></i>
+                                    </div>
+                                    <div class="method-info">
+                                        <span class="method-name">Dinheiro</span>
+                                        <span class="method-amount">R$ {{ transacoes[0].avista }}</span>
+                                        <div class="method-percentage">
+                                            {% set total = transacoes[0].avista + transacoes[0].pix + transacoes[0].debito + transacoes[0].credito %}
+                                            {% if total > 0 %}
+                                                {{ ((transacoes[0].avista / total) * 100)|round(1) }}%
+                                            {% else %}
+                                                0%
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="payment-method pix">
+                                    <div class="method-icon">
+                                        <i class="fas fa-qrcode"></i>
+                                    </div>
+                                    <div class="method-info">
+                                        <span class="method-name">Pix</span>
+                                        <span class="method-amount">R$ {{ transacoes[0].pix }}</span>
+                                        <div class="method-percentage">
+                                            {% set total = transacoes[0].avista + transacoes[0].pix + transacoes[0].debito + transacoes[0].credito %}
+                                            {% if total > 0 %}
+                                                {{ ((transacoes[0].pix / total) * 100)|round(1) }}%
+                                            {% else %}
+                                                0%
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="payment-method debit">
+                                    <div class="method-icon">
+                                        <i class="fas fa-credit-card"></i>
+                                    </div>
+                                    <div class="method-info">
+                                        <span class="method-name">Débito</span>
+                                        <span class="method-amount">R$ {{ transacoes[0].debito }}</span>
+                                        <div class="method-percentage">
+                                            {% set total = transacoes[0].avista + transacoes[0].pix + transacoes[0].debito + transacoes[0].credito %}
+                                            {% if total > 0 %}
+                                                {{ ((transacoes[0].debito / total) * 100)|round(1) }}%
+                                            {% else %}
+                                                0%
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="payment-method credit">
+                                    <div class="method-icon">
+                                        <i class="far fa-credit-card"></i>
+                                    </div>
+                                    <div class="method-info">
+                                        <span class="method-name">Crédito</span>
+                                        <span class="method-amount">R$ {{ transacoes[0].credito }}</span>
+                                        <div class="method-percentage">
+                                            {% set total = transacoes[0].avista + transacoes[0].pix + transacoes[0].debito + transacoes[0].credito %}
+                                            {% if total > 0 %}
+                                                {{ ((transacoes[0].credito / total) * 100)|round(1) }}%
+                                            {% else %}
+                                                0%
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
+
+
+
+
+
                     </div>
-                </div>
+                </section>
+
+                <!-- Seção de Ações -->
+                <section class="action-buttons">
+                    <a href="/sangria_caixa" class="action-btn cash-out">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <span>Sangria de Caixa</span>
+                    </a>
+                    <a href="/reforco_caixa" class="action-btn cash-in">
+                        <i class="fas fa-coins"></i>
+                        <span>Reforço de Caixa</span>
+                    </a>
+                    <a href="/fluxo_caixa" class="action-btn cash-flow">
+                        <i class="fas fa-chart-line"></i>
+                        <span>Fluxo de Caixa</span>
+                    </a>
+                </section>
+
+                <!-- Seção de Fluxo de Caixa -->
+                <section class="cash-flow-section">
+                    <header class="section-header">
+                        <h2><i class="fas fa-file-invoice-dollar"></i> Fluxo de Caixa</h2>
+                    </header>
+                    
+                    <div class="table-responsive">
+                        <table class="cash-flow-table">
+                            <thead>
+                                <tr>
+                                    <th class="type-col">Tipo</th>
+                                    <th class="description-col">Descrição</th>
+                                    <th class="amount-col">Valor</th>
+                                    <th class="payment-col">Pagamento</th>
+                                    <th class="date-col">Data</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for registro_financeiro in registro_financeiro %}
+                                <tr>
+                                    <td class="type-col">{{ registro_financeiro[1] }}</td>
+                                    <td class="description-col">{{ registro_financeiro[2] }}</td>
+                                    <td class="amount-col">R$ {{ registro_financeiro[3] }}</td>
+                                    <td class="payment-col">{{ registro_financeiro[4] }}</td>
+                                    <td class="date-col">{{ registro_financeiro[5] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
             </div>
         </div>
+
+
+
+
+
     </div>
     <script>
         const expandableBtns = document.querySelectorAll('.expandable-header');

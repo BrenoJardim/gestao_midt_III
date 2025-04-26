@@ -1074,7 +1074,22 @@ def get_transacoes():
 def financeiro():
     valor_caixa = get_valor_caixa()
     transacoes = get_transacoes()
-    return render_template('financeiro.html', valor_caixa=valor_caixa, transacoes=transacoes)
+
+    # Pegar as últimas transações do fluxo de caixa
+    conn = conectar_bd()
+    cursor = conn.cursor()
+
+    # Pega as últimas 30 transações (pode ajustar esse número)
+    cursor.execute('SELECT * FROM registro_financeiro ORDER BY id DESC LIMIT 30')
+    registro_financeiro = cursor.fetchall()
+
+    conn.close()
+
+    return render_template('financeiro.html', 
+                           valor_caixa=valor_caixa, 
+                           transacoes=transacoes, 
+                           registro_financeiro=registro_financeiro)
+
 
 # Rota para exibir o formulário de reforço de caixa
 @app.route('/reforco_caixa')

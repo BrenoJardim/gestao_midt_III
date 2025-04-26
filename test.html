@@ -1,16 +1,30 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Estilos Bootstrap -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
-<style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 
+    <style>
+    
+    :root {
+        --primary-color: #3498db;
+        --secondary-color: #2ecc71;
+        --danger-color: #e74c3c;
+        --warning-color: #f39c12;
+        --dark-color: #2c3e50;
+        --light-color: #ecf0f1;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+        }
+    
     body {
         font-family: Arial, sans-serif;
         margin: 0;
@@ -23,35 +37,8 @@
         color: #fff;
         display: flex;
         align-items: center;
-        padding: 0px 20px;
+        padding: 0px 0px; 
     }
-    
-    .header {
-        background-color: #131325;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        padding: 0px 20px;
-    }
-    
-    .right-buttons {
-        display: flex;
-        align-items: center;
-        margin-left: auto; 
-    }
-    
-    .weather-button {
-        background: none;
-        border: none;
-        cursor: pointer;
-        margin-right: 10px;
-    }
-    
-    .weather-icon {
-        width: 24px;
-        height: 24px;
-    }
-    
 
     .logo img {
         width: 80px;
@@ -67,7 +54,7 @@
     }
 
     .logoside img {
-        max-width: 100%; 
+        max-width: 100%;  
         max-height: 100%; 
         width: auto;
         height: auto;
@@ -143,85 +130,117 @@
         display: block;
         max-height: 1000px;
     }
+
     .content {
-        background-color: #f2f2f2; /* Cinza claro */
+        width: 100%;
         padding: 20px;
         overflow-y: auto;
-        min-height: 100vh;
     }
 
     .icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 10px;
+    width: 24px; 
+    height: 24px; 
+    margin-right: 10px;
     }
 
-    .form-container {
+    /* Estilos para a página financeira */
+    .finance-container {
         background-color: #fff;
         padding: 20px;
         border-radius: 10px;
         box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-
-    .form-group {
         margin-bottom: 20px;
     }
 
-    label {
+    .finance-container .section {
+        margin-bottom: 20px;
+    }
+
+    .section-header {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .section-content {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
+
+    th,
+    td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
         font-weight: bold;
     }
 
-    input[type="text"] {
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: calc(100% - 24px); 
-        font-size: 16px;
-        margin-bottom: 10px; 
-        transition: border-color 0.3s;
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
     }
 
-    input[type="text"]:focus {
-        border-color: #4CAF50; 
-        outline: none; 
-    }
-
-    button {
-        padding: 12px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    button:hover {
-        background-color: #45a049; 
-    }
-
-    #resultado-clima {
-        margin-top: 20px; 
-        padding: 15px;
-        border: 1px solid #ccc; 
-        border-radius: 5px; 
-        background-color: #f0f0f0; 
-    }
-
-    .clima-dia {
+    .cash-container {
         display: flex;
         align-items: center;
         margin-bottom: 10px;
     }
 
-    .clima-dia img {
-        width: 50px; 
-        height: 50px; 
-        margin-right: 10px; 
+    .cash-value {
+        font-size: 18px;
+        font-weight: bold;
+        margin-right: 10px;
     }
 
-    .help-button, #abrir-modal-clima {
+    .btn {
+        background-color: #4CAF50; /* Green */
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin-right: 10px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
+    /* Estilos para os botões de sangria, reforço e fluxo de caixa */
+    .sangria-btn {
+        background-color: #FF5733; /* Vermelho */
+    }
+
+    .reforco-btn {
+        background-color: #4CAF50; /* Verde */
+    }
+
+    .fluxo-btn {
+        background-color: #131325; /* Preto */
+    }
+
+    /* Efeito hover para os botões */
+    .btn:hover {
+        opacity: 0.8;
+    }
+
+    .help-button {
+        margin-left: auto; /* Alinha o botão à direita */
         padding: 10px;
         background-color: #4CAF50;
         color: white;
@@ -229,9 +248,10 @@
         border-radius: 5px;
         cursor: pointer;
         transition: background-color 0.3s;
+        margin-right: 20px
     }
 
-    .help-button:hover, #abrir-modal-clima:hover {
+    .help-button:hover {
         background-color: #45a049;
     }
 
@@ -272,276 +292,248 @@
         cursor: pointer;
     }
 
-    
-    #modalClima .modal-content {
-        max-width: 500px;
-    }
-
-    #modalClima .form-container {
-        margin-bottom: 20px;
-    }
-
-    #modalClima #resultado-clima {
-        margin-top: 20px;
-    }
-
-    #abrir-modal-clima {
-        background: none; 
-        border: none; 
-        padding: 0; 
-        cursor: pointer;
-        outline: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #abrir-modal-clima img {
-        width: 24px;
-        height: 24px;
-    }
-
-    .dashboard-cards {
+    .financial-dashboard {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      
+      /* Seção de Resumo Financeiro */
+      .financial-summary {
+        margin-bottom: 2rem;
+      }
+      
+      .summary-cards {
         display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-        gap: 15px;
-        margin-bottom: 20px;
-    }
-    
-    /* Estilo das caixas informativas */
-    .card {
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        font-weight: bold;
-        font-size: 18px;
-        transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
-        position: relative;
-    }
-    
-    /* Efeito de hover nas caixas */
-    .card:hover {
+        grid-template-columns: 1fr 2fr;
+        gap: 1.5rem;
+      }
+      
+      .summary-card {
+        background: white;
+        border-radius: var(--border-radius);
+        padding: 1.5rem;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+      }
+      
+      .summary-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Cores das caixas */
-    .card-green {
-        background-color: #4CAF50;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .total-cash {
+        background: linear-gradient(135deg, var(--primary-color), #5dade2);
         color: white;
-        border: 2px solid #388E3C; /* Borda mais escura */
-    }
-    
-    .card-white {
-        background-color: white;
-        color: black;
-        border: 2px solid #ccc; /* Borda suave */
-    }
-    
-    .card-blue {
-        background-color: #007bff;
-        color: white;
-        border: 2px solid #0056b3; /* Borda mais escura */
-    }
-    
-    /* Adicionando um brilho suave nas caixas ao passar o mouse */
-    .card-green:hover {
-        background-color: #45a049;
-        border-color: #388E3C;
-    }
-    
-    .card-blue:hover {
-        background-color: #0056b3;
-        border-color: #003f7f;
-    }
-    
-    .card-white:hover {
-        background-color: #f1f1f1;
-        border-color: #bbb;
-    }
-    
-    /* Adicionando ícones de seta */
-    .card::after {
-        content: " →";
-        font-size: 24px;
-        color: rgba(0, 0, 0, 0.3);
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-    }
-    
-    /* Seção dos gráficos */
-    .charts-container {
+      }
+      
+      .total-cash .amount {
+        font-size: 2.5rem;
+        font-weight: 700;
+        margin-top: 0.5rem;
+      }
+      
+      .payment-method h3 {
+        margin-bottom: 1rem;
+        color: var(--dark-color);
+        font-size: 1.2rem;
+      }
+      
+      .payment-methods-grid {
         display: grid;
-        grid-template-columns: 2fr 1fr; /* Esquerda = 2 partes, Direita = 1 parte */
-        gap: 20px;
-        align-items: stretch;
-    }
-
-    /* Container esquerdo com os gráficos */
-    .charts-left {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+      
+      .payment-method {
         display: flex;
-        flex-direction: column;
-        gap: 20px;
-        width: 100%;
-    }
-
-    /* Container do gráfico à direita */
-    .chart-meta {
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.8rem;
+        border-radius: calc(var(--border-radius) - 2px);
+        background-color: var(--light-color);
+      }
+      
+      .method-name {
+        font-weight: 600;
+        color: var(--dark-color);
+      }
+      
+      .method-amount {
+        font-weight: 700;
+      }
+      
+      /* Botões de Ação */
+      .action-buttons {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+      
+      .action-btn {
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100%;
-        min-height: 640px;
-        border-radius: 12px;
-        background-color: #f5f5f5;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        padding: 20px;
-    }
-
-    .meta-info {
+        padding: 1.5rem 1rem;
         text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .meta-text {
-        font-size: 18px;
-        font-weight: bold;
-        margin: 5px 0;
-        color: #333;
-    }
-
-    .meta-text span {
-        font-size: 20px;
-        color: #007bff; /* Cor azul para valores destacados */
-    }
-
-    /* Estilo do botão de definir meta */
-    .btn-definir-meta {
-        padding: 10px 15px;
-        background-color: #007bff;
+        border-radius: var(--border-radius);
         color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-
-    .btn-definir-meta:hover {
-        background-color: #0056b3;
-    }
-
-    /* Modal para definição da meta */
-    .modal-meta {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-        display: none; /* Esconde o modal por padrão */
-        justify-content: center;
+        text-decoration: none;
+        font-weight: 600;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+      }
+      
+      .action-btn:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+      }
+      
+      .action-btn i {
+        font-size: 1.8rem;
+        margin-bottom: 0.5rem;
+      }
+      
+      .cash-out {
+        background: linear-gradient(135deg, var(--danger-color), #e67e22);
+      }
+      
+      .cash-in {
+        background: linear-gradient(135deg, var(--secondary-color), #27ae60);
+      }
+      
+      .cash-flow {
+        background: linear-gradient(135deg, var(--primary-color), #2980b9);
+      }
+      
+      /* Tabela de Fluxo de Caixa */
+      .cash-flow-section {
+        background: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
+      }
+      
+      .section-header {
+        padding: 1.5rem;
+        border-bottom: 1px solid #eee;
+      }
+      
+      .section-header h2 {
+        display: flex;
         align-items: center;
-    }
-
-    .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        width: 300px;
-    }
-
-    .modal-content input {
+        gap: 0.5rem;
+        color: var(--dark-color);
+      }
+      
+      .table-responsive {
+        overflow-x: auto;
+      }
+      
+      .cash-flow-table {
         width: 100%;
-        padding: 10px;
-        margin: 10px 0; /* Adicionando margem entre o input e os botões */
-        border-radius: 5px;
-        border: 1px solid #ccc;
-        box-sizing: border-box;
-    }
-
-    .modal-content button {
-        padding: 10px;
-        margin-top: 10px;
-        width: 100%;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #007bff;
+        border-collapse: collapse;
+      }
+      
+      .cash-flow-table th,
+      .cash-flow-table td {
+        padding: 1rem;
+        text-align: left;
+      }
+      
+      .cash-flow-table thead {
+        background-color: var(--dark-color);
         color: white;
-    }
-
-    .modal-content button:hover {
-        background-color: #0056b3;
-    }
-
-    .modal-content button:focus {
-        outline: none;
-    }
-
-    #nova-meta {
-        padding: 10px;
+      }
+      
+      .cash-flow-table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+      }
+      
+      .cash-flow-table tbody tr {
+        border-bottom: 1px solid #eee;
+        transition: var(--transition);
+      }
+      
+      .cash-flow-table tbody tr:hover {
+        background-color: #f8f9fa;
+      }
+      
+      .cash-flow-table tbody tr:last-child {
+        border-bottom: none;
+      }
+      
+      /* Classes específicas para colunas */
+      .type-col {
+        width: 15%;
+        font-weight: 600;
+        color: var(--primary-color);
+      }
+      
+      .description-col {
+        width: 35%;
+      }
+      
+      .amount-col {
+        width: 15%;
+        font-weight: 700;
+        color: var(--secondary-color);
+      }
+      
+      .payment-col {
+        width: 15%;
+      }
+      
+      .date-col {
+        width: 20%;
+        color: var(--text-light);
+      }
+      
+      /* Responsividade */
+      @media (max-width: 768px) {
+        .summary-cards {
+          grid-template-columns: 1fr;
+        }
+        
+        .action-buttons {
+          flex-direction: column;
+        }
+        
+        .cash-flow-table th,
+        .cash-flow-table td {
+          padding: 0.75rem 0.5rem;
+          font-size: 0.9rem;
+        }
+        
+        .type-col, .payment-col, .date-col {
+          width: auto;
+        }
+      }
+      
+      @media (max-width: 480px) {
+        .payment-methods-grid {
+          grid-template-columns: 1fr;
+        }
+        
+        .cash-flow-table {
+          font-size: 0.8rem;
+        }
+      }
+    
+        @media (max-width: 768px) {
+    .sidebar {
         width: 100%;
-        font-size: 16px;
-        margin-top: 10px;
+        height: auto;
     }
-
-    .btn-confirmar-meta, .btn-cancelar-meta {
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-top: 10px;
-        cursor: pointer;
+    .content {
+        width: 100%;
     }
-
-    .btn-confirmar-meta:hover {
-        background-color: #45a049;
-    }
-
-    .btn-cancelar-meta {
-        background-color: #f44336;
-    }
-
-    .btn-cancelar-meta:hover {
-        background-color: #e53935;
-    }
-
-    /* Estilo dos gráficos */
-    .chart {
-        position: relative;
-        flex-grow: 1;
-        border-radius: 12px; /* Borda arredondada */
-        background-color: #ffffff; /* Fundo branco para os gráficos */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-        transition: box-shadow 0.3s, transform 0.3s;
-    }
-
-    /* Efeito de hover nos gráficos */
-    .chart:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
-        transform: translateY(-5px); /* Efeito de elevação */
-    }
-
-
-        /* Responsividade */
-    @media (max-width: 1024px) {
-        .dashboard-cards {
-            grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
-        }
-    }
-
-    @media (max-width: 600px) {
-        .dashboard-cards {
-            grid-template-columns: 1fr; /* 1 coluna para telas pequenas */
-            
-        }
     }
 
     </style>
@@ -553,12 +545,7 @@
                 <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
         <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
-        <div class="right-buttons">
-            <button id="abrir-modal-clima" class="weather-button">
-                <img src="/images/sun-icon.png" alt="Clima" class="weather-icon">
-            </button>
-            <button class="help-button" id="help-button">?</button>
-        </div>
+        <button class="help-button" id="help-button">?</button>
     </div>
     <div class="container">
         <div class="sidebar">
@@ -642,504 +629,212 @@
                 <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
             </ul>           
         </div>
-        <div class="content">
-            <div class="dashboard-cards">
-                <div class="card card-green">Vendas do Dia: R$ <span id="vendas-dia">0,00</span></div>
-                <div class="card card-white">Faturamento do Mês: R$ <span id="faturamento-mes">0,00</span></div>
-                <div class="card card-white">Custos dos Produtos: R$ <span id="custos-produtos">0,00</span></div>
-                <div class="card card-blue">Lucro do Mês: R$ <span id="lucro-mes">0,00</span></div>
-            </div>             
-            <div class="charts-container">
-                <!-- Esquerda -->
-                <div class="charts-left">
-                    <div class="chart">
-                        <canvas id="grafico-vendas"></canvas>
+        
+
+
+
+
+
+       <div class="financial-dashboard">
+    <!-- Seção de Resumo Financeiro -->
+    <section class="financial-summary">
+        <div class="summary-cards">
+            <div class="summary-card total-cash">
+                <h3>Total em Caixa</h3>
+                <p class="amount">R$ {{ valor_caixa }}</p>
+            </div>
+            
+            <div class="summary-card payment-method">
+                <h3>Formas de Pagamento</h3>
+                <div class="payment-methods-grid">
+                    <div class="payment-method cash">
+                        <span class="method-name">Dinheiro</span>
+                        <span class="method-amount">R$ {{ transacoes[0].avista }}</span>
                     </div>
-                    <div class="chart">
-                        <canvas id="grafico-contas"></canvas>
+                    <div class="payment-method pix">
+                        <span class="method-name">Pix</span>
+                        <span class="method-amount">R$ {{ transacoes[0].pix }}</span>
                     </div>
-                </div>
-                <!-- Direita (Meta do mês) -->
-                <div class="chart chart-meta"height="30">
-                    <div class="meta-info">
-                        <p class="meta-text">Meta do Mês: R$ <span id="meta-total">20,000</span></p>
-                        <p class="meta-text">Faturamento Atual: R$ <span id="faturamento-atual">12,500</span></p>
-                        <p class="meta-text">Faltando: R$ <span id="faltando">7,500</span></p>
-                        <button id="btn-definir-meta" class="btn-definir-meta">Definir Meta</button>
+                    <div class="payment-method debit">
+                        <span class="method-name">Débito</span>
+                        <span class="method-amount">R$ {{ transacoes[0].debito }}</span>
                     </div>
-                    <canvas id="grafico-meta"></canvas>
-                </div>
-                <!-- Modal de definição da meta -->
-                <div id="modal-meta" class="modal-meta">
-                    <div class="modal-content">
-                        <h3>Definir Nova Meta</h3>
-                        <input type="number" id="nova-meta" placeholder="Digite o novo valor da meta" />
-                        <button id="btn-confirmar-meta" class="btn-confirmar-meta">Confirmar</button>
-                        <button id="btn-cancelar-meta" class="btn-cancelar-meta">Cancelar</button>
+                    <div class="payment-method credit">
+                        <span class="method-name">Crédito</span>
+                        <span class="method-amount">R$ {{ transacoes[0].credito }}</span>
                     </div>
-                </div>  
-            </div>            
-        </div>
-            <!-- Modal do Clima -->
-            <div id="modalClima" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Informações do Clima</h2>
-                    <div class="form-container">
-                        <input type="text" id="cidade" placeholder="Digite o nome da cidade">
-                        <button id="buscar-clima">Buscar Clima</button>
-                        <button id="usar-localizacao">Usar Minha Localização</button>
-                    </div>
-                    <div id="resultado-clima"></div>
                 </div>
             </div>
         </div>
+    </section>
+
+    <!-- Seção de Ações -->
+    <section class="action-buttons">
+        <a href="/sangria_caixa" class="action-btn cash-out">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>Sangria de Caixa</span>
+        </a>
+        <a href="/reforco_caixa" class="action-btn cash-in">
+            <i class="fas fa-coins"></i>
+            <span>Reforço de Caixa</span>
+        </a>
+        <a href="/fluxo_caixa" class="action-btn cash-flow">
+            <i class="fas fa-chart-line"></i>
+            <span>Fluxo de Caixa</span>
+        </a>
+    </section>
+
+    <!-- Seção de Fluxo de Caixa -->
+    <section class="cash-flow-section">
+        <header class="section-header">
+            <h2><i class="fas fa-file-invoice-dollar"></i> Fluxo de Caixa</h2>
+        </header>
+        
+        <div class="table-responsive">
+            <table class="cash-flow-table">
+                <thead>
+                    <tr>
+                        <th class="type-col">Tipo</th>
+                        <th class="description-col">Descrição</th>
+                        <th class="amount-col">Valor</th>
+                        <th class="payment-col">Pagamento</th>
+                        <th class="date-col">Data</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for registro_financeiro in registro_financeiro %}
+                    <tr>
+                        <td class="type-col">{{ registro_financeiro[1] }}</td>
+                        <td class="description-col">{{ registro_financeiro[2] }}</td>
+                        <td class="amount-col">R$ {{ registro_financeiro[3] }}</td>
+                        <td class="payment-col">{{ registro_financeiro[4] }}</td>
+                        <td class="date-col">{{ registro_financeiro[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+</div>
+
+
+
+
+
     </div>
+    <script>
+        const expandableBtns = document.querySelectorAll('.expandable-header');
+        expandableBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const body = this.nextElementSibling;
+                this.classList.toggle('active');
+                if (body.style.maxHeight) {
+                    body.style.maxHeight = null;
+                } else {
+                    body.style.maxHeight = body.scrollHeight + "px";
+                }
+            });
+        });
 
-<script>
-    const expandableBtns = document.querySelectorAll('.expandable-header');
-    expandableBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const body = this.nextElementSibling;
-            this.classList.toggle('active');
-            if (body.style.maxHeight) {
-                body.style.maxHeight = null;
-            } else {
-                body.style.maxHeight = body.scrollHeight + "px";
+        $(document).ready(function() {
+        // Definir as teclas de atalho (Ctrl + Shift + number)
+        $(document).keydown(function(event) {
+            if (event.ctrlKey && event.shiftKey) {
+                switch (event.which) {
+                    case 49: // Ctrl + Shift + 1
+                        window.location.href = "/cadastro_produtos";
+                        break;
+                    case 50: // Ctrl + Shift + 2
+                        window.location.href = "/cadastro_clientes";
+                        break;
+                    case 51: // Ctrl + Shift + 3
+                        window.location.href = "/cadastro_fornecedores";
+                        break;
+                    case 52: // Ctrl + Shift + 4
+                        window.location.href = "/venda_balcao";
+                        break;
+                    case 53: // Ctrl + Shift + 5
+                        window.location.href = "/listar_vendas";
+                        break;
+                    case 54: // Ctrl + Shift + 6
+                        window.location.href = "/compras";
+                        break;
+                    case 55: // Ctrl + Shift + 7
+                        window.location.href = "/adicao_sitio";
+                        break;
+                    case 56: // Ctrl + Shift + 8
+                        window.location.href = "/listar_compras";
+                        break;
+                    case 57: // Ctrl + Shift + 9
+                        window.location.href = "/financeiro";
+                        break;
+                    default:
+                        break;
+                }
             }
         });
     });
-    
-    document.addEventListener("DOMContentLoaded", function () {
-        // Abrir modal do clima
-        const abrirModalClima = document.getElementById("abrir-modal-clima");
-        const modalClima = document.getElementById("modalClima");
-        const spanClima = modalClima.querySelector(".close");
-    
-        abrirModalClima.addEventListener("click", () => {
-            modalClima.style.display = "block";
-        });
-    
-        spanClima.addEventListener("click", () => {
-            modalClima.style.display = "none";
-        });
-    
-        window.addEventListener("click", (event) => {
-            if (event.target === modalClima) {
-                modalClima.style.display = "none";
-            }
-        });
-    
-        // Buscar clima (código existente)
-        function buscarClima(cidade) {
-            if (cidade) {
-                $.getJSON(`/api/clima?cidade=${cidade}`, function(data) {
-                    $('#resultado-clima').html(`
-                        <p>Cidade: ${data.cidade}</p>
-                        <p>Temperatura Atual: ${data.temperatura}°C</p>
-                        <img src="${data.icone_url}" alt="Ícone do clima atual">
-                        <p>Temperatura Máxima: ${data.temperatura_maxima}°C</p>
-                        <p>Temperatura Mínima: ${data.temperatura_minima}°C</p>
-                        <p>Previsão de Chuva: ${data.previsao_chuva ? 'Sim' : 'Não'}</p>
-                        <h3>Previsão para os Próximos Dias</h3>
-                        <ul>
-                            ${data.previsao_dias.map(dia => `
-                                <li>
-                                    <strong>${dia.data}</strong>: ${dia.temperatura_maxima}°C / ${dia.temperatura_minima}°C - ${dia.descricao}
-                                    <img src="${dia.icone_url}" alt="Ícone do clima">
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `);
-                }).fail(function() {
-                    $('#resultado-clima').html('<p>Erro ao buscar informações do clima.</p>');
-                });
-            } else {
-                $('#resultado-clima').html('<p>Por favor, digite o nome da cidade ou use a localização.</p>');
-            }
-        }
-    
-        $('#buscar-clima').click(function() {
-            const cidade = $('#cidade').val();
-            buscarClima(cidade);
-        });
-    
-        $('#usar-localizacao').click(function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-    
-                    $.getJSON(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, function(data) {
-                        const cidade = data.address.city || data.address.town || data.address.village;
-                        buscarClima(cidade);
-                    }).fail(function() {
-                        $('#resultado-clima').html('<p>Erro ao obter a localização.</p>');
-                    });
-                }, function() {
-                    $('#resultado-clima').html('<p>Geolocalização não permitida.</p>');
-                });
-            } else {
-                $('#resultado-clima').html('<p>Geolocalização não é suportada por este navegador.</p>');
-            }
-        });
-    });
-</script>
 
-<script>
-    $(document).ready(function() {
-    // Definir as teclas de atalho (Ctrl + Shift + number)
-    $(document).keydown(function(event) {
-        if (event.ctrlKey && event.shiftKey) {
-            switch (event.which) {
-                case 49: // Ctrl + Shift + 1
-                    window.location.href = "/cadastro_produtos";
-                    break;
-                case 50: // Ctrl + Shift + 2
-                    window.location.href = "/cadastro_clientes";
-                    break;
-                case 51: // Ctrl + Shift + 3
-                    window.location.href = "/cadastro_fornecedores";
-                    break;
-                case 52: // Ctrl + Shift + 4
-                    window.location.href = "/venda_balcao";
-                    break;
-                case 53: // Ctrl + Shift + 5
-                    window.location.href = "/listar_vendas";
-                    break;
-                case 54: // Ctrl + Shift + 6
-                    window.location.href = "/compras";
-                    break;
-                case 55: // Ctrl + Shift + 7
-                    window.location.href = "/adicao_sitio";
-                    break;
-                case 56: // Ctrl + Shift + 8
-                    window.location.href = "/listar_compras";
-                    break;
-                case 57: // Ctrl + Shift + 9
-                    window.location.href = "/financeiro";
-                    break;
-                default:
-                    break;
-            }
-        }
-    });
-});
-
-// Redirecionar ao clicar na imagem
-document.getElementById('minha-imagem').addEventListener('click', function() {
-        window.location.href = 'inicio';
-    });
-
-    // Redirecionar ao clicar no texto
-    document.getElementById('texto-link').addEventListener('click', function() {
-        window.location.href = 'inicio';
-    });
-
-
-    // Mostrar e esconder o modal
-    var modal = document.getElementById("helpModal");
-        var btn = document.getElementById("help-button");
-        var span = document.getElementsByClassName("close")[0];
-
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Redirecionar ao clicar na imagem
-        document.getElementById('minha-imagem').addEventListener('click', function() {
-            window.location.href = 'inicio';
+    // Redirecionar ao clicar na imagem
+    document.getElementById('minha-imagem').addEventListener('click', function() {
+            window.location.href = 'http://127.0.0.1:5000/inicio';
         });
 
         // Redirecionar ao clicar no texto
         document.getElementById('texto-link').addEventListener('click', function() {
-            window.location.href = 'inicio';
+            window.location.href = 'http://127.0.0.1:5000/inicio';
         });
-        
-</script>
-<script>
 
- // Atualizar gráfico de vendas x custos
-fetch('/dados_grafico_vendas')
-.then(response => response.json())
-.then(data => {
-    const ctxVendas = document.getElementById("grafico-vendas").getContext("2d");
 
-    new Chart(ctxVendas, {
-        type: "bar",
-        data: {
-            labels: data.labels,
-            datasets: [
-                { label: "Vendas", data: data.vendas, backgroundColor: "#4CAF50" },
-                { label: "Custos", data: data.custos, backgroundColor: "#FF5733" }
-            ]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Vendas x Custos - Últimos 7 Dias", // Título do gráfico
-                    font: {
-                        size: 18,
-                        weight: "bold"
-                    },
-                    padding: {
-                        top: 10,
-                        bottom: 20
-                    },
-                    color: "#333"
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return `R$ ${tooltipItem.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-                        }
-                    }
-                }
-            },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return `R$ ${value.toLocaleString('pt-BR')}`;
-                        }
-                    }
+        // Mostrar e esconder o modal
+        var modal = document.getElementById("helpModal");
+            var btn = document.getElementById("help-button");
+            var span = document.getElementsByClassName("close")[0];
+
+            btn.onclick = function() {
+                modal.style.display = "block";
+            }
+
+            span.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
                 }
             }
-        }
-    });
-})
-.catch(error => console.error("Erro ao carregar os dados do gráfico:", error));
 
-// Buscar os dados da API
-fetch('/dados_grafico_contas')
-    .then(response => response.json())
-    .then(data => {
-        const ctxContas = document.getElementById("grafico-contas").getContext("2d");
+            // Redirecionar ao clicar na imagem
+            document.getElementById('minha-imagem').addEventListener('click', function() {
+                window.location.href = 'http://127.0.0.1:5000/inicio';
+            });
 
-        // Criar o gráfico atualizado
-        new Chart(ctxContas, {
-            type: "bar",
-            data: {
-                labels: data.contas,
-                datasets: [{
-                    label: "Saldo das Contas",
-                    data: data.saldos,
-                    backgroundColor: ["#4CAF50", "#2196F3"], // Verde e Azul
-                    borderColor: ["#388E3C", "#1565C0"], // Tons mais escuros para bordas
-                    borderWidth: 2,
-                    borderRadius: 8
-                }]
-            },
-            options: {
-                responsive: true,
-                plugins: {
-                    title: {
-                        display: true,
-                        text: "Caixa Atual", // Título do gráfico
-                        font: {
-                            size: 18,
-                            weight: "bold"
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        },
-                        color: "#333"
-                    },
-                    legend: {
-                        display: false // Ocultar legenda para não poluir o gráfico
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(tooltipItem) {
-                                return `R$ ${tooltipItem.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-                            }
-                        }
-                    }
-                },
-                scales: {
-                    y: {
-                        beginAtZero: true,
-                        ticks: {
-                            callback: function(value) {
-                                return `R$ ${value.toLocaleString('pt-BR')}`;
-                            }
-                        }
-                    }
-                }
-            }
+            // Redirecionar ao clicar no texto
+            document.getElementById('texto-link').addEventListener('click', function() {
+                window.location.href = 'http://127.0.0.1:5000/inicio';
+            });
+    
+        document.getElementById('sangria').addEventListener('click', function() {
+            // Redireciona para a página de sangria_caixa.html
+            window.location.href = '/sangria_caixa';
         });
-    })
-    .catch(error => console.error("Erro ao carregar os dados do gráfico:", error));
 
-    let metaMensal = 20000;
-    let faturamentoAtual = 0; // Inicialmente zero, será atualizado com valor real
-    
-    const ctxMeta = document.getElementById("grafico-meta").getContext("2d");
-    const graficoMeta = new Chart(ctxMeta, {
-        type: "doughnut",
-        data: {
-            labels: ["Faturado", "Faltando"],
-            datasets: [{
-                data: [faturamentoAtual, metaMensal - faturamentoAtual],
-                backgroundColor: ["#007bff", "#808080"]
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { position: "bottom" },
-                title: {
-                    display: true,
-                    text: "Meta de Faturamento Mensal", // Adiciona título ao gráfico
-                    font: {
-                        size: 18,
-                        weight: "bold"
-                    },
-                    padding: {
-                        top: 10,
-                        bottom: 20
-                    }
-                }
-            }
-        }
-    });
-    
-    // ** Função para carregar o faturamento do mês **
-    function carregarFaturamento() {
-        fetch("/faturamento_mes")
-            .then(response => response.json())
-            .then(data => {
-                faturamentoAtual = parseFloat(data.total_faturamento_mes);
-                atualizarExibicaoMeta();
-                atualizarGrafico();
-            })
-            .catch(err => console.error("Erro ao carregar faturamento:", err));
-    }
-    
-    // ** Função para carregar a meta do banco **
-    function carregarMeta() {
-        fetch("/api/meta")
-            .then(response => response.json())
-            .then(data => {
-                metaMensal = data.meta;
-                atualizarExibicaoMeta();
-                atualizarGrafico();
-            })
-            .catch(err => console.error("Erro ao carregar meta:", err));
-    }
-    
-    // ** Atualiza os valores exibidos na tela **
-function atualizarExibicaoMeta() {
-    document.getElementById("meta-total").textContent = metaMensal.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-    document.getElementById("faturamento-atual").textContent = faturamentoAtual.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-    document.getElementById("faltando").textContent = Math.max(0, metaMensal - faturamentoAtual).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-}
+        document.getElementById('reforco').addEventListener('click', function() {
+            // Redireciona para a página de reforco_caixa.html
+            window.location.href = '/reforco_caixa';
+        });
 
-    // ** Atualizar gráfico de meta **
-    function atualizarGrafico() {
-        graficoMeta.data.datasets[0].data = [faturamentoAtual, Math.max(0, metaMensal - faturamentoAtual)];
-        graficoMeta.update();
-    }
-    
-  // Exibir o modal para definir a meta
-document.getElementById("btn-definir-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "flex";  // Exibe o modal
-});
+        document.getElementById('fluxo').addEventListener('click', function() {
+            // Redireciona para a página de fluxo_caixa.html
+            window.location.href = '/fluxo_caixa';
+        });
 
-// Fechar o modal ao clicar no botão de cancelar
-document.getElementById("btn-cancelar-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
-});
 
-// Atualizar meta no banco de dados
-document.getElementById("btn-confirmar-meta").addEventListener("click", () => {
-    const novaMeta = parseFloat(document.getElementById("nova-meta").value);
 
-    if (isNaN(novaMeta) || novaMeta <= 0) {
-        alert("Por favor, insira um valor válido para a meta.");
-        return;
-    }
 
-    fetch("/api/meta", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ meta: novaMeta })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            metaMensal = data.meta;
-            atualizarExibicaoMeta();
-            atualizarGrafico();
-            document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
-            alert(data.mensagem);  // Mensagem de sucesso
-        } else {
-            alert("Erro ao atualizar a meta. Tente novamente.");
-        }
-    })
-    .catch(err => console.error("Erro ao atualizar meta:", err));
-});
-    
-    // ** Carregar dados ao iniciar a página **
-    carregarMeta();
-    carregarFaturamento();
-    
-// Função para atualizar os valores do dashboard
-function atualizarDashboard() {
-    // Atualizar as vendas do dia
-    fetch('/vendas_dia')
-    .then(response => response.json())
-    .then(data => {
-        console.log("Vendas do dia:", data);
-        document.getElementById('vendas-dia').textContent = "R$ " + parseFloat(data.total_vendas_dia).toFixed(2);
-    })
-    .catch(error => console.error('Erro ao obter vendas do dia:', error));
 
-    // Atualizar o faturamento do mês
-    fetch('/faturamento_mes')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('faturamento-mes').textContent = "R$ " + data.total_faturamento_mes;
-        })
-        .catch(error => console.error('Erro ao atualizar faturamento do mês:', error));
-
-    // Atualizar o lucro do mês
-    fetch('/lucro_mes')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('lucro-mes').textContent = "R$ " + data.total_lucro_mes;
-        })
-        .catch(error => console.error('Erro ao atualizar lucro do mês:', error));
-
-    // Atualizar os custos de produtos
-    fetch('/custos_produtos')
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('custos-produtos').textContent = "R$ " + data.total_custos_produtos;
-        })
-        .catch(error => console.error('Erro ao atualizar custos dos produtos:', error));
-}
-// Chamar a função para atualizar o dashboard
-atualizarDashboard();
-
-// Atualizar os dados do dashboard a cada 30 segundos
-setInterval(atualizarDashboard, 30000);
-
-</script>
+    </script>
 </body>
-</html>
 
+</html>
