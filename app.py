@@ -1300,14 +1300,59 @@ def editar_venda(venda_id):
 # Rota para excluir uma venda pelo ID
 @app.route('/excluir_venda/<int:venda_id>')
 def excluir_venda(venda_id):
-    # Exclua a venda do banco de dados
     conn = sqlite3.connect('erp.db')
     c = conn.cursor()
-    c.execute("DELETE FROM vendas WHERE id=?", (venda_id,))
+
+    # Buscar dados da venda
+    c.execute("SELECT produto, quantidade, total, forma_pagamento FROM vendas WHERE id = ?", (venda_id,))
+    venda = c.fetchone()
+
+    if not venda:
+        flash('Venda não encontrada.', 'error')
+        conn.close()
+        return redirect(url_for('listar_vendas'))
+
+    produto, quantidade, total, forma_pagamento = venda
+
+    # Atualizar o estoque do produto
+    c.execute("UPDATE produtos SET estoque = estoque + ? WHERE nome = ?", (quantidade, produto))
+
+    # Criar uma transação de estorno com valor negativo
+    forma_normalizada = forma_pagamento.strip().lower()
+
+    campos_pagamento = {
+        'a vista': {'avista': 1, 'pix': 0, 'debito': 0, 'credito': 0, 'a_combinar': 0},
+        'pix':      {'avista': 0, 'pix': 1, 'debito': 0, 'credito': 0, 'a_combinar': 0},
+        'debito':   {'avista': 0, 'pix': 0, 'debito': 1, 'credito': 0, 'a_combinar': 0},
+        'credito':  {'avista': 0, 'pix': 0, 'debito': 0, 'credito': 1, 'a_combinar': 0},
+        'a combinar': {'avista': 0, 'pix': 0, 'debito': 0, 'credito': 0, 'a_combinar': 1}
+    }
+
+    if forma_normalizada in campos_pagamento:
+        flags = campos_pagamento[forma_normalizada]
+        c.execute('''
+            INSERT INTO transacoes (valor, debito, credito, avista, pix, a_combinar, fluxo_caixa)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        ''', (
+            -total,
+            flags['debito'],
+            flags['credito'],
+            flags['avista'],
+            flags['pix'],
+            flags['a_combinar'],
+            f'Estorno da venda ID {venda_id}'
+        ))
+    else:
+        flash(f'Forma de pagamento "{forma_pagamento}" não reconhecida. Estorno não registrado.', 'warning')
+
+    # Excluir a venda
+    c.execute("DELETE FROM vendas WHERE id = ?", (venda_id,))
     conn.commit()
     conn.close()
-    flash('Venda excluída com sucesso', 'success')
+
+    flash('Venda excluída com sucesso. Estoque e caixa atualizados.', 'success')
     return redirect(url_for('listar_vendas'))
+
 
 # Rota para compras
 @app.route('/compras')

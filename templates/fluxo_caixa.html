@@ -4,74 +4,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão Midt</title>
+    <title>Fluxo de Caixa - Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-
     <style>
-
     :root {
-        --primary-color: #3498db;
-        --secondary-color: #2ecc71;
+        --primary-color: #131325;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
         --danger-color: #e74c3c;
         --warning-color: #f39c12;
-        --dark-color: #131325;
         --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
         --text-color: #333;
         --text-light: #7f8c8d;
-        --border-radius: 8px;
-        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --border-radius: 6px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         --transition: all 0.3s ease;
     }
-        
+
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f9f9f9;
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
     }
 
     .header {
-        background-color: #131325;
-        color: #fff;
+        background-color: var(--primary-color);
+        color: white;
         display: flex;
         align-items: center;
-        padding: 0px 0px; 
+        padding: 15px 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 100;
     }
 
     .logo img {
-        width: 80px;
-        height: auto;
-        margin-right: 10px; 
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 15px;
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .header h1:hover {
+        color: var(--light-color);
     }
 
     .logoside {
         display: flex;
-        justify-content: center; 
-        align-items: center; 
-        height: 180px; 
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
     }
 
     .logoside img {
-        max-width: 100%;  
-        max-height: 100%; 
-        width: auto;
-        height: auto;
+        max-width: 80%;
+        max-height: 100px;
+        object-fit: contain;
     }
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        min-height: calc(100vh - 80px);
     }
 
     .sidebar {
-        background-color: #ffffff;
-        width: 20%;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(13, 13, 25, 0.1);
-        border-right: 1px solid #ccc;
+        background-color: white;
+        width: 250px;
+        padding: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #e0e0e0;
         overflow-y: auto;
+        transition: var(--transition);
     }
 
     .navigation {
@@ -81,114 +107,201 @@
     }
 
     .navigation li {
-        margin-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .navigation li:last-child {
-        border-bottom: none;
+        margin: 0;
     }
 
     .navigation a {
         text-decoration: none;
-        color: #000000;
-        font-size: 16px;
+        color: var(--text-color);
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        padding: 12px 20px;
+        transition: var(--transition);
+        border-left: 3px solid transparent;
     }
 
     .navigation a:hover {
-        background-color: #d4d4d4;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .navigation a.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        font-weight: 500;
     }
 
     .expandable-header {
-        background-color: #d4d4d4;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
+        padding: 12px 20px;
+        margin: 0;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: var(--transition);
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        border-left: 3px solid transparent;
     }
 
     .expandable-header:hover {
-        background-color: #929292;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+    }
+
+    .expandable-header.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .expandable-header i {
+        transition: var(--transition);
+    }
+
+    .expandable-header.active i {
+        transform: rotate(90deg);
     }
 
     .expandable-body {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease;
+        background-color: #f9fafb;
     }
 
-    .expandable-btn.active+.expandable-body {
-        display: block;
+    .expandable-body.show {
         max-height: 1000px;
     }
 
     .content {
         flex: 1;
         padding: 30px;
+        overflow-y: auto;
         background-color: #f5f7fa;
     }
 
     .icon {
-    width: 24px; 
-    height: 24px; 
-    margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        color: var(--text-light);
     }
 
-     /* Estilos para o fluxo de caixa */
-     .cash-flow-container {
-        background: white;
+    /* Estilos específicos para o Fluxo de Caixa */
+    .cash-flow-summary {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .summary-card {
+        flex: 1;
+        background-color: white;
+        padding: 20px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+    }
+
+    .summary-card h3 {
+        margin: 0 0 10px 0;
+        font-size: 1rem;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+    }
+
+    .summary-card h3 i {
+        margin-right: 8px;
+    }
+
+    .summary-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .summary-income {
+        color: var(--success-color);
+    }
+
+    .summary-expense {
+        color: var(--danger-color);
+    }
+
+    .summary-balance {
+        color: var(--accent-color);
+    }
+
+    .cash-flow-container {
+        background-color: white;
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
         overflow: hidden;
     }
 
     .cash-flow-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
         padding: 20px;
-        border-bottom: 1px solid #eee;
+        border-bottom: 1px solid #e0e0e0;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
     }
 
     .cash-flow-header h2 {
         margin: 0;
-        color: var(--dark-color);
+        color: var(--primary-color);
+        font-size: 1.3rem;
         display: flex;
         align-items: center;
-        gap: 10px;
+    }
+
+    .cash-flow-header h2 i {
+        margin-right: 10px;
     }
 
     .cash-flow-actions {
         display: flex;
         gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background-color: #f8f9fa;
+        padding: 8px 12px;
+        border-radius: var(--border-radius);
+    }
+
+    .filter-group span {
+        font-size: 0.9rem;
+        color: var(--text-light);
     }
 
     .filter-btn {
         padding: 8px 15px;
-        background: white;
+        font-size: 0.9rem;
         border: 1px solid #ddd;
         border-radius: var(--border-radius);
+        background-color: white;
+        color: var(--text-color);
         cursor: pointer;
         transition: var(--transition);
     }
 
     .filter-btn:hover {
-        background: #f5f5f5;
+        background-color: #f1f5f9;
     }
 
     .filter-btn.active {
-        background: var(--primary-color);
+        background-color: var(--accent-color);
         color: white;
-        border-color: var(--primary-color);
+        border-color: var(--accent-color);
     }
 
     .cash-flow-table-container {
@@ -202,19 +315,18 @@
     }
 
     .cash-flow-table th {
-        background-color: var(--dark-color);
+        background-color: var(--primary-color);
         color: white;
-        font-weight: 600;
-        text-transform: uppercase;
-        font-size: 0.85rem;
-        letter-spacing: 0.5px;
         padding: 15px;
         text-align: left;
+        font-weight: 500;
+        font-size: 0.9rem;
     }
 
     .cash-flow-table td {
         padding: 15px;
         border-bottom: 1px solid #eee;
+        font-size: 0.95rem;
     }
 
     .cash-flow-table tr:last-child td {
@@ -222,16 +334,15 @@
     }
 
     .cash-flow-table tr:hover {
-        background-color: rgba(0, 0, 0, 0.02);
+        background-color: rgba(52, 152, 219, 0.05);
     }
 
-    /* Estilos para tipos de transação */
     .transaction-type {
         display: inline-block;
-        padding: 4px 8px;
+        padding: 4px 10px;
         border-radius: 4px;
-        font-weight: 600;
         font-size: 0.85rem;
+        font-weight: 500;
     }
 
     .transaction-sangria {
@@ -240,121 +351,137 @@
     }
 
     .transaction-reforco {
-        background-color: rgba(46, 204, 113, 0.1);
-        color: var(--secondary-color);
+        background-color: rgba(39, 174, 96, 0.1);
+        color: var(--success-color);
     }
 
-    /* Estilos para valores */
     .transaction-value {
-        font-weight: 700;
+        font-weight: 600;
     }
 
     .positive-value {
-        color: var(--secondary-color);
+        color: var(--success-color);
     }
 
     .negative-value {
         color: var(--danger-color);
     }
 
-    /* Estilos para datas */
     .transaction-date {
         color: var(--text-light);
         font-size: 0.9rem;
     }
 
-    /* Resumo do fluxo */
-    .cash-flow-summary {
+    .help-button {
+        margin-left: auto;
+        width: 36px;
+        height: 36px;
         display: flex;
-        justify-content: space-between;
-        margin-bottom: 20px;
-        gap: 20px;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: bold;
     }
 
-    .summary-card {
-        flex: 1;
-        background: white;
+    .help-button:hover {
+        background-color: #2980b9;
+        transform: scale(1.1);
+    }
+
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
+    }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 25px;
         border-radius: var(--border-radius);
-        padding: 20px;
-        box-shadow: var(--box-shadow);
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s;
     }
 
-    .summary-card h3 {
-        margin-top: 0;
-        margin-bottom: 10px;
-        font-size: 1rem;
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .close {
         color: var(--text-light);
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        transition: var(--transition);
     }
 
-    .summary-value {
-        font-size: 1.5rem;
-        font-weight: 700;
-    }
-
-    .summary-income {
-        color: var(--secondary-color);
-    }
-
-    .summary-expense {
+    .close:hover,
+    .close:focus {
         color: var(--danger-color);
+        text-decoration: none;
+        cursor: pointer;
     }
 
-    .summary-balance {
+    .modal-title {
+        margin-top: 0;
         color: var(--primary-color);
     }
 
-    .cash-flow-actions {
+    .shortcut-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .shortcut-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
         display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
-        margin-bottom: 20px;
-        align-items: center;
+        justify-content: space-between;
     }
-    
-    .filter-group {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        background: #f5f5f5;
-        padding: 8px 12px;
-        border-radius: 8px;
+
+    .shortcut-list li:last-child {
+        border-bottom: none;
     }
-    
-    .filter-group span {
-        font-size: 14px;
-        color: #555;
-        margin-right: 5px;
-    }
-    
-    .filter-btn {
-        padding: 6px 12px;
-        border: 1px solid #ddd;
-        border-radius: 20px;
-        background: white;
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-size: 14px;
-    }
-    
-    .filter-btn:hover {
-        background: #f0f0f0;
-    }
-    
-    .filter-btn.active {
-        background: var(--primary-color);
-        color: white;
-        border-color: var(--primary-color);
+
+    .shortcut-key {
+        background-color: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        color: var(--primary-color);
     }
 
     /* Responsividade */
     @media (max-width: 1024px) {
         .sidebar {
-            transform: translateX(-100%);
             position: fixed;
-            top: 70px;
+            top: 80px;
             left: 0;
-            height: calc(100vh - 70px);
+            transform: translateX(-100%);
+            height: calc(100vh - 80px);
             z-index: 900;
+            transition: transform 0.3s ease;
         }
         
         .sidebar.active {
@@ -363,6 +490,7 @@
         
         .content {
             margin-left: 0;
+            padding: 20px;
         }
     }
 
@@ -374,182 +502,136 @@
         .cash-flow-header {
             flex-direction: column;
             align-items: flex-start;
-            gap: 15px;
         }
         
-        .cash-flow-actions {
+        .filter-group {
             width: 100%;
-            overflow-x: auto;
-            padding-bottom: 10px;
+        }
+        
+        .filter-btn {
+            flex: 1;
+            text-align: center;
         }
     }
-
-    .help-button {
-        margin-left: auto; /* Alinha o botão à direita */
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin-right: 20px
-    }
-
-    .help-button:hover {
-        background-color: #45a049;
-    }
-
-    .modal {
-        display: none; 
-        position: fixed;
-        z-index: 1000;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); 
-        padding-top: 60px;
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px; 
-        border-radius: 10px; 
-    }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-    
-        @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-    }
-    .content {
-        width: 100%;
-    }
-    }
-
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="logo">
-                <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
+            <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
-        <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
-        <button class="help-button" id="help-button">?</button>
+        <h1 id="texto-link">Gestão Midt</h1>
+        <button class="help-button" id="help-button" title="Ajuda e atalhos">
+            <i class="fas fa-question"></i>
+        </button>
     </div>
     <div class="container">
         <div class="sidebar">
             <div class="logoside">
                 <img src="/images/logo.jpeg" alt="Logo da Empresa" id="minha-imagem">
             </div>
-            <!-- Modal -->
+            
+            <!-- Modal de Ajuda -->
             <div id="helpModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h4>Teclas de Atalho:</h4>
-                    <ul>
-                        <li><strong>Cadastro de Produtos</strong>: <em>Ctrl + Shift + 1</em></li>
-                        <li><strong>Cadastro de Clientes</strong>: <em>Ctrl + Shift + 2</em></li>
-                        <li><strong>Cadastro de Fornecedores</strong>: <em>Ctrl + Shift + 3</em></li>
-                        <li><strong>Venda Balcão</strong>: <em>Ctrl + Shift + 4</em></li>
-                        <li><strong>Listar Vendas</strong>: <em>Ctrl + Shift + 5</em></li>
-                        <li><strong>Compras</strong>: <em>Ctrl + Shift + 6</em></li>
-                        <li><strong>Adição de Sítio</strong>: <em>Ctrl + Shift + 7</em></li>
-                        <li><strong>Listar Compras</strong>: <em>Ctrl + Shift + 8</em></li>
-                        <li><strong>Financeiro</strong>: <em>Ctrl + Shift + 9</em></li>
+                    <h3 class="modal-title"><i class="fas fa-keyboard icon"></i> Teclas de Atalho</h3>
+                    <ul class="shortcut-list">
+                        <li><span>Cadastro de Produtos</span> <span class="shortcut-key">Ctrl + Shift + 1</span></li>
+                        <li><span>Cadastro de Clientes</span> <span class="shortcut-key">Ctrl + Shift + 2</span></li>
+                        <li><span>Cadastro de Fornecedores</span> <span class="shortcut-key">Ctrl + Shift + 3</span></li>
+                        <li><span>Venda Balcão</span> <span class="shortcut-key">Ctrl + Shift + 4</span></li>
+                        <li><span>Listar Vendas</span> <span class="shortcut-key">Ctrl + Shift + 5</span></li>
+                        <li><span>Compras</span> <span class="shortcut-key">Ctrl + Shift + 6</span></li>
+                        <li><span>Adição de Sítio</span> <span class="shortcut-key">Ctrl + Shift + 7</span></li>
+                        <li><span>Listar Compras</span> <span class="shortcut-key">Ctrl + Shift + 8</span></li>
+                        <li><span>Financeiro</span> <span class="shortcut-key">Ctrl + Shift + 9</span></li>
                     </ul>
                 </div>
             </div>
-            <!-- Botão expansível para Cadastros -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/cadastro.png" alt="Ícone Cadastros">
-                <span>Cadastros</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/cadastro_produtos">Cadastro de Produtos</a></li>
-                    <li><a href="/cadastro_clientes">Cadastro de Clientes</a></li>
-                    <li><a href="/cadastro_fornecedores">Cadastro de Fornecedores</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Vendas -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/vendas.png" alt="Ícone Vendas">
-                <span>Vendas</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/venda_balcao">Venda Balcão</a></li>
-                    <li><a href="/listar_vendas">Registro de Vendas</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Estoque -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/estoque.png" alt="Ícone Estoque">
-                <span>Estoque</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/compras">Compras</a></li>
-                    <!-- Adiciona a opção "Compras" -->
-                    <li><a href="/adicao_sitio">Adições do Sitio</a></li>
-                    <!-- Adiciona a opção "Adições do Sitio" -->
-                    <li><a href="/listar_compras">Registro de Compras</a></li>
-                    <!-- Adiciona a opção "Registro de Compras" -->
-                </ul>
-            </div>
-            <!-- Botão expansível para Financeiro -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/financeiro.png" alt="Ícone Financeiro">
-                <span>Financeiro</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/financeiro">Caixa</a></li>
-                    <!-- Adiciona a opção "Caixas" -->
-                    <li><a href="/fluxo_caixa">Fluxo de Caixa</a></li>
-                    <!-- Adiciona a opção "Fluxo de Caixa" -->
-                </ul>
-            </div>
-            <!-- Links diretos para listagens -->
+            
+            <!-- Menu de Navegação -->
             <ul class="navigation">
-                <li><a href="/listar_clientes"><span class="icon icon-clientes"></span><img class="icon" src="/images/cliente.png" alt="Ícone Clientes">Clientes</a></li>
-                <li><a href="/listar_fornecedores"><span class="icon icon-fornecedores"></span><img class="icon" src="/images/fornecedor.png" alt="Ícone Fornecedores">Fornecedores</a></li>
-                <li><a href="/listar_produtos"><span class="icon icon-produtos"></span><img class="icon" src="/images/produtos.png" alt="Ícone Produtos">Produtos</a></li>
-                <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
+                <!-- Botão expansível para Cadastros -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-user-plus icon"></i>
+                            <span>Cadastros</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/cadastro_produtos"><i class="fas fa-box icon"></i> Cadastro de Produtos</a></li>
+                            <li><a href="/cadastro_clientes"><i class="fas fa-users icon"></i> Cadastro de Clientes</a></li>
+                            <li><a href="/cadastro_fornecedores"><i class="fas fa-truck icon"></i> Cadastro de Fornecedores</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Vendas -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-shopping-cart icon"></i>
+                            <span>Vendas</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/venda_balcao"><i class="fas fa-cash-register icon"></i> Venda Balcão</a></li>
+                            <li><a href="/listar_vendas"><i class="fas fa-receipt icon"></i> Registro de Vendas</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Estoque -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-warehouse icon"></i>
+                            <span>Estoque</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/compras"><i class="fas fa-shopping-basket icon"></i> Compras</a></li>
+                            <li><a href="/adicao_sitio"><i class="fas fa-parachute-box icon"></i> Adições do Sitio</a></li>
+                            <li><a href="/listar_compras"><i class="fas fa-clipboard-list icon"></i> Registro de Compras</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Financeiro -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-money-bill-wave icon"></i>
+                            <span>Financeiro</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/financeiro"><i class="fas fa-cash-register icon"></i> Caixa</a></li>
+                            <li><a href="/fluxo_caixa" class="active"><i class="fas fa-chart-line icon"></i> Fluxo de Caixa</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Links diretos -->
+                <li><a href="/listar_clientes"><i class="fas fa-address-book icon"></i> Clientes</a></li>
+                <li><a href="/listar_fornecedores"><i class="fas fa-truck-loading icon"></i> Fornecedores</a></li>
+                <li><a href="/listar_produtos"><i class="fas fa-boxes icon"></i> Produtos</a></li>
+                <li><a href="/relatorio_vendas"><i class="fas fa-chart-pie icon"></i> Relatórios</a></li>
             </ul>           
         </div>
-
-
-
-
-
-
-
-
-
-        <div class="content">
+        
+        <main class="content">
             <div class="cash-flow-summary">
                 <div class="summary-card">
                     <h3><i class="fas fa-arrow-down"></i> Entradas</h3>
@@ -620,22 +702,9 @@
                     </table>
                 </div>
             </div>
-        </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </main>
     </div>
+
     <script>
         const expandableBtns = document.querySelectorAll('.expandable-header');
         expandableBtns.forEach(btn => {
@@ -651,46 +720,46 @@
         });
 
         $(document).ready(function() {
-        // Definir as teclas de atalho (Ctrl + Shift + number)
-        $(document).keydown(function(event) {
-            if (event.ctrlKey && event.shiftKey) {
-                switch (event.which) {
-                    case 49: // Ctrl + Shift + 1
-                        window.location.href = "/cadastro_produtos";
-                        break;
-                    case 50: // Ctrl + Shift + 2
-                        window.location.href = "/cadastro_clientes";
-                        break;
-                    case 51: // Ctrl + Shift + 3
-                        window.location.href = "/cadastro_fornecedores";
-                        break;
-                    case 52: // Ctrl + Shift + 4
-                        window.location.href = "/venda_balcao";
-                        break;
-                    case 53: // Ctrl + Shift + 5
-                        window.location.href = "/listar_vendas";
-                        break;
-                    case 54: // Ctrl + Shift + 6
-                        window.location.href = "/compras";
-                        break;
-                    case 55: // Ctrl + Shift + 7
-                        window.location.href = "/adicao_sitio";
-                        break;
-                    case 56: // Ctrl + Shift + 8
-                        window.location.href = "/listar_compras";
-                        break;
-                    case 57: // Ctrl + Shift + 9
-                        window.location.href = "/financeiro";
-                        break;
-                    default:
-                        break;
+            // Definir as teclas de atalho (Ctrl + Shift + number)
+            $(document).keydown(function(event) {
+                if (event.ctrlKey && event.shiftKey) {
+                    switch (event.which) {
+                        case 49: // Ctrl + Shift + 1
+                            window.location.href = "/cadastro_produtos";
+                            break;
+                        case 50: // Ctrl + Shift + 2
+                            window.location.href = "/cadastro_clientes";
+                            break;
+                        case 51: // Ctrl + Shift + 3
+                            window.location.href = "/cadastro_fornecedores";
+                            break;
+                        case 52: // Ctrl + Shift + 4
+                            window.location.href = "/venda_balcao";
+                            break;
+                        case 53: // Ctrl + Shift + 5
+                            window.location.href = "/listar_vendas";
+                            break;
+                        case 54: // Ctrl + Shift + 6
+                            window.location.href = "/compras";
+                            break;
+                        case 55: // Ctrl + Shift + 7
+                            window.location.href = "/adicao_sitio";
+                            break;
+                        case 56: // Ctrl + Shift + 8
+                            window.location.href = "/listar_compras";
+                            break;
+                        case 57: // Ctrl + Shift + 9
+                            window.location.href = "/financeiro";
+                            break;
+                        default:
+                            break;
+                    }
                 }
-            }
+            });
         });
-    });
 
-    // Redirecionar ao clicar na imagem
-    document.getElementById('minha-imagem').addEventListener('click', function() {
+        // Redirecionar ao clicar na imagem
+        document.getElementById('minha-imagem').addEventListener('click', function() {
             window.location.href = 'http://127.0.0.1:5000/inicio';
         });
 
@@ -699,105 +768,81 @@
             window.location.href = 'http://127.0.0.1:5000/inicio';
         });
 
-
         // Mostrar e esconder o modal
         var modal = document.getElementById("helpModal");
-            var btn = document.getElementById("help-button");
-            var span = document.getElementsByClassName("close")[0];
+        var btn = document.getElementById("help-button");
+        var span = document.getElementsByClassName("close")[0];
 
-            btn.onclick = function() {
-                modal.style.display = "block";
-            }
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
 
-            span.onclick = function() {
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
                 modal.style.display = "none";
             }
+        }
 
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-            // Redirecionar ao clicar na imagem
-            document.getElementById('minha-imagem').addEventListener('click', function() {
-                window.location.href = 'http://127.0.0.1:5000/inicio';
-            });
-
-            // Redirecionar ao clicar no texto
-            document.getElementById('texto-link').addEventListener('click', function() {
-                window.location.href = 'http://127.0.0.1:5000/inicio';
-            });
-
-
-
-
-
-            document.addEventListener('DOMContentLoaded', function() {
-                // Filtros da tabela
-                const filterButtons = document.querySelectorAll('.filter-btn');
-                
-                filterButtons.forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        // Determinar se é um botão de tipo ou período
-                        const isTipoBtn = this.hasAttribute('data-tipo');
-                        const isPeriodoBtn = this.hasAttribute('data-periodo');
-                        
-                        // Obter filtros atuais da URL
-                        const urlParams = new URLSearchParams(window.location.search);
-                        let tipo = urlParams.get('tipo') || 'todos';
-                        let periodo = urlParams.get('periodo') || 'todos';
-                        
-                        // Atualizar apenas o filtro correspondente ao botão clicado
-                        if (isTipoBtn) {
-                            tipo = this.dataset.tipo;
-                        }
-                        if (isPeriodoBtn) {
-                            periodo = this.dataset.periodo;
-                        }
-                        
-                        // Atualizar URL com os parâmetros de filtro
-                        const url = new URL(window.location.href);
-                        url.searchParams.set('tipo', tipo);
-                        url.searchParams.set('periodo', periodo);
-                        window.location.href = url.toString();
-                    });
-                });
-                
-                // Marcar botões ativos baseados nos filtros atuais
-                const urlParams = new URLSearchParams(window.location.search);
-                const currentTipo = urlParams.get('tipo') || 'todos';
-                const currentPeriodo = urlParams.get('periodo') || 'todos';
-                
-                // Remover classe active de todos os botões
-                document.querySelectorAll('.filter-btn').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                // Ativar botões correspondentes aos filtros atuais
-                document.querySelectorAll(`.filter-btn[data-tipo="${currentTipo}"]`).forEach(btn => {
-                    btn.classList.add('active');
-                });
-                
-                document.querySelectorAll(`.filter-btn[data-periodo="${currentPeriodo}"]`).forEach(btn => {
-                    btn.classList.add('active');
-                });
-                
-                // Formatar valores monetários
-                document.querySelectorAll('.summary-value').forEach(el => {
-                    const value = parseFloat(el.textContent.replace('R$', '').trim());
-                    el.textContent = 'R$ ' + value.toFixed(2).replace('.', ',');
-                });
-            });
-
-
-
-
+        // Filtros da tabela
+        document.addEventListener('DOMContentLoaded', function() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
             
-
-
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    // Determinar se é um botão de tipo ou período
+                    const isTipoBtn = this.hasAttribute('data-tipo');
+                    const isPeriodoBtn = this.hasAttribute('data-periodo');
+                    
+                    // Obter filtros atuais da URL
+                    const urlParams = new URLSearchParams(window.location.search);
+                    let tipo = urlParams.get('tipo') || 'todos';
+                    let periodo = urlParams.get('periodo') || 'todos';
+                    
+                    // Atualizar apenas o filtro correspondente ao botão clicado
+                    if (isTipoBtn) {
+                        tipo = this.dataset.tipo;
+                    }
+                    if (isPeriodoBtn) {
+                        periodo = this.dataset.periodo;
+                    }
+                    
+                    // Atualizar URL com os parâmetros de filtro
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('tipo', tipo);
+                    url.searchParams.set('periodo', periodo);
+                    window.location.href = url.toString();
+                });
+            });
             
+            // Marcar botões ativos baseados nos filtros atuais
+            const urlParams = new URLSearchParams(window.location.search);
+            const currentTipo = urlParams.get('tipo') || 'todos';
+            const currentPeriodo = urlParams.get('periodo') || 'todos';
+            
+            // Remover classe active de todos os botões
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Ativar botões correspondentes aos filtros atuais
+            document.querySelectorAll(`.filter-btn[data-tipo="${currentTipo}"]`).forEach(btn => {
+                btn.classList.add('active');
+            });
+            
+            document.querySelectorAll(`.filter-btn[data-periodo="${currentPeriodo}"]`).forEach(btn => {
+                btn.classList.add('active');
+            });
+            
+            // Formatar valores monetários
+            document.querySelectorAll('.summary-value').forEach(el => {
+                const value = parseFloat(el.textContent.replace('R$', '').trim());
+                el.textContent = 'R$ ' + value.toFixed(2).replace('.', ',');
+            });
+        });
     </script>
 </body>
-
 </html>

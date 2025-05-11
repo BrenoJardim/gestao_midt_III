@@ -5,57 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Adições - Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
-
     <style>
-        
+    :root {
+        --primary-color: #131325;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
+        --danger-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 6px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
+
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f9f9f9;
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
     }
 
     .header {
-        background-color: #131325;
-        color: #fff;
+        background-color: var(--primary-color);
+        color: white;
         display: flex;
         align-items: center;
-        padding: 0px 0px; 
+        padding: 15px 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 100;
     }
 
     .logo img {
-        width: 80px;
-        height: auto;
-        margin-right: 10px; 
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 15px;
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .header h1:hover {
+        color: var(--light-color);
     }
 
     .logoside {
         display: flex;
-        justify-content: center; 
-        align-items: center; 
-        height: 180px; 
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
     }
 
     .logoside img {
-        max-width: 100%;  
-        max-height: 100%; 
-        width: auto;
-        height: auto;
+        max-width: 80%;
+        max-height: 100px;
+        object-fit: contain;
     }
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        min-height: calc(100vh - 80px);
     }
 
     .sidebar {
-        background-color: #ffffff;
-        width: 20%;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(13, 13, 25, 0.1);
-        border-right: 1px solid #ccc;
+        background-color: white;
+        width: 250px;
+        padding: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #e0e0e0;
         overflow-y: auto;
+        transition: var(--transition);
     }
 
     .navigation {
@@ -65,154 +105,259 @@
     }
 
     .navigation li {
-        margin-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .navigation li:last-child {
-        border-bottom: none;
+        margin: 0;
     }
 
     .navigation a {
         text-decoration: none;
-        color: #000000;
-        font-size: 16px;
+        color: var(--text-color);
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        padding: 12px 20px;
+        transition: var(--transition);
+        border-left: 3px solid transparent;
     }
 
     .navigation a:hover {
-        background-color: #d4d4d4;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .navigation a.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        font-weight: 500;
     }
 
     .expandable-header {
-        background-color: #d4d4d4;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
+        padding: 12px 20px;
+        margin: 0;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: var(--transition);
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        border-left: 3px solid transparent;
     }
 
     .expandable-header:hover {
-        background-color: #929292;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+    }
+
+    .expandable-header.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .expandable-header i {
+        transition: var(--transition);
+    }
+
+    .expandable-header.active i {
+        transform: rotate(90deg);
     }
 
     .expandable-body {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease;
+        background-color: #f9fafb;
     }
 
-    .expandable-btn.active+.expandable-body {
-        display: block;
+    .expandable-body.show {
         max-height: 1000px;
     }
 
     .content {
-        width: 80%;
-        padding: 20px;
+        flex: 1;
+        padding: 30px;
         overflow-y: auto;
+        background-color: #f5f7fa;
     }
 
     .icon {
-    width: 24px; 
-    height: 24px; 
-    margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        color: var(--text-light);
     }
 
     .form-container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .form-header {
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .form-header h2 {
+        margin: 0;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    .form-header p {
+        margin: 5px 0 0;
+        color: var(--text-light);
+        font-size: 0.9rem;
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .form-col {
+        flex: 1;
     }
 
     label {
-        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark-color);
+        font-size: 0.9rem;
     }
 
     input[type="text"],
+    input[type="number"],
     input[type="tel"],
-    input[type="submit"] {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        transition: border-color 0.3s ease;
+    input[type="email"],
+    input[type="password"],
+    select,
+    textarea {
+        width: 95%;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background-color: #f9fafb;
     }
 
     input[type="text"]:focus,
-    input[type="tel"]:focus {
-        border-color: #333;
+    input[type="number"]:focus,
+    input[type="tel"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        background-color: white;
     }
 
-    input[type="submit"] {
-        background-color: #333;
-        color: #fff;
+    .form-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    button[type="submit"],
+    .btn-primary {
+        padding: 12px 25px;
+        font-size: 0.95rem;
         border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    input[type="submit"]:hover {
-        background-color: #555;
-    }
-
-    .cancel {
-        padding: 15px 30px;
-        font-size: 18px;
-        border: none;
-        border-radius: 5px;
-        background-color: #c42a2a;
+        border-radius: var(--border-radius);
+        background-color: var(--success-color);
         color: white;
         cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    button[type="submit"]:hover,
+    .btn-primary:hover {
+        background-color: #219653;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+    }
+
+    .btn-secondary {
+        padding: 12px 25px;
+        font-size: 0.95rem;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        background-color: white;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-secondary:hover {
+        background-color: #f8f9fa;
+        border-color: #ccc;
+    }
+
+    .btn-cancelar {
+        padding: 12px 25px;
+        background-color: var(--danger-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: var(--transition);
         text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    button[type="submit"]:hover {
-        background-color: #45a049;
-    }
-
-    button[type="submit"] {
-        padding: 15px 30px;
-        font-size: 18px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
+    .btn-cancelar:hover {
+        background-color: #c0392b;
     }
 
     .help-button {
-        margin-left: auto; /* Alinha o botão à direita */
-        padding: 10px;
-        background-color: #4CAF50;
+        margin-left: auto;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-color);
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 50%;
         cursor: pointer;
-        transition: background-color 0.3s;
-        margin-right: 20px
+        transition: var(--transition);
+        font-weight: bold;
     }
 
     .help-button:hover {
-        background-color: #45a049;
+        background-color: #2980b9;
+        transform: scale(1.1);
     }
 
     .modal {
-        display: none; 
+        display: none;
         position: fixed;
         z-index: 1000;
         left: 0;
@@ -220,174 +365,271 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); 
-        padding-top: 60px;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
     }
 
     .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px; 
-        border-radius: 10px; 
+        background-color: white;
+        margin: 10% auto;
+        padding: 25px;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .close {
-        color: #aaa;
+        color: var(--text-light);
         float: right;
-        font-size: 28px;
+        font-size: 24px;
         font-weight: bold;
+        transition: var(--transition);
     }
 
     .close:hover,
     .close:focus {
-        color: black;
+        color: var(--danger-color);
         text-decoration: none;
         cursor: pointer;
     }
-    
-        @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-    }
-    .content {
-        width: 100%;
-    }
+
+    .modal-title {
+        margin-top: 0;
+        color: var(--primary-color);
     }
 
+    .shortcut-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .shortcut-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .shortcut-list li:last-child {
+        border-bottom: none;
+    }
+
+    .shortcut-key {
+        background-color: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        color: var(--primary-color);
+    }
+
+    /* Responsividade */
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+
+        .content {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .modal-content {
+            margin: 20% auto;
+            width: 95%;
+        }
+    }
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="logo">
-                <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
+            <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
-        <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
-        <button class="help-button" id="help-button">?</button>
+        <h1 id="texto-link">Gestão Midt</h1>
+        <button class="help-button" id="help-button" title="Ajuda e atalhos">
+            <i class="fas fa-question"></i>
+        </button>
     </div>
     <div class="container">
         <div class="sidebar">
             <div class="logoside">
                 <img src="/images/logo.jpeg" alt="Logo da Empresa" id="minha-imagem">
             </div>
-            <!-- Modal -->
+            
+            <!-- Modal de Ajuda -->
             <div id="helpModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h4>Teclas de Atalho:</h4>
-                    <ul>
-                        <li><strong>Cadastro de Produtos</strong>: <em>Ctrl + Shift + 1</em></li>
-                        <li><strong>Cadastro de Clientes</strong>: <em>Ctrl + Shift + 2</em></li>
-                        <li><strong>Cadastro de Fornecedores</strong>: <em>Ctrl + Shift + 3</em></li>
-                        <li><strong>Venda Balcão</strong>: <em>Ctrl + Shift + 4</em></li>
-                        <li><strong>Listar Vendas</strong>: <em>Ctrl + Shift + 5</em></li>
-                        <li><strong>Compras</strong>: <em>Ctrl + Shift + 6</em></li>
-                        <li><strong>Adição de Sítio</strong>: <em>Ctrl + Shift + 7</em></li>
-                        <li><strong>Listar Compras</strong>: <em>Ctrl + Shift + 8</em></li>
-                        <li><strong>Financeiro</strong>: <em>Ctrl + Shift + 9</em></li>
+                    <h3 class="modal-title"><i class="fas fa-keyboard icon"></i> Teclas de Atalho</h3>
+                    <ul class="shortcut-list">
+                        <li><span>Cadastro de Produtos</span> <span class="shortcut-key">Ctrl + Shift + 1</span></li>
+                        <li><span>Cadastro de Clientes</span> <span class="shortcut-key">Ctrl + Shift + 2</span></li>
+                        <li><span>Cadastro de Fornecedores</span> <span class="shortcut-key">Ctrl + Shift + 3</span></li>
+                        <li><span>Venda Balcão</span> <span class="shortcut-key">Ctrl + Shift + 4</span></li>
+                        <li><span>Listar Vendas</span> <span class="shortcut-key">Ctrl + Shift + 5</span></li>
+                        <li><span>Compras</span> <span class="shortcut-key">Ctrl + Shift + 6</span></li>
+                        <li><span>Adição de Sítio</span> <span class="shortcut-key">Ctrl + Shift + 7</span></li>
+                        <li><span>Listar Compras</span> <span class="shortcut-key">Ctrl + Shift + 8</span></li>
+                        <li><span>Financeiro</span> <span class="shortcut-key">Ctrl + Shift + 9</span></li>
                     </ul>
                 </div>
             </div>
-            <!-- Botão expansível para Cadastros -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/cadastro.png" alt="Ícone Cadastros">
-                <span>Cadastros</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/cadastro_produtos">Cadastro de Produtos</a></li>
-                    <li><a href="/cadastro_clientes">Cadastro de Clientes</a></li>
-                    <li><a href="/cadastro_fornecedores">Cadastro de Fornecedores</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Vendas -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/vendas.png" alt="Ícone Vendas">
-                <span>Vendas</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/venda_balcao">Venda Balcão</a></li>
-                    <li><a href="/listar_vendas">Registro de Vendas</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Estoque -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/estoque.png" alt="Ícone Estoque">
-                <span>Estoque</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/compras">Compras</a></li>
-                    <!-- Adiciona a opção "Compras" -->
-                    <li><a href="/adicao_sitio">Adições do Sitio</a></li>
-                    <!-- Adiciona a opção "Adições do Sitio" -->
-                    <li><a href="/listar_compras">Registro de Compras</a></li>
-                    <!-- Adiciona a opção "Registro de Compras" -->
-                </ul>
-            </div>
-            <!-- Botão expansível para Financeiro -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/financeiro.png" alt="Ícone Financeiro">
-                <span>Financeiro</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/financeiro">Caixa</a></li>
-                    <!-- Adiciona a opção "Caixas" -->
-                    <li><a href="/fluxo_caixa">Fluxo de Caixa</a></li>
-                    <!-- Adiciona a opção "Fluxo de Caixa" -->
-                </ul>
-            </div>
-            <!-- Links diretos para listagens -->
+            
+            <!-- Menu de Navegação -->
             <ul class="navigation">
-                <li><a href="/listar_clientes"><span class="icon icon-clientes"></span><img class="icon" src="/images/cliente.png" alt="Ícone Clientes">Clientes</a></li>
-                <li><a href="/listar_fornecedores"><span class="icon icon-fornecedores"></span><img class="icon" src="/images/fornecedor.png" alt="Ícone Fornecedores">Fornecedores</a></li>
-                <li><a href="/listar_produtos"><span class="icon icon-produtos"></span><img class="icon" src="/images/produtos.png" alt="Ícone Produtos">Produtos</a></li>
-                <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
+                <!-- Botão expansível para Cadastros -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-user-plus icon"></i>
+                            <span>Cadastros</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/cadastro_produtos"><i class="fas fa-box icon"></i> Cadastro de Produtos</a></li>
+                            <li><a href="/cadastro_clientes"><i class="fas fa-users icon"></i> Cadastro de Clientes</a></li>
+                            <li><a href="/cadastro_fornecedores"><i class="fas fa-truck icon"></i> Cadastro de Fornecedores</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Vendas -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-shopping-cart icon"></i>
+                            <span>Vendas</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/venda_balcao"><i class="fas fa-cash-register icon"></i> Venda Balcão</a></li>
+                            <li><a href="/listar_vendas"><i class="fas fa-receipt icon"></i> Registro de Vendas</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Estoque -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-warehouse icon"></i>
+                            <span>Estoque</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/compras"><i class="fas fa-shopping-basket icon"></i> Compras</a></li>
+                            <li><a href="/adicao_sitio" class="active"><i class="fas fa-parachute-box icon"></i> Adições do Sitio</a></li>
+                            <li><a href="/listar_compras"><i class="fas fa-clipboard-list icon"></i> Registro de Compras</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Financeiro -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-money-bill-wave icon"></i>
+                            <span>Financeiro</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/financeiro"><i class="fas fa-cash-register icon"></i> Caixa</a></li>
+                            <li><a href="/fluxo_caixa"><i class="fas fa-chart-line icon"></i> Fluxo de Caixa</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Links diretos -->
+                <li><a href="/listar_clientes"><i class="fas fa-address-book icon"></i> Clientes</a></li>
+                <li><a href="/listar_fornecedores"><i class="fas fa-truck-loading icon"></i> Fornecedores</a></li>
+                <li><a href="/listar_produtos"><i class="fas fa-boxes icon"></i> Produtos</a></li>
+                <li><a href="/relatorio_vendas"><i class="fas fa-chart-pie icon"></i> Relatórios</a></li>
             </ul>           
         </div>
-        <div class="content">
+        
+        <main class="content">
             <div class="form-container">
+                <div class="form-header">
+                    <h2><i class="fas fa-parachute-box icon"></i> Editar Adição do Sítio</h2>
+                    <p>Atualize as informações da adição do sítio</p>
+                </div>
+                
                 <form action="/adicao_sitio/{{ adicao_sitio[0] }}" method="POST">
                     <div class="form-group">
-                        <label for="nome">Nome:</label>
+                        <label for="nome_produto"><i class="fas fa-box icon"></i> Nome:</label>
                         <input type="text" id="nome_produto" name="nome_produto" value="{{ adicao_sitio[2] }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="telefone">Quantidade</label>
+                        <label for="quantidade"><i class="fas fa-sort-numeric-up icon"></i> Quantidade:</label>
                         <input type="tel" id="quantidade" name="quantidade" value="{{ adicao_sitio[3] }}" required>
                     </div>
                     <div class="form-group">
-                        <label for="endereco">Data</label>
+                        <label for="data_adicao"><i class="fas fa-calendar-alt icon"></i> Data:</label>
                         <input type="text" id="data_adicao" name="data_adicao" value="{{ adicao_sitio[4] }}" required>
                     </div>
-                    <button type="submit">Salvar</button>
-                    <a class="cancel" href="/adicao_sitio">Cancelar</a>
+                    
+                    <div class="form-actions">
+                        <a href="/adicao_sitio" class="btn-cancelar">
+                            <i class="fas fa-times"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> Salvar
+                        </button>
+                    </div>
                 </form>                
             </div>
-        </div>
+        </main>
     </div>
 
     <script>
-        const expandableBtns = document.querySelectorAll('.expandable-header');
-        expandableBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                const body = this.nextElementSibling;
-                this.classList.toggle('active');
-                if (body.style.maxHeight) {
-                    body.style.maxHeight = null;
-                } else {
-                    body.style.maxHeight = body.scrollHeight + "px";
-                }
-            });
+    // Adiciona a classe 'active' ao botão clicado para expandir ou recolher o conteúdo
+    const expandableBtns = document.querySelectorAll('.expandable-header');
+    expandableBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const body = this.nextElementSibling;
+            this.classList.toggle('active');
+            if (body.style.maxHeight) {
+                body.style.maxHeight = null;
+            } else {
+                body.style.maxHeight = body.scrollHeight + "px";
+            }
         });
+    });
 
-        $(document).ready(function() {
+    $(document).ready(function() {
         // Definir as teclas de atalho (Ctrl + Shift + number)
         $(document).keydown(function(event) {
             if (event.ctrlKey && event.shiftKey) {
@@ -428,44 +670,32 @@
 
     // Redirecionar ao clicar na imagem
     document.getElementById('minha-imagem').addEventListener('click', function() {
-            window.location.href = 'http://127.0.0.1:5000/inicio';
-        });
+        window.location.href = 'inicio';
+    });
 
-        // Redirecionar ao clicar no texto
-        document.getElementById('texto-link').addEventListener('click', function() {
-            window.location.href = 'http://127.0.0.1:5000/inicio';
-        });
+    // Redirecionar ao clicar no texto
+    document.getElementById('texto-link').addEventListener('click', function() {
+        window.location.href = 'inicio';
+    });
 
+    // Mostrar e esconder o modal
+    var modal = document.getElementById("helpModal");
+    var btn = document.getElementById("help-button");
+    var span = document.getElementsByClassName("close")[0];
 
-        // Mostrar e esconder o modal
-        var modal = document.getElementById("helpModal");
-            var btn = document.getElementById("help-button");
-            var span = document.getElementsByClassName("close")[0];
+    btn.onclick = function() {
+        modal.style.display = "block";
+    }
 
-            btn.onclick = function() {
-                modal.style.display = "block";
-            }
+    span.onclick = function() {
+        modal.style.display = "none";
+    }
 
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-            // Redirecionar ao clicar na imagem
-            document.getElementById('minha-imagem').addEventListener('click', function() {
-                window.location.href = 'http://127.0.0.1:5000/inicio';
-            });
-
-            // Redirecionar ao clicar no texto
-            document.getElementById('texto-link').addEventListener('click', function() {
-                window.location.href = 'http://127.0.0.1:5000/inicio';
-            });
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
     </script>
 </body>
-
 </html>

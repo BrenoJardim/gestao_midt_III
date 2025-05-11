@@ -4,59 +4,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestão Midt</title>
+    <title>Gestão Midt - Listagem de Vendas</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
-
     <style>
+    :root {
+        --primary-color: #131325;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
+        --danger-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 6px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
 
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f9f9f9;
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
     }
 
     .header {
-        background-color: #131325;
-        color: #fff;
+        background-color: var(--primary-color);
+        color: white;
         display: flex;
         align-items: center;
-        padding: 0px 0px;
+        padding: 15px 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 100;
     }
 
     .logo img {
-        width: 80px;
-        height: auto;
-        margin-right: 10px; 
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 15px;
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .header h1:hover {
+        color: var(--light-color);
     }
 
     .logoside {
         display: flex;
-        justify-content: center; 
-        align-items: center; 
-        height: 180px; 
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
     }
 
     .logoside img {
-        max-width: 100%;
-        max-height: 100%; 
-        width: auto;
-        height: auto;
+        max-width: 80%;
+        max-height: 100px;
+        object-fit: contain;
     }
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        min-height: calc(100vh - 80px);
     }
 
     .sidebar {
-        background-color: #ffffff;
-        
-        width: 20%;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(13, 13, 25, 0.1);
-        border-right: 1px solid #ccc;
+        background-color: white;
+        width: 250px;
+        padding: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #e0e0e0;
+        overflow-y: auto;
+        transition: var(--transition);
     }
 
     .navigation {
@@ -66,148 +106,203 @@
     }
 
     .navigation li {
-        margin-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .navigation li:last-child {
-        border-bottom: none;
+        margin: 0;
     }
 
     .navigation a {
         text-decoration: none;
-        color: #000000;
-        font-size: 16px;
+        color: var(--text-color);
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        padding: 12px 20px;
+        transition: var(--transition);
+        border-left: 3px solid transparent;
     }
 
     .navigation a:hover {
-        background-color: #d4d4d4;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .navigation a.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        font-weight: 500;
     }
 
     .expandable-header {
-        background-color: #d4d4d4;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
+        padding: 12px 20px;
+        margin: 0;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: var(--transition);
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        border-left: 3px solid transparent;
     }
 
     .expandable-header:hover {
-        background-color: #929292;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+    }
+
+    .expandable-header.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
     }
 
     .expandable-body {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease;
+        background-color: #f9fafb;
     }
 
-    .expandable-btn.active+.expandable-body {
-        display: block;
+    .expandable-body.show {
         max-height: 1000px;
     }
 
     .content {
-        width: 80%;
-        padding: 20px;
+        flex: 1;
+        padding: 30px;
         overflow-y: auto;
+        background-color: #f5f7fa;
     }
 
     .icon {
-    width: 24px; 
-    height: 24px; 
-    margin-right: 10px; 
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        color: var(--text-light);
+    }
+
+    /* Estilos específicos para a listagem de vendas */
+    .page-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .page-header h2 {
+        margin: 0;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    .btn-venda-balcao {
+        padding: 12px 25px;
+        font-size: 0.95rem;
+        border: none;
+        border-radius: var(--border-radius);
+        background-color: var(--success-color);
+        color: white;
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+    .btn-venda-balcao:hover {
+        background-color: #219653;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
     }
 
     .sales-table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        background-color: white;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        overflow: hidden;
     }
 
     .sales-table th,
     .sales-table td {
-        padding: 10px;
-        border: 1px solid #ddd;
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #e0e0e0;
     }
 
     .sales-table th {
-        background-color: #f2f2f2;
-        text-align: left;
+        background-color: #f8f9fa;
+        font-weight: 600;
+        color: var(--dark-color);
     }
 
-    .sales-table tbody tr:nth-child(even) {
-        background-color: #f9f9f9;
+    .sales-table tr:hover {
+        background-color: #f5f7fa;
     }
 
-    .sales-table tbody td a {
-        color: #fff;
-        padding: 5px 10px;
-        border-radius: 3px;
+    .sales-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn-visualizar,
+    .btn-excluir {
+        padding: 8px 12px;
+        border-radius: var(--border-radius);
+        font-size: 0.85rem;
+        font-weight: 500;
         text-decoration: none;
-        margin-right: 5px;
-        min-width: 70px; 
-        display: inline-block;
-        text-align: center;
+        transition: var(--transition);
     }
 
-    .sales-table tbody td a.editar {
-        background-color: green;
-    }
-
-    .sales-table tbody td a.excluir {
-        background-color: red;
-    }
-
-    .sales-table tbody td:first-child {
-        white-space: nowrap;
-    }
-
-    .btn-venda-balcao {
-        background-color: #4CAF50;
+    .btn-visualizar {
+        background-color: var(--accent-color);
         color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-        transition-duration: 0.4s;
-        cursor: pointer;
     }
 
-    .btn-venda-balcao:hover {
-        background-color: #45a049;
+    .btn-visualizar:hover {
+        background-color: #2980b9;
+    }
+
+    .btn-excluir {
+        background-color: var(--danger-color);
+        color: white;
+    }
+
+    .btn-excluir:hover {
+        background-color: #c0392b;
     }
 
     .help-button {
-        margin-left: auto; /* Alinha o botão à direita */
-        padding: 10px;
-        background-color: #4CAF50;
+        margin-left: auto;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-color);
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 50%;
         cursor: pointer;
-        transition: background-color 0.3s;
-        margin-right: 20px
+        transition: var(--transition);
+        font-weight: bold;
     }
 
     .help-button:hover {
-        background-color: #45a049;
+        background-color: #2980b9;
+        transform: scale(1.1);
     }
 
     .modal {
-        display: none; 
+        display: none;
         position: fixed;
         z-index: 1000;
         left: 0;
@@ -215,152 +310,316 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); 
-        padding-top: 60px;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
     }
 
     .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px; 
-        border-radius: 10px; 
+        background-color: white;
+        margin: 10% auto;
+        padding: 25px;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .close {
-        color: #aaa;
+        color: var(--text-light);
         float: right;
-        font-size: 28px;
+        font-size: 24px;
         font-weight: bold;
+        transition: var(--transition);
     }
 
     .close:hover,
     .close:focus {
-        color: black;
+        color: var(--danger-color);
         text-decoration: none;
         cursor: pointer;
     }
-    
-        @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-    }
-    .content {
-        width: 100%;
-    }
+
+    /* Adicione ao seu CSS */
+    .sales-table th i {
+        margin-right: 8px;
+        color: var(--accent-color);
     }
 
+    .text-center {
+        text-align: center;
+    }
+
+    .text-right {
+        text-align: right;
+    }
+
+    .payment-method {
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 0.8rem;
+        font-weight: 500;
+    }
+
+    .payment-method {
+        background-color: #e3f7e8;
+        color: #27ae60;
+    }
+
+    .payment-method.cartão,
+    .payment-method.cartao,
+    .payment-method.crédito,
+    .payment-method.credito,
+    .payment-method.débito,
+    .payment-method.debito {
+        background-color: #e3e8f7;
+        color: #3498db;
+    }
+
+    .payment-method.pix {
+        background-color: #f0e3f7;
+        color: #9b59b6;
+    }
+
+    .action-buttons a i {
+        margin-right: 5px;
+    }
+
+    /* Estilos para os filtros */
+    .page-actions {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+    }
+
+    .search-filter {
+        display: flex;
+        gap: 10px;
+    }
+
+    .search-input {
+        padding: 10px 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+    }
+
+    .filter-select {
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        background-color: white;
+    }
+
+    #customDateRange {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    #customDateRange span {
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+    
+    .loading {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 15px 25px;
+        border-radius: var(--border-radius);
+        z-index: 1000;
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+
+        .content {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .sales-table {
+            display: block;
+            overflow-x: auto;
+        }
+    }
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="logo">
-                <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
+            <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
-        <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
-        <button class="help-button" id="help-button">?</button>
+        <h1 id="texto-link">Gestão Midt</h1>
+        <button class="help-button" id="help-button" title="Ajuda e atalhos">
+            <i class="fas fa-question"></i>
+        </button>
     </div>
     <div class="container">
         <div class="sidebar">
             <div class="logoside">
                 <img src="/images/logo.jpeg" alt="Logo da Empresa" id="minha-imagem">
             </div>
-            <!-- Modal -->
+            
+            <!-- Modal de Ajuda -->
             <div id="helpModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h4>Teclas de Atalho:</h4>
-                    <ul>
-                        <li><strong>Cadastro de Produtos</strong>: <em>Ctrl + Shift + 1</em></li>
-                        <li><strong>Cadastro de Clientes</strong>: <em>Ctrl + Shift + 2</em></li>
-                        <li><strong>Cadastro de Fornecedores</strong>: <em>Ctrl + Shift + 3</em></li>
-                        <li><strong>Venda Balcão</strong>: <em>Ctrl + Shift + 4</em></li>
-                        <li><strong>Listar Vendas</strong>: <em>Ctrl + Shift + 5</em></li>
-                        <li><strong>Compras</strong>: <em>Ctrl + Shift + 6</em></li>
-                        <li><strong>Adição de Sítio</strong>: <em>Ctrl + Shift + 7</em></li>
-                        <li><strong>Listar Compras</strong>: <em>Ctrl + Shift + 8</em></li>
-                        <li><strong>Financeiro</strong>: <em>Ctrl + Shift + 9</em></li>
+                    <h3 class="modal-title"><i class="fas fa-keyboard icon"></i> Teclas de Atalho</h3>
+                    <ul class="shortcut-list">
+                        <li><span>Cadastro de Produtos</span> <span class="shortcut-key">Ctrl + Shift + 1</span></li>
+                        <li><span>Cadastro de Clientes</span> <span class="shortcut-key">Ctrl + Shift + 2</span></li>
+                        <li><span>Cadastro de Fornecedores</span> <span class="shortcut-key">Ctrl + Shift + 3</span></li>
+                        <li><span>Venda Balcão</span> <span class="shortcut-key">Ctrl + Shift + 4</span></li>
+                        <li><span>Listar Vendas</span> <span class="shortcut-key">Ctrl + Shift + 5</span></li>
+                        <li><span>Compras</span> <span class="shortcut-key">Ctrl + Shift + 6</span></li>
+                        <li><span>Adição de Sítio</span> <span class="shortcut-key">Ctrl + Shift + 7</span></li>
+                        <li><span>Listar Compras</span> <span class="shortcut-key">Ctrl + Shift + 8</span></li>
+                        <li><span>Financeiro</span> <span class="shortcut-key">Ctrl + Shift + 9</span></li>
                     </ul>
                 </div>
             </div>
-            <!-- Botão expansível para Cadastros -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/cadastro.png" alt="Ícone Cadastros">
-                <span>Cadastros</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/cadastro_produtos">Cadastro de Produtos</a></li>
-                    <li><a href="/cadastro_clientes">Cadastro de Clientes</a></li>
-                    <li><a href="/cadastro_fornecedores">Cadastro de Fornecedores</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Vendas -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/vendas.png" alt="Ícone Vendas">
-                <span>Vendas</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/venda_balcao">Venda Balcão</a></li>
-                    <li><a href="/listar_vendas">Registro de Vendas</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Estoque -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/estoque.png" alt="Ícone Estoque">
-                <span>Estoque</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/compras">Compras</a></li>
-                    <!-- Adiciona a opção "Compras" -->
-                    <li><a href="/adicao_sitio">Adições do Sitio</a></li>
-                    <!-- Adiciona a opção "Adições do Sitio" -->
-                    <li><a href="/listar_compras">Registro de Compras</a></li>
-                    <!-- Adiciona a opção "Registro de Compras" -->
-                </ul>
-            </div>
-            <!-- Botão expansível para Financeiro -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/financeiro.png" alt="Ícone Financeiro">
-                <span>Financeiro</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/financeiro">Caixa</a></li>
-                    <!-- Adiciona a opção "Caixas" -->
-                    <li><a href="/fluxo_caixa">Fluxo de Caixa</a></li>
-                    <!-- Adiciona a opção "Fluxo de Caixa" -->
-                </ul>
-            </div>
-            <!-- Links diretos para listagens -->
+            
+            <!-- Menu de Navegação -->
             <ul class="navigation">
-                <li><a href="/listar_clientes"><span class="icon icon-clientes"></span><img class="icon" src="/images/cliente.png" alt="Ícone Clientes">Clientes</a></li>
-                <li><a href="/listar_fornecedores"><span class="icon icon-fornecedores"></span><img class="icon" src="/images/fornecedor.png" alt="Ícone Fornecedores">Fornecedores</a></li>
-                <li><a href="/listar_produtos"><span class="icon icon-produtos"></span><img class="icon" src="/images/produtos.png" alt="Ícone Produtos">Produtos</a></li>
-                <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
+                <!-- Botão expansível para Cadastros -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-user-plus icon"></i>
+                            <span>Cadastros</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/cadastro_produtos" class="active"><i class="fas fa-box icon"></i> Cadastro de Produtos</a></li>
+                            <li><a href="/cadastro_clientes"><i class="fas fa-users icon"></i> Cadastro de Clientes</a></li>
+                            <li><a href="/cadastro_fornecedores"><i class="fas fa-truck icon"></i> Cadastro de Fornecedores</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Vendas -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-shopping-cart icon"></i>
+                            <span>Vendas</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/venda_balcao"><i class="fas fa-cash-register icon"></i> Venda Balcão</a></li>
+                            <li><a href="/listar_vendas"><i class="fas fa-receipt icon"></i> Registro de Vendas</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Estoque -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-warehouse icon"></i>
+                            <span>Estoque</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/compras"><i class="fas fa-shopping-basket icon"></i> Compras</a></li>
+                            <li><a href="/adicao_sitio"><i class="fas fa-parachute-box icon"></i> Adições do Sitio</a></li>
+                            <li><a href="/listar_compras"><i class="fas fa-clipboard-list icon"></i> Registro de Compras</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Financeiro -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-money-bill-wave icon"></i>
+                            <span>Financeiro</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/financeiro"><i class="fas fa-cash-register icon"></i> Caixa</a></li>
+                            <li><a href="/fluxo_caixa"><i class="fas fa-chart-line icon"></i> Fluxo de Caixa</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Links diretos -->
+                <li><a href="/listar_clientes"><i class="fas fa-address-book icon"></i> Clientes</a></li>
+                <li><a href="/listar_fornecedores"><i class="fas fa-truck-loading icon"></i> Fornecedores</a></li>
+                <li><a href="/listar_produtos"><i class="fas fa-boxes icon"></i> Produtos</a></li>
+                <li><a href="/relatorio_vendas"><i class="fas fa-chart-pie icon"></i> Relatórios</a></li>
             </ul>           
         </div>
+        
         <div class="content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <h1>Listagem de Vendas</h1>
-                <a href="/venda_balcao" class="btn-venda-balcao">Venda Balcão</a>
+            <div class="page-header">
+                <h2><i class="fas fa-receipt"></i> Listagem de Vendas</h2>
+                <div class="page-actions">
+                    <div class="search-filter">
+                        <input type="text" id="searchInput" placeholder="Buscar venda..." class="search-input">
+                        <select id="filterDate" class="filter-select">
+                            <option value="all">Todas as datas</option>
+                            <option value="today">Hoje</option>
+                            <option value="week">Esta semana</option>
+                            <option value="month">Este mês</option>
+                            <option value="custom">Período personalizado</option>
+                        </select>
+                        <div id="customDateRange" style="display:none;">
+                            <input type="date" id="startDate" class="filter-select">
+                            <span>até</span>
+                            <input type="date" id="endDate" class="filter-select">
+                        </div>
+                    </div>
+                    <a href="/venda_balcao" class="btn-venda-balcao">
+                        <i class="fas fa-cash-register"></i> Venda Balcão
+                    </a>
+                </div>
             </div>
+            
             <table class="sales-table">
                 <thead>
                     <tr>
-                        <th>Data</th>
-                        <th>Cliente</th>
-                        <th>Produto</th>
-                        <th>Quantidade</th>
-                        <th>Total</th>
-                        <th>Forma de Pagamento</th>
-                        <th>Ações</th>
+                        <th><i class="fas fa-calendar-alt"></i> Data</th>
+                        <th><i class="fas fa-user"></i> Cliente</th>
+                        <th><i class="fas fa-box"></i> Produto</th>
+                        <th><i class="fas fa-hashtag"></i> Quantidade</th>
+                        <th><i class="fas fa-money-bill-wave"></i> Total</th>
+                        <th><i class="fas fa-credit-card"></i> Pagamento</th>
+                        <th><i class="fas fa-cog"></i> Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -369,24 +628,34 @@
                         <td>{{ venda[1] }}</td>
                         <td>{{ venda[2] }}</td>
                         <td>{{ venda[3] }}</td>
-                        <td>{{ venda[4] }}</td>
-                        <td>{{ venda[7] }}</td>
-                        <td>{{ venda[8] }}</td>
+                        <td class="text-center">{{ venda[4] }}</td>
+                        <td class="text-right">R$ {{ "%.2f"|format(venda[7]) }}</td>
                         <td>
-                            <a href="/editar_venda/{{ venda[0] }}" class="editar">Editar</a>
-                            <a href="/excluir_venda/{{ venda[0] }}" class="excluir" onclick="return confirm('Tem certeza que deseja excluir esta venda?')">Excluir</a>
-                        </td>                        
+                            <span class="payment-method {{ venda[8]|lower|replace(' ', '-') }}">
+                                {{ venda[8] }}
+                            </span>
+                        </td>
+                        <td class="action-buttons">
+                            <a href="/editar_venda/{{ venda[0] }}" class="btn-visualizar" title="Visualizar venda">
+                                <i class="fas fa-eye"></i> Visualizar
+                            </a>
+                            <a href="/excluir_venda/{{ venda[0] }}" class="btn-excluir" title="Excluir venda" 
+                               onclick="return confirm('Tem certeza que deseja excluir esta venda?')">
+                                <i class="fas fa-trash-alt"></i> Excluir
+                            </a>
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-        </main>
+        </div>
     </div>
 
     <script>
+        // Expansão dos menus
         const expandableBtns = document.querySelectorAll('.expandable-header');
         expandableBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
+            btn.addEventListener('click', function() {
                 const body = this.nextElementSibling;
                 this.classList.toggle('active');
                 if (body.style.maxHeight) {
@@ -397,85 +666,202 @@
             });
         });
 
+        // Teclas de atalho
         $(document).ready(function() {
-        // Definir as teclas de atalho (Ctrl + Shift + number)
-        $(document).keydown(function(event) {
-            if (event.ctrlKey && event.shiftKey) {
-                switch (event.which) {
-                    case 49: // Ctrl + Shift + 1
-                        window.location.href = "/cadastro_produtos";
-                        break;
-                    case 50: // Ctrl + Shift + 2
-                        window.location.href = "/cadastro_clientes";
-                        break;
-                    case 51: // Ctrl + Shift + 3
-                        window.location.href = "/cadastro_fornecedores";
-                        break;
-                    case 52: // Ctrl + Shift + 4
-                        window.location.href = "/venda_balcao";
-                        break;
-                    case 53: // Ctrl + Shift + 5
-                        window.location.href = "/listar_vendas";
-                        break;
-                    case 54: // Ctrl + Shift + 6
-                        window.location.href = "/compras";
-                        break;
-                    case 55: // Ctrl + Shift + 7
-                        window.location.href = "/adicao_sitio";
-                        break;
-                    case 56: // Ctrl + Shift + 8
-                        window.location.href = "/listar_compras";
-                        break;
-                    case 57: // Ctrl + Shift + 9
-                        window.location.href = "/financeiro";
-                        break;
-                    default:
-                        break;
+            $(document).keydown(function(event) {
+                if (event.ctrlKey && event.shiftKey) {
+                    switch (event.which) {
+                        case 49: window.location.href = "/cadastro_produtos"; break;
+                        case 50: window.location.href = "/cadastro_clientes"; break;
+                        case 51: window.location.href = "/cadastro_fornecedores"; break;
+                        case 52: window.location.href = "/venda_balcao"; break;
+                        case 53: window.location.href = "/listar_vendas"; break;
+                        case 54: window.location.href = "/compras"; break;
+                        case 55: window.location.href = "/adicao_sitio"; break;
+                        case 56: window.location.href = "/listar_compras"; break;
+                        case 57: window.location.href = "/financeiro"; break;
+                    }
                 }
-            }
+            });
         });
-    });
 
-    // Redirecionar ao clicar na imagem
-    document.getElementById('minha-imagem').addEventListener('click', function() {
+        // Redirecionamentos
+        document.getElementById('minha-imagem').addEventListener('click', function() {
             window.location.href = 'inicio';
         });
 
-        // Redirecionar ao clicar no texto
         document.getElementById('texto-link').addEventListener('click', function() {
             window.location.href = 'inicio';
         });
 
-
-        // Mostrar e esconder o modal
+        // Modal de ajuda
         var modal = document.getElementById("helpModal");
-            var btn = document.getElementById("help-button");
-            var span = document.getElementsByClassName("close")[0];
+        var btn = document.getElementById("help-button");
+        var span = document.getElementsByClassName("close")[0];
 
-            btn.onclick = function() {
-                modal.style.display = "block";
-            }
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
 
-            span.onclick = function() {
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
                 modal.style.display = "none";
             }
+        }
 
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
+        // Adicione ao seu script existente
+        $(document).ready(function() {
+            // Filtro de busca
+            $('#searchInput').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $('.sales-table tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            // Filtro por data (exemplo básico)
+            $('#filterDate').change(function() {
+                const filter = $(this).val();
+                // Aqui você implementaria a lógica de filtro por data
+                // Pode ser via AJAX ou manipulação do DOM para dados já carregados
+                console.log('Filtrar por:', filter);
+            });
+        });
+
+        $(document).ready(function() {
+            // Mostrar/ocultar filtro personalizado
+            $('#filterDate').change(function() {
+                if ($(this).val() === 'custom') {
+                    $('#customDateRange').show();
+                } else {
+                    $('#customDateRange').hide();
+                    filterSalesByDate($(this).val());
                 }
+            });
+        
+            // Aplicar filtro quando datas personalizadas forem alteradas
+            $('#startDate, #endDate').change(function() {
+                if ($('#filterDate').val() === 'custom') {
+                    filterSalesByDate('custom');
+                }
+            });
+        
+            function filterSalesByDate(range) {
+                const now = new Date();
+                let startDate, endDate;
+        
+                switch (range) {
+                    case 'today':
+                        startDate = new Date(now.setHours(0, 0, 0, 0));
+                        endDate = new Date(now.setHours(23, 59, 59, 999));
+                        break;
+                    case 'week':
+                        const day = now.getDay();
+                        const diff = now.getDate() - day + (day === 0 ? -6 : 1); // Ajuste para domingo
+                        startDate = new Date(now.setDate(diff));
+                        startDate.setHours(0, 0, 0, 0);
+                        endDate = new Date(now.setDate(diff + 6));
+                        endDate.setHours(23, 59, 59, 999);
+                        break;
+                    case 'month':
+                        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                        startDate.setHours(0, 0, 0, 0);
+                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
+                        endDate.setHours(23, 59, 59, 999);
+                        break;
+                    case 'custom':
+                        startDate = new Date($('#startDate').val());
+                        endDate = new Date($('#endDate').val());
+                        endDate.setHours(23, 59, 59, 999);
+                        break;
+                    default: // 'all'
+                        $('.sales-table tbody tr').show();
+                        return;
+                }
+        
+                $('.sales-table tbody tr').each(function() {
+                    // Supondo que a data está na primeira coluna (índice 0)
+                    const dateText = $(this).find('td:eq(0)').text().trim();
+                    const saleDate = new Date(dateText);
+                    
+                    // Mostra apenas as vendas dentro do período
+                    $(this).toggle(saleDate >= startDate && saleDate <= endDate);
+                });
             }
+        });
 
-            // Redirecionar ao clicar na imagem
-            document.getElementById('minha-imagem').addEventListener('click', function() {
-                window.location.href = 'inicio';
+        $(document).ready(function() {
+            // Mostrar/ocultar filtro personalizado
+            $('#filterDate').change(function() {
+                if ($(this).val() === 'custom') {
+                    $('#customDateRange').show();
+                } else {
+                    $('#customDateRange').hide();
+                    fetchSalesByDate($(this).val());
+                }
             });
-
-            // Redirecionar ao clicar no texto
-            document.getElementById('texto-link').addEventListener('click', function() {
-                window.location.href = 'inicio';
+        
+            // Aplicar filtro quando datas personalizadas forem alteradas
+            $('#startDate, #endDate').change(function() {
+                if ($('#filterDate').val() === 'custom') {
+                    fetchSalesByDate('custom');
+                }
             });
+        
+            function fetchSalesByDate(range) {
+                let url = '/listar_vendas?filter=';
+                let params = '';
+        
+                switch (range) {
+                    case 'today':
+                        params = 'today';
+                        break;
+                    case 'week':
+                        params = 'week';
+                        break;
+                    case 'month':
+                        params = 'month';
+                        break;
+                    case 'custom':
+                        const start = $('#startDate').val();
+                        const end = $('#endDate').val();
+                        if (!start || !end) return;
+                        params = `custom&start=${start}&end=${end}`;
+                        break;
+                    default: // 'all'
+                        params = 'all';
+                }
+        
+                $.ajax({
+                    url: url + params,
+                    method: 'GET',
+                    beforeSend: function() {
+                        // Mostrar loading
+                        $('.content').append('<div class="loading">Carregando...</div>');
+                    },
+                    success: function(data) {
+                        // Atualizar a tabela com os novos dados
+                        updateSalesTable(data);
+                    },
+                    complete: function() {
+                        // Esconder loading
+                        $('.loading').remove();
+                    },
+                    error: function() {
+                        alert('Erro ao filtrar vendas');
+                    }
+                });
+            }
+        
+            function updateSalesTable(data) {
+                // Implemente a lógica para atualizar a tabela com os dados recebidos
+                // Isso depende de como seu backend retorna os dados
+            }
+        });
     </script>
 </body>
-
 </html>

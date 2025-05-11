@@ -1,62 +1,101 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Venda de Balcão - Gestão Midt</title>
+    <title>Cadastro de Produtos - Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
     <style>
+    :root {
+        --primary-color: #131325;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
+        --danger-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 6px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
 
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f9f9f9;
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
     }
 
     .header {
-        background-color: #131325;
-        color: #fff;
+        background-color: var(--primary-color);
+        color: white;
         display: flex;
         align-items: center;
-        padding: 0px 0px; /* Ajuste o padding conforme necessário */
+        padding: 15px 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 100;
     }
 
-
     .logo img {
-        width: 80px;
-        height: auto;
-        margin-right: 10px; /* Espaçamento entre a logo e o texto */
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 15px;
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .header h1:hover {
+        color: var(--light-color);
     }
 
     .logoside {
         display: flex;
-        justify-content: center; /* Para centralizar horizontalmente */
-        align-items: center; /* Para centralizar verticalmente */
-        height: 180px; /* Defina a altura desejada */
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
     }
 
     .logoside img {
-        max-width: 100%; /* Para que a imagem tenha no máximo a largura da sidebar */
-        max-height: 100%; /* Para que a imagem tenha no máximo a altura da sidebar */
-        width: auto;
-        height: auto;
+        max-width: 80%;
+        max-height: 100px;
+        object-fit: contain;
     }
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        min-height: calc(100vh - 80px);
     }
 
     .sidebar {
-        background-color: #ffffff;
-        width: 20%;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(13, 13, 25, 0.1);
-        border-right: 1px solid #ccc;
+        background-color: white;
+        width: 250px;
+        padding: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #e0e0e0;
         overflow-y: auto;
+        transition: var(--transition);
     }
 
     .navigation {
@@ -66,143 +105,456 @@
     }
 
     .navigation li {
-        margin-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .navigation li:last-child {
-        border-bottom: none;
+        margin: 0;
     }
 
     .navigation a {
         text-decoration: none;
-        color: #000000;
-        font-size: 16px;
+        color: var(--text-color);
+        font-size: 0.95rem;
         display: flex;
-        /* Para alinhar ícones e texto verticalmente */
         align-items: center;
-        /* Alinha os itens verticalmente */
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        padding: 12px 20px;
+        transition: var(--transition);
+        border-left: 3px solid transparent;
     }
 
     .navigation a:hover {
-        background-color: #d4d4d4;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .navigation a.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        font-weight: 500;
     }
 
     .expandable-header {
-        background-color: #d4d4d4;
-        /* Cor alterada */
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
+        padding: 12px 20px;
+        margin: 0;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: var(--transition);
         display: flex;
-        /* Para alinhar ícones e texto verticalmente */
         align-items: center;
-        /* Alinha os itens verticalmente */
+        justify-content: space-between;
+        border-left: 3px solid transparent;
     }
 
     .expandable-header:hover {
-        background-color: #929292;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+    }
+
+    .expandable-header.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .expandable-header i {
+        transition: var(--transition);
+    }
+
+    .expandable-header.active i {
+        transform: rotate(90deg);
     }
 
     .expandable-body {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease;
+        background-color: #f9fafb;
     }
 
-    .expandable-btn.active+.expandable-body {
-        display: block;
+    .expandable-body.show {
         max-height: 1000px;
     }
 
     .content {
         flex: 1;
-        padding: 20px;
+        padding: 30px;
+        overflow-y: auto;
+        background-color: #f5f7fa;
     }
 
-    .vendb {
-        background-color: #fff;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        padding: 40px;
-        max-width: 90%;
+    .icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        color: var(--text-light);
+    }
+
+    .form-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        max-width: 800px;
         margin: 0 auto;
     }
 
-    .tit {
-        text-align: center;
+    .form-header {
         margin-bottom: 30px;
-        color: #333;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
     }
 
-    form label {
+    .form-header h2 {
+        margin: 0;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    .form-header p {
+        margin: 5px 0 0;
+        color: var(--text-light);
+        font-size: 0.9rem;
+    }
+
+    .form-group {
+        margin-bottom: 25px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .form-col {
+        flex: 1;
+    }
+
+    label {
         display: block;
-        margin-bottom: 5px;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark-color);
+        font-size: 0.9rem;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-group .prefix {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
     }
 
     input[type="text"],
     input[type="number"],
-    select {
+    input[type="email"],
+    input[type="password"],
+    select,
+    textarea {
         width: 100%;
-        padding: 10px;
-        margin-bottom: 20px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        box-sizing: border-box;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background-color: #f9fafb;
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        background-color: white;
+    }
+
+    input.with-prefix {
+        padding-left: 35px;
+    }
+
+    /* Adicione esta regra para garantir que os inputs com prefixo fiquem alinhados */
+    .form-row .form-col .input-group {
+        display: flex;
+    }
+
+    select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 15px;
+    }
+
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
     }
 
     button[type="submit"],
-    button[type="button"] {
-        width: 100%;
-        padding: 10px;
+    .btn-primary {
+        padding: 12px 25px;
+        font-size: 0.95rem;
         border: none;
-        border-radius: 5px;
+        border-radius: var(--border-radius);
+        background-color: var(--success-color);
+        color: white;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    button[type="submit"] {
-        background-color: #28a745;
-        color: #fff;
+    button[type="submit"] i,
+    .btn-primary i {
+        margin-right: 8px; /* Espaço entre ícone e texto */
     }
 
     button[type="submit"]:hover,
-    button[type="button"]:hover {
-        background-color: #218838;
+    .btn-primary:hover {
+        background-color: #219653;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
     }
 
-    .sales-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 20px;
-    }
-
-    .sales-table th,
-    .sales-table td {
+    .btn-secondary {
+        padding: 12px 25px;
+        font-size: 0.95rem;
         border: 1px solid #ddd;
-        padding: 10px;
-        text-align: left;
+        border-radius: var(--border-radius);
+        background-color: white;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .sales-table th {
-        background-color: #f2f2f2;
+    .btn-secondary i {
+        margin-right: 8px; /* Espaço entre ícone e texto */
+    }
+
+    .btn-secondary:hover {
+        background-color: #f8f9fa;
+        border-color: #ccc;
+    }
+
+    .help-button {
+        margin-left: auto;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-color);
+        color: white;
+        border: none;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: var(--transition);
         font-weight: bold;
     }
 
-    .sales-table tbody tr:nth-child(even) {
-        background-color: #f2f2f2;
+    .help-button:hover {
+        background-color: #2980b9;
+        transform: scale(1.1);
     }
 
-    .total {
-        font-weight: bold;
-        margin-top: 20px;
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
     }
+
+    .modal-content {
+        background-color: white;
+        margin: 10% auto;
+        padding: 25px;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .close {
+        color: var(--text-light);
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        transition: var(--transition);
+    }
+
+    .close:hover,
+    .close:focus {
+        color: var(--danger-color);
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    .modal-title {
+        margin-top: 0;
+        color: var(--primary-color);
+    }
+
+    .shortcut-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .shortcut-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .shortcut-list li:last-child {
+        border-bottom: none;
+    }
+
+    .shortcut-key {
+        background-color: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        color: var(--primary-color);
+    }
+
+    .status-message {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: var(--border-radius);
+        display: none;
+    }
+
+    .success-message {
+        background-color: rgba(39, 174, 96, 0.1);
+        border-left: 4px solid var(--success-color);
+        color: var(--success-color);
+    }
+
+    .error-message {
+        background-color: rgba(231, 76, 60, 0.1);
+        border-left: 4px solid var(--danger-color);
+        color: var(--danger-color);
+    }
+
+    /* Estilos adicionais para a tela de vendas */
+.vendb {
+    max-width: 100%;
+}
+
+.tit {
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    font-weight: 600;
+}
+
+.total-pedido-container {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: var(--border-radius);
+    border: 1px solid #e0e0e0;
+    margin-top: 10px;
+}
+
+.total-pedido-container label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+}
+
+.total-pedido-value {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--success-color);
+}
+
+.select-with-icon {
+    padding-left: 35px !important;
+    background-position: left 10px center !important;
+}
+
+.form-actions {
+    margin-top: 30px;
+    justify-content: space-between;
+}
+
+.btn-cancelar {
+    padding: 12px 25px;
+    background-color: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.btn-cancelar:hover {
+    background-color: #c0392b;
+}
+
+.uniform-input {
+    width: 100%;
+    padding: 12px 15px !important;
+    border: 1px solid #ddd;
+    border-radius: var(--border-radius);
+    font-size: 0.95rem;
+    transition: var(--transition);
+    background-color: #f9fafb;
+    box-sizing: border-box; /* Isso garante que padding não aumente a largura */
+}
+
+/* Se estiver usando inputs com prefixo, adicione também: */
+.input-group .uniform-input.with-prefix {
+    padding-left: 35px !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .total-pedido-value {
+        font-size: 1.2rem;
+    }
+}
 
     @media (max-width: 768px) {
         .container {
@@ -211,348 +563,412 @@
 
         .sidebar {
             width: 100%;
-            margin-bottom: 20px;
+            height: auto;
+            max-height: 300px;
+        }
+
+        .content {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .modal-content {
+            margin: 20% auto;
+            width: 95%;
         }
     }
 
-    .table-container {
-        max-height: 300px; /* Defina a altura máxima da tabela */
-        overflow-y: auto; /* Adiciona uma barra de rolagem vertical se a altura máxima for excedida */
+    /* Adicionando animação de loading para o botão */
+    .btn-loading {
+        position: relative;
+        pointer-events: none;
     }
 
-    .btn-cancelar {
-            background-color: #dc3545; /* Vermelho */
-            color: #fff;
-    }
-
-    .total-pedido {
-            margin-top: 20px;
-            font-weight: bold;
-            font-size: 20px; /* Tamanho maior */
-            color: #007bff; /* Azul */
-    }
-
-    /* Define a largura máxima para as imagens de ícone */
-    .icon {
-        width: 24px; /* Ajuste conforme necessário */
-        height: 24px; /* Ajuste conforme necessário */
-        margin-right: 10px; /* Espaçamento entre o ícone e o texto */
-        }
-
-        .help-button {
-        margin-left: auto; /* Alinha o botão à direita */
-        padding: 10px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        margin-right: 20px
-    }
-
-    .help-button:hover {
-        background-color: #45a049;
-    }
-
-    .modal {
-        display: none; 
-        position: fixed;
-        z-index: 1000;
-        left: 0;
+    .btn-loading:after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
         top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); 
-        padding-top: 60px;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        border: 3px solid transparent;
+        border-top-color: white;
+        border-radius: 50%;
+        animation: btn-loading-spinner 1s linear infinite;
     }
 
-    .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px; 
-        border-radius: 10px; 
+    @keyframes btn-loading-spinner {
+        from {
+            transform: rotate(0turn);
+        }
+        to {
+            transform: rotate(1turn);
+        }
     }
-
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="logo">
-                <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
+            <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
-        <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
-        <button class="help-button" id="help-button">?</button>
+        <h1 id="texto-link">Gestão Midt</h1>
+        <button class="help-button" id="help-button" title="Ajuda e atalhos">
+            <i class="fas fa-question"></i>
+        </button>
     </div>
     <div class="container">
         <div class="sidebar">
             <div class="logoside">
                 <img src="/images/logo.jpeg" alt="Logo da Empresa" id="minha-imagem">
             </div>
-            <!-- Modal -->
+            
+            <!-- Modal de Ajuda -->
             <div id="helpModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h4>Teclas de Atalho:</h4>
-                    <ul>
-                        <li><strong>Cadastro de Produtos</strong>: <em>Ctrl + Shift + 1</em></li>
-                        <li><strong>Cadastro de Clientes</strong>: <em>Ctrl + Shift + 2</em></li>
-                        <li><strong>Cadastro de Fornecedores</strong>: <em>Ctrl + Shift + 3</em></li>
-                        <li><strong>Venda Balcão</strong>: <em>Ctrl + Shift + 4</em></li>
-                        <li><strong>Listar Vendas</strong>: <em>Ctrl + Shift + 5</em></li>
-                        <li><strong>Compras</strong>: <em>Ctrl + Shift + 6</em></li>
-                        <li><strong>Adição de Sítio</strong>: <em>Ctrl + Shift + 7</em></li>
-                        <li><strong>Listar Compras</strong>: <em>Ctrl + Shift + 8</em></li>
-                        <li><strong>Financeiro</strong>: <em>Ctrl + Shift + 9</em></li>
+                    <h3 class="modal-title"><i class="fas fa-keyboard icon"></i> Teclas de Atalho</h3>
+                    <ul class="shortcut-list">
+                        <li><span>Cadastro de Produtos</span> <span class="shortcut-key">Ctrl + Shift + 1</span></li>
+                        <li><span>Cadastro de Clientes</span> <span class="shortcut-key">Ctrl + Shift + 2</span></li>
+                        <li><span>Cadastro de Fornecedores</span> <span class="shortcut-key">Ctrl + Shift + 3</span></li>
+                        <li><span>Venda Balcão</span> <span class="shortcut-key">Ctrl + Shift + 4</span></li>
+                        <li><span>Listar Vendas</span> <span class="shortcut-key">Ctrl + Shift + 5</span></li>
+                        <li><span>Compras</span> <span class="shortcut-key">Ctrl + Shift + 6</span></li>
+                        <li><span>Adição de Sítio</span> <span class="shortcut-key">Ctrl + Shift + 7</span></li>
+                        <li><span>Listar Compras</span> <span class="shortcut-key">Ctrl + Shift + 8</span></li>
+                        <li><span>Financeiro</span> <span class="shortcut-key">Ctrl + Shift + 9</span></li>
                     </ul>
                 </div>
             </div>
-             <!-- Botão expansível para Cadastros -->
-             <div class="expandable-header">
-                <img class="icon" src="/images/cadastro.png" alt="Ícone Cadastros">
-                <span>Cadastros</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/cadastro_produtos">Cadastro de Produtos</a></li>
-                    <li><a href="/cadastro_clientes">Cadastro de Clientes</a></li>
-                    <li><a href="/cadastro_fornecedores">Cadastro de Fornecedores</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Vendas -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/vendas.png" alt="Ícone Vendas">
-                <span>Vendas</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/venda_balcao">Venda Balcão</a></li>
-                    <li><a href="/listar_vendas">Registro de Vendas</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Estoque -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/estoque.png" alt="Ícone Estoque">
-                <span>Estoque</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/compras">Compras</a></li>
-                    <!-- Adiciona a opção "Compras" -->
-                    <li><a href="/adicao_sitio">Adições do Sitio</a></li>
-                    <!-- Adiciona a opção "Adições do Sitio" -->
-                    <li><a href="/listar_compras">Registro de Compras</a></li>
-                    <!-- Adiciona a opção "Registro de Compras" -->
-                </ul>
-            </div>
-            <!-- Botão expansível para Financeiro -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/financeiro.png" alt="Ícone Financeiro">
-                <span>Financeiro</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/financeiro">Caixa</a></li>
-                    <!-- Adiciona a opção "Caixas" -->
-                    <li><a href="/fluxo_caixa">Fluxo de Caixa</a></li>
-                    <!-- Adiciona a opção "Fluxo de Caixa" -->
-                </ul>
-            </div>
-            <!-- Links diretos para listagens -->
+            
+            <!-- Menu de Navegação -->
             <ul class="navigation">
-                <li><a href="/listar_clientes"><span class="icon icon-clientes"></span><img class="icon" src="/images/cliente.png" alt="Ícone Clientes">Clientes</a></li>
-                <li><a href="/listar_fornecedores"><span class="icon icon-fornecedores"></span><img class="icon" src="/images/fornecedor.png" alt="Ícone Fornecedores">Fornecedores</a></li>
-                <li><a href="/listar_produtos"><span class="icon icon-produtos"></span><img class="icon" src="/images/produtos.png" alt="Ícone Produtos">Produtos</a></li>
-                <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
+                <!-- Botão expansível para Cadastros -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-user-plus icon"></i>
+                            <span>Cadastros</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/cadastro_produtos" class="active"><i class="fas fa-box icon"></i> Cadastro de Produtos</a></li>
+                            <li><a href="/cadastro_clientes"><i class="fas fa-users icon"></i> Cadastro de Clientes</a></li>
+                            <li><a href="/cadastro_fornecedores"><i class="fas fa-truck icon"></i> Cadastro de Fornecedores</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Vendas -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-shopping-cart icon"></i>
+                            <span>Vendas</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/venda_balcao"><i class="fas fa-cash-register icon"></i> Venda Balcão</a></li>
+                            <li><a href="/listar_vendas"><i class="fas fa-receipt icon"></i> Registro de Vendas</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Estoque -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-warehouse icon"></i>
+                            <span>Estoque</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/compras"><i class="fas fa-shopping-basket icon"></i> Compras</a></li>
+                            <li><a href="/adicao_sitio"><i class="fas fa-parachute-box icon"></i> Adições do Sitio</a></li>
+                            <li><a href="/listar_compras"><i class="fas fa-clipboard-list icon"></i> Registro de Compras</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Financeiro -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-money-bill-wave icon"></i>
+                            <span>Financeiro</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/financeiro"><i class="fas fa-cash-register icon"></i> Caixa</a></li>
+                            <li><a href="/fluxo_caixa"><i class="fas fa-chart-line icon"></i> Fluxo de Caixa</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Links diretos -->
+                <li><a href="/listar_clientes"><i class="fas fa-address-book icon"></i> Clientes</a></li>
+                <li><a href="/listar_fornecedores"><i class="fas fa-truck-loading icon"></i> Fornecedores</a></li>
+                <li><a href="/listar_produtos"><i class="fas fa-boxes icon"></i> Produtos</a></li>
+                <li><a href="/relatorio_vendas"><i class="fas fa-chart-pie icon"></i> Relatórios</a></li>
             </ul>           
         </div>
+        
         <main class="content">
-            <div class="vendb">
-                <h1 class="tit">Venda de Balcão</h1>
+            <div class="form-container">
+                <div class="form-header">
+                    <h2><i class="fas fa-cash-register icon"></i> Venda de Balcão</h2>
+                    <p>Registre as vendas realizadas no balcão da sua loja</p>
+                </div>
+                
+                <div class="status-message" id="status-message" style="display: none;"></div>
+                
                 <form id="form-venda" action="/registrar_venda" method="post">
-                    <div class="form-group">
-                        <label for="produto">Produto:</label>
-                        <select id="produto" name="produto" required>
-                            <option value="" selected>Selecione o Produto</option>
-                            {% for produto in produtos %}
-                                <option>{{ produto }}</option>
-                            {% endfor %}
-                        </select>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="produto"><i class="fas fa-box icon"></i> Produto:</label>
+                                <select id="produto" name="produto" required class="select-with-icon">
+                                    <option value="" selected>Selecione o Produto</option>
+                                    {% for produto in produtos %}
+                                        <option>{{ produto }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="valor_venda"><i class="fas fa-tag icon"></i> Valor de Venda:</label>
+                                <div class="input-group">
+                                    <span class="prefix">R$</span>
+                                    <input type="text" id="valor_venda" name="valor_venda" class="with-prefix" oninput="calcularTotalVenda()">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="quantidade"><i class="fas fa-sort-numeric-up icon"></i> Quantidade:</label>
+                                <input type="text" id="quantidade" name="quantidade" required oninput="calcularTotalVenda()" class="uniform-input">
+                            </div>
+                        </div>
+                        
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="desconto"><i class="fas fa-percentage icon"></i> Desconto:</label>
+                                <div class="input-group">
+                                    <span class="prefix">R$</span>
+                                    <input type="text" id="desconto" name="desconto" class="with-prefix" oninput="calcularTotalVenda()">
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="valor_total"><i class="fas fa-calculator icon"></i> Valor Total:</label>
+                                <div class="input-group">
+                                    <span class="prefix">R$</span>
+                                    <input type="text" id="valor_total" name="valor_total" class="with-prefix" readonly>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="cliente"><i class="fas fa-user icon"></i> Cliente:</label>
+                                <select id="cliente" name="cliente" required>
+                                    {% for cliente in clientes %}
+                                        <option>{{ cliente }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="valor_venda">Valor de Venda:</label>
-                        <input type="text" id="valor_venda" name="valor_venda" oninput="calcularTotalVenda()">
-                    </div>           
-                    <div class="form-group">
-                        <label for="quantidade">Quantidade:</label>
-                        <input type="text" id="quantidade" name="quantidade" required>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="forma_pagamento"><i class="fas fa-credit-card icon"></i> Forma de Pagamento:</label>
+                                <select id="forma_pagamento" name="forma_pagamento" required>
+                                    <option value="A vista">À vista</option>
+                                    <option value="Debito">Débito</option>
+                                    <option value="Credito">Crédito</option>
+                                    <option value="Pix">Pix</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-col">
+                            <div class="total-pedido-container">
+                                <label><i class="fas fa-receipt icon"></i> Total do Pedido:</label>
+                                <div class="total-pedido-value" id="total_pedido">R$ 0,00</div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="desconto">Desconto:</label>
-                        <input type="text" id="desconto" name="desconto" oninput="calcularTotalVenda()">
+                    
+                    <div class="form-actions">
+                        <button type="button" class="btn-secondary" onclick="location.href='venda_balcao'">
+                            <i class="fas fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-check"></i> Finalizar Venda
+                        </button>
                     </div>
-                    <div class="form-group">
-                        <label for="valor_total">Valor Total:</label>
-                        <input type="text" id="valor_total" name="valor_total" readonly>
-                    </div>
-                    <div class="form-group">
-                        <label for="cliente">Cliente:</label>
-                        <select id="cliente" name="cliente" required>
-                            {% for cliente in clientes %}
-                                <option>{{ cliente }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="total-pedido">
-                        <label>Total do Pedido:</label>
-                        <span id="total_pedido">R$ 0,00</span>
-                    </div>
-                    <div class="form-group">
-                        <label for="forma_pagamento">Forma de Pagamento:</label>
-                        <select id="forma_pagamento" name="forma_pagamento" required>
-                            <option value="A vista">A vista</option>
-                            <option value="Debito">Débito</option>
-                            <option value="Credito">Crédito</option>
-                            <option value="Pix">Pix</option>
-                        </select>
-                    </div>
-                    <button class="btn-cancelar" type="button" onclick="location.href='venda_balcao'">Cancelar</button>
-                    <button type="submit">Finalizar Venda</button>           
                 </form>
             </div>
         </main>
     </div>
 
     <script>
-        
-        // Adiciona a classe 'active' ao botão clicado para expandir ou recolher o conteúdo
-        const expandableBtns = document.querySelectorAll('.expandable-header');
-        expandableBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                const body = this.nextElementSibling;
-                this.classList.toggle('active');
-                if (body.style.maxHeight) {
-                    body.style.maxHeight = null;
-                } else {
-                    body.style.maxHeight = body.scrollHeight + "px";
-                }
-            });
-        });
-
-        document.getElementById('produto').addEventListener('change', function() {
-            var produtoSelecionado = this.value;
-            if (produtoSelecionado) {
-                fetch('/buscar_valor_venda?produto=' + produtoSelecionado)
-                    .then(response => response.json())
-                    .then(data => {
-                        document.getElementById('valor_venda').value = data.valor_venda;
-                        // Recalcular o total da venda quando o valor de venda mudar
-                        calcularTotalVenda();
-                    })
-                    .catch(error => console.error('Erro ao buscar valor de venda do produto:', error));
+    // Adiciona a classe 'active' ao botão clicado para expandir ou recolher o conteúdo
+    const expandableBtns = document.querySelectorAll('.expandable-header');
+    expandableBtns.forEach(btn => {
+        btn.addEventListener('click', function () {
+            const body = this.nextElementSibling;
+            this.classList.toggle('active');
+            if (body.style.maxHeight) {
+                body.style.maxHeight = null;
             } else {
-                // Limpar o campo de valor de venda se nenhum produto for selecionado
-                document.getElementById('valor_venda').value = '';
-            }
-        });
-
-        // Função para calcular o total da venda
-        function calcularTotalVenda() {
-            var quantidade = parseInt(document.getElementById('quantidade').value) || 0;
-            var valor_venda = parseFloat(document.getElementById('valor_venda').value) || 0;
-            var desconto = parseFloat(document.getElementById('desconto').value) || 0;
-            var total = (quantidade * valor_venda) - desconto;
-            document.getElementById('valor_total').value = total.toFixed(2);
-            document.getElementById('total_pedido').textContent = 'R$ ' + total.toFixed(2);
-        }
-
-        // Chama a função para calcular o total da venda ao carregar a página
-        calcularTotalVenda();
-
-        document.getElementById('quantidade').addEventListener('input', function() {
-            calcularTotalVenda();
-        });
-
-        document.getElementById('desconto').addEventListener('input', function() {
-            calcularTotalVenda();
-        });
-
-        // Função para calcular e exibir o total do pedido
-        function calcularTotalPedido() {
-            var quantidade = parseInt(document.getElementById('quantidade').value) || 0;
-            var custo = parseFloat(document.getElementById('custo').value) || 0;
-            var desconto = parseFloat(document.getElementById('desconto').value) || 0;
-            var total = (quantidade * custo) - desconto;
-            document.getElementById('valor_total').value = total.toFixed(2);
-            document.getElementById('total_pedido').textContent = 'R$ ' + total.toFixed(2);
-        }
-
-        // Chama a função para calcular o total do pedido ao carregar a página
-        calcularTotalPedido();
-    
-    </script>
-
-    <script>
-        $(document).ready(function() {
-        // Definir as teclas de atalho (Ctrl + Shift + number)
-        $(document).keydown(function(event) {
-            if (event.ctrlKey && event.shiftKey) {
-                switch (event.which) {
-                    case 49: // Ctrl + Shift + 1
-                        window.location.href = "/cadastro_produtos";
-                        break;
-                    case 50: // Ctrl + Shift + 2
-                        window.location.href = "/cadastro_clientes";
-                        break;
-                    case 51: // Ctrl + Shift + 3
-                        window.location.href = "/cadastro_fornecedores";
-                        break;
-                    case 52: // Ctrl + Shift + 4
-                        window.location.href = "/venda_balcao";
-                        break;
-                    case 53: // Ctrl + Shift + 5
-                        window.location.href = "/listar_vendas";
-                        break;
-                    case 54: // Ctrl + Shift + 6
-                        window.location.href = "/compras";
-                        break;
-                    case 55: // Ctrl + Shift + 7
-                        window.location.href = "/adicao_sitio";
-                        break;
-                    case 56: // Ctrl + Shift + 8
-                        window.location.href = "/listar_compras";
-                        break;
-                    case 57: // Ctrl + Shift + 9
-                        window.location.href = "/financeiro";
-                        break;
-                    default:
-                        break;
-                }
+                body.style.maxHeight = body.scrollHeight + "px";
             }
         });
     });
 
-    // Redirecionar ao clicar na imagem
-    document.getElementById('minha-imagem').addEventListener('click', function() {
+    document.getElementById('produto').addEventListener('change', function() {
+        var produtoSelecionado = this.value;
+        if (produtoSelecionado) {
+            fetch('/buscar_valor_venda?produto=' + produtoSelecionado)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('valor_venda').value = data.valor_venda;
+                    // Recalcular o total da venda quando o valor de venda mudar
+                    calcularTotalVenda();
+                })
+                .catch(error => console.error('Erro ao buscar valor de venda do produto:', error));
+        } else {
+            // Limpar o campo de valor de venda se nenhum produto for selecionado
+            document.getElementById('valor_venda').value = '';
+        }
+    });
+
+    // Função para calcular o total da venda
+    function calcularTotalVenda() {
+        var quantidade = parseInt(document.getElementById('quantidade').value) || 0;
+        var valor_venda = parseFloat(document.getElementById('valor_venda').value) || 0;
+        var desconto = parseFloat(document.getElementById('desconto').value) || 0;
+        var total = (quantidade * valor_venda) - desconto;
+        document.getElementById('valor_total').value = total.toFixed(2);
+        document.getElementById('total_pedido').textContent = 'R$ ' + total.toFixed(2);
+    }
+
+    // Chama a função para calcular o total da venda ao carregar a página
+    calcularTotalVenda();
+
+    document.getElementById('quantidade').addEventListener('input', function() {
+        calcularTotalVenda();
+    });
+
+    document.getElementById('desconto').addEventListener('input', function() {
+        calcularTotalVenda();
+    });
+
+    // Função para calcular e exibir o total do pedido
+    function calcularTotalPedido() {
+        var quantidade = parseInt(document.getElementById('quantidade').value) || 0;
+        var custo = parseFloat(document.getElementById('custo').value) || 0;
+        var desconto = parseFloat(document.getElementById('desconto').value) || 0;
+        var total = (quantidade * custo) - desconto;
+        document.getElementById('valor_total').value = total.toFixed(2);
+        document.getElementById('total_pedido').textContent = 'R$ ' + total.toFixed(2);
+    }
+
+    // Chama a função para calcular o total do pedido ao carregar a página
+    calcularTotalPedido();
+
+</script>
+
+<script>
+    $(document).ready(function() {
+    // Definir as teclas de atalho (Ctrl + Shift + number)
+    $(document).keydown(function(event) {
+        if (event.ctrlKey && event.shiftKey) {
+            switch (event.which) {
+                case 49: // Ctrl + Shift + 1
+                    window.location.href = "/cadastro_produtos";
+                    break;
+                case 50: // Ctrl + Shift + 2
+                    window.location.href = "/cadastro_clientes";
+                    break;
+                case 51: // Ctrl + Shift + 3
+                    window.location.href = "/cadastro_fornecedores";
+                    break;
+                case 52: // Ctrl + Shift + 4
+                    window.location.href = "/venda_balcao";
+                    break;
+                case 53: // Ctrl + Shift + 5
+                    window.location.href = "/listar_vendas";
+                    break;
+                case 54: // Ctrl + Shift + 6
+                    window.location.href = "/compras";
+                    break;
+                case 55: // Ctrl + Shift + 7
+                    window.location.href = "/adicao_sitio";
+                    break;
+                case 56: // Ctrl + Shift + 8
+                    window.location.href = "/listar_compras";
+                    break;
+                case 57: // Ctrl + Shift + 9
+                    window.location.href = "/financeiro";
+                    break;
+                default:
+                    break;
+            }
+        }
+    });
+});
+
+// Redirecionar ao clicar na imagem
+document.getElementById('minha-imagem').addEventListener('click', function() {
+        window.location.href = 'inicio';
+    });
+
+    // Redirecionar ao clicar no texto
+    document.getElementById('texto-link').addEventListener('click', function() {
+        window.location.href = 'inicio';
+    });
+
+
+    // Mostrar e esconder o modal
+    var modal = document.getElementById("helpModal");
+        var btn = document.getElementById("help-button");
+        var span = document.getElementsByClassName("close")[0];
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Redirecionar ao clicar na imagem
+        document.getElementById('minha-imagem').addEventListener('click', function() {
             window.location.href = 'inicio';
         });
 
@@ -561,36 +977,6 @@
             window.location.href = 'inicio';
         });
 
-
-        // Mostrar e esconder o modal
-        var modal = document.getElementById("helpModal");
-            var btn = document.getElementById("help-button");
-            var span = document.getElementsByClassName("close")[0];
-
-            btn.onclick = function() {
-                modal.style.display = "block";
-            }
-
-            span.onclick = function() {
-                modal.style.display = "none";
-            }
-
-            window.onclick = function(event) {
-                if (event.target == modal) {
-                    modal.style.display = "none";
-                }
-            }
-
-            // Redirecionar ao clicar na imagem
-            document.getElementById('minha-imagem').addEventListener('click', function() {
-                window.location.href = 'inicio';
-            });
-
-            // Redirecionar ao clicar no texto
-            document.getElementById('texto-link').addEventListener('click', function() {
-                window.location.href = 'inicio';
-            });
     </script>
 </body>
-
 </html>

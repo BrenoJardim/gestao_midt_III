@@ -3,98 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Inicial</title>
+    <title>Dashboard - Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Ícones -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Estilos Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
-<style>
-
-    html, body {
-        height: 100%;
-        overflow-x: hidden; /* Para evitar rolagem horizontal */
+    <style>
+    :root {
+        --primary-color: #131325;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
+        --danger-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 6px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
     }
 
     body {
-        overflow: hidden;
-    }
-    
-    
-    body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f9f9f9;
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
+        height: 100vh;
+        overflow: hidden;
     }
 
     .header {
-        background-color: #131325;
-        color: #fff;
+        background-color: var(--primary-color);
+        color: white;
         display: flex;
         align-items: center;
-        padding: 0px 20px;
+        padding: 15px 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 100;
+        height: 80px;
+        box-sizing: border-box;
     }
-    
-    .header {
-        background-color: #131325;
-        color: #fff;
-        display: flex;
-        align-items: center;
-        padding: 0px 20px;
+
+    .logo img {
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 15px;
+        border-radius: 50%;
+        transition: var(--transition);
     }
-    
+
+    .logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .header h1:hover {
+        color: var(--light-color);
+    }
+
     .right-buttons {
         display: flex;
         align-items: center;
-        margin-left: auto; 
+        margin-left: auto;
+        gap: 15px;
     }
-    
-    .weather-button {
+
+    .weather-button, .help-button {
         background: none;
         border: none;
         cursor: pointer;
-        margin-right: 10px;
+        color: white;
+        font-size: 1.2rem;
+        transition: var(--transition);
     }
-    
-    .weather-icon {
-        width: 24px;
-        height: 24px;
-    }
-    
 
-    .logo img {
-        width: 80px;
-        height: auto;
-        margin-right: 10px; 
+    .weather-button:hover, .help-button:hover {
+        color: var(--accent-color);
     }
 
     .logoside {
         display: flex;
-        justify-content: center; 
-        align-items: center; 
-        height: 180px; 
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
+        height: 120px;
+        box-sizing: border-box;
     }
 
     .logoside img {
-        max-width: 100%; 
-        max-height: 100%; 
-        width: auto;
-        height: auto;
+        max-width: 80%;
+        max-height: 100px;
+        object-fit: contain;
     }
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        height: calc(100vh - 80px);
     }
 
     .sidebar {
-        background-color: #ffffff;
-        width: 20%;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(13, 13, 25, 0.1);
-        border-right: 1px solid #ccc;
+        background-color: white;
+        width: 250px;
+        padding: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #e0e0e0;
         overflow-y: auto;
+        transition: var(--transition);
     }
 
     .navigation {
@@ -104,146 +132,234 @@
     }
 
     .navigation li {
-        margin-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .navigation li:last-child {
-        border-bottom: none;
+        margin: 0;
     }
 
     .navigation a {
         text-decoration: none;
-        color: #000000;
-        font-size: 16px;
+        color: var(--text-color);
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        padding: 12px 20px;
+        transition: var(--transition);
+        border-left: 3px solid transparent;
     }
 
     .navigation a:hover {
-        background-color: #d4d4d4;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .navigation a.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        font-weight: 500;
     }
 
     .expandable-header {
-        background-color: #d4d4d4;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
+        padding: 12px 20px;
+        margin: 0;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: var(--transition);
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        border-left: 3px solid transparent;
     }
 
     .expandable-header:hover {
-        background-color: #929292;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+    }
+
+    .expandable-header.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .expandable-header i {
+        transition: var(--transition);
+    }
+
+    .expandable-header.active i {
+        transform: rotate(90deg);
     }
 
     .expandable-body {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease;
+        background-color: #f9fafb;
     }
 
-    .expandable-btn.active+.expandable-body {
-        display: block;
+    .expandable-body.show {
         max-height: 1000px;
     }
+
     .content {
-        background-color: #f2f2f2;
-        padding: 5px 20px 20px 20px;
-        overflow-y: auto;
-        overflow-x: hidden; /* Evita que o conteúdo cause rolagem horizontal */
-        min-height: 100vh;
-        width: 100%;
-        box-sizing: border-box; /* Evita que padding aumente a largura total */
+        flex: 1;
+        padding: 20px;
+        background-color: #f5f7fa;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        box-sizing: border-box;
     }
-    
 
     .icon {
-        width: 24px;
-        height: 24px;
-        margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        color: var(--text-light);
     }
 
-    .form-container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* Dashboard Styles */
+    .dashboard-cards {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+        margin-bottom: 15px;
+        height: 120px;
     }
 
-    label {
-        font-weight: bold;
-    }
-
-    input[type="text"] {
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        width: calc(100% - 24px); 
-        font-size: 16px;
-        transition: border-color 0.3s;
-    }
-
-    input[type="text"]:focus {
-        border-color: #4CAF50; 
-        outline: none; 
-    }
-
-    button {
-        padding: 12px 20px;
-        font-size: 16px;
-        border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
-        color: white;
-        cursor: pointer;
-        transition: background-color 0.3s;
-    }
-
-    button:hover {
-        background-color: #45a049; 
-    }
-
-    #resultado-clima {
+    .card {
         padding: 15px;
-        border: 1px solid #ccc; 
-        border-radius: 5px; 
-        background-color: #f0f0f0; 
-    }
-
-    .clima-dia {
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        text-align: center;
+        font-weight: 600;
+        font-size: 0.9rem;
+        transition: var(--transition);
+        position: relative;
+        overflow: hidden;
         display: flex;
-        align-items: center;
+        flex-direction: column;
+        justify-content: center;
     }
 
-    .clima-dia img {
-        width: 50px; 
-        height: 50px; 
-        margin-right: 10px; 
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
     }
 
-    .help-button, #abrir-modal-clima {
-        padding: 10px;
-        background-color: #4CAF50;
+    .card-green {
+        background-color: var(--success-color);
+        color: white;
+        border: 1px solid #219653;
+    }
+
+    .card-white {
+        background-color: white;
+        color: var(--dark-color);
+        border: 1px solid #e0e0e0;
+    }
+
+    .card-blue {
+        background-color: var(--accent-color);
+        color: white;
+        border: 1px solid #2980b9;
+    }
+
+    .card span {
+        display: block;
+        font-size: 1.3rem;
+        margin-top: 5px;
+        font-weight: 700;
+    }
+
+    .charts-main-container {
+        display: flex;
+        flex: 1;
+        gap: 15px;
+        height: calc(100% - 135px); /* Altura total - cards - margens */
+    }
+
+    .charts-left-column {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .chart {
+        background-color: white;
+        padding: 15px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        position: relative;
+        flex: 1;
+        min-height: 0; /* Importante para o flex funcionar corretamente */
+    }
+
+    .chart-title {
+        font-size: 1rem;
+        font-weight: 600;
+        margin-bottom: 15px;
+        color: var(--dark-color);
+    }
+
+    .chart-right {
+        flex: 1;
+        background-color: white;
+        padding: 15px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .meta-info {
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .meta-text {
+        font-size: 0.9rem;
+        font-weight: 500;
+        margin: 8px 0;
+        color: var(--text-color);
+    }
+
+    .meta-text span {
+        font-weight: 600;
+        color: var(--accent-color);
+    }
+
+    .btn-definir-meta {
+        padding: 8px 12px;
+        background-color: var(--accent-color);
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: var(--border-radius);
+        font-size: 0.8rem;
         cursor: pointer;
-        transition: background-color 0.3s;
+        margin-top: 10px;
+        transition: var(--transition);
     }
 
-    .help-button:hover, #abrir-modal-clima:hover {
-        background-color: #45a049;
+    .btn-definir-meta:hover {
+        background-color: #2980b9;
     }
 
+    /* Estilos para os canvas dos gráficos */
+    .chart canvas {
+        width: 100% !important;
+        height: calc(100% - 30px) !important; /* Altura total - título */
+    }
+
+    .chart-right canvas {
+        height: calc(100% - 120px) !important; /* Altura total - info meta */
+    }
+
+    /* Modal Styles */
     .modal {
-        display: none; 
+        display: none;
         position: fixed;
         z-index: 1000;
         left: 0;
@@ -251,700 +367,535 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); 
-        padding-top: 60px;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
     }
 
     .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
+        background-color: white;
+        margin: 10% auto;
         padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px; 
-        border-radius: 10px; 
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .close {
-        color: #aaa;
+        color: var(--text-light);
         float: right;
-        font-size: 28px;
+        font-size: 24px;
         font-weight: bold;
+        transition: var(--transition);
     }
 
     .close:hover,
     .close:focus {
-        color: black;
+        color: var(--danger-color);
         text-decoration: none;
         cursor: pointer;
     }
 
-    
-    #modalClima .modal-content {
-        max-width: 500px;
+    .modal-title {
+        margin-top: 0;
+        color: var(--primary-color);
     }
 
-    #modalClima .form-container {
-        margin-bottom: 20px;
-    }
-
-    #modalClima #resultado-clima {
-        margin-top: 20px;
-    }
-
-    #abrir-modal-clima {
-        background: none; 
-        border: none; 
-        padding: 0; 
-        cursor: pointer;
-        outline: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-
-    #abrir-modal-clima img {
-        width: 24px;
-        height: 30px;
-    }
-
-    .dashboard-cards {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr); /* 4 colunas */
-        gap: 15px;
-        margin-bottom: 10px;
-    }
-    
-    /* Estilo das caixas informativas */
-    .card {
-        padding: 20px;
-        border-radius: 12px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        text-align: center;
-        font-weight: bold;
-        font-size: 18px;
-        transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
-        position: relative;
-    }
-    
-    /* Efeito de hover nas caixas */
-    .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-    
-    /* Cores das caixas */
-    .card-green {
-        background-color: #4CAF50;
-        color: white;
-        border: 2px solid #388E3C; /* Borda mais escura */
-    }
-    
-    .card-white {
+    .form-container {
         background-color: white;
-        color: black;
-        border: 2px solid #ccc; /* Borda suave */
-    }
-    
-    .card-blue {
-        background-color: #007bff;
-        color: white;
-        border: 2px solid #0056b3; /* Borda mais escura */
-    }
-    
-    /* Adicionando um brilho suave nas caixas ao passar o mouse */
-    .card-green:hover {
-        background-color: #45a049;
-        border-color: #388E3C;
-    }
-    
-    .card-blue:hover {
-        background-color: #0056b3;
-        border-color: #003f7f;
-    }
-    
-    .card-white:hover {
-        background-color: #f1f1f1;
-        border-color: #bbb;
-    }
-    
-    /* Adicionando ícones de seta */
-    .card::after {
-        content: " →";
-        font-size: 24px;
-        color: rgba(0, 0, 0, 0.3);
-        position: absolute;
-        right: 10px;
-        bottom: 10px;
-    }
-    
-    /* Seção dos gráficos */
-    .charts-container {
-        display: grid;
-        grid-template-columns: 2fr 1fr; /* Esquerda = 2 partes, Direita = 1 parte */
-        gap: 20px;
-        align-items: stretch;
+        padding: 15px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-bottom: 15px;
     }
 
-    /* Container esquerdo com os gráficos */
-    .charts-left {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        min-height: 75vh;  /* Altura mínima */
-        max-height: 75vh;  /* Altura máxima ajustável conforme a necessidade */
-    }
-
-    #grafico-vendas {
-        min-height: 40vh;  /* Altura mínima */
-        max-height: 40vh;  /* Altura máxima ajustável conforme a necessidade */
-    }
-
-    /* Container do gráfico à direita */
-    .chart-meta {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: auto;  /* Remover 100% */
-        min-height: 75vh;  /* Altura mínima */
-        max-height: 75vh;  /* Altura máxima ajustável conforme a necessidade */
-        border-radius: 12px;
-        background-color: #f5f5f5;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        overflow: hidden;
-        
-    }
-
-    .meta-info {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .meta-text {
-        font-size: 18px;
-        font-weight: bold;
-        margin: 5px 0;
-        color: #333;
-    }
-
-    .meta-text span {
-        font-size: 20px;
-        color: #007bff; /* Cor azul para valores destacados */
-    }
-
-    /* Estilo do botão de definir meta */
-    .btn-definir-meta {
-        padding: 10px 15px;
-        background-color: #007bff;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        margin-top: 10px;
-    }
-
-    .btn-definir-meta:hover {
-        background-color: #0056b3;
-    }
-
-    /* Modal para definição da meta */
-    .modal-meta {
-        position: fixed;
-        top: 0;
-        left: 0;
+    input[type="text"],
+    input[type="number"] {
         width: 100%;
-        height: 100%;
-        background: rgba(0, 0, 0, 0.5); /* Fundo semitransparente */
-        display: none; /* Esconde o modal por padrão */
-        justify-content: center;
-        align-items: center;
-    }
-
-    .modal-content {
-        background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        width: 300px;
-    }
-
-    .modal-content input {
-        width: 100%;
-        padding: 10px;
-        margin: 10px 0; /* Adicionando margem entre o input e os botões */
-        border-radius: 5px;
-        border: 1px solid #ccc;
+        padding: 10px 12px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 0.9rem;
+        transition: var(--transition);
+        background-color: #f9fafb;
+        margin-bottom: 12px;
         box-sizing: border-box;
     }
 
-    .modal-content button {
-        padding: 10px;
-        margin-top: 10px;
-        width: 100%;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        background-color: #007bff;
-        color: white;
-    }
-
-    .modal-content button:hover {
-        background-color: #0056b3;
-    }
-
-    .modal-content button:focus {
+    input[type="text"]:focus,
+    input[type="number"]:focus {
         outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        background-color: white;
     }
 
-    #nova-meta {
-        padding: 10px;
-        width: 100%;
-        font-size: 16px;
-        margin-top: 10px;
-    }
-
-    .btn-confirmar-meta, .btn-cancelar-meta {
-        padding: 10px 20px;
-        background-color: #4CAF50;
-        color: white;
+    button {
+        padding: 10px 15px;
+        font-size: 0.9rem;
         border: none;
-        border-radius: 5px;
-        font-size: 16px;
-        margin-top: 10px;
+        border-radius: var(--border-radius);
+        background-color: var(--accent-color);
+        color: white;
         cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        margin-right: 8px;
     }
 
-    .btn-confirmar-meta:hover {
-        background-color: #45a049;
+    button:hover {
+        background-color: #2980b9;
     }
 
-    .btn-cancelar-meta {
-        background-color: #f44336;
+    #resultado-clima {
+        padding: 12px;
+        border-radius: var(--border-radius);
+        background-color: #f9fafb;
+        margin-top: 15px;
     }
 
-    .btn-cancelar-meta:hover {
-        background-color: #e53935;
-    }
-
-    /* Estilo dos gráficos */
-    .chart {
-        position: relative;
-        flex-grow: 1;
-        border-radius: 12px; /* Borda arredondada */
-        background-color: #ffffff; /* Fundo branco para os gráficos */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
-        transition: box-shadow 0.3s, transform 0.3s;
-    }
-
-    /* Efeito de hover nos gráficos */
-    .chart:hover {
-        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Sombra mais forte */
-        transform: translateY(-5px); /* Efeito de elevação */
-    }
-
-
-        /* Responsividade */
-    @media (max-width: 1024px) {
+    @media (max-width: 1200px) {
         .dashboard-cards {
-            grid-template-columns: repeat(2, 1fr); /* 2 colunas em telas menores */
+            grid-template-columns: repeat(2, 1fr);
+            height: auto;
+        }
+        
+        .charts-main-container {
+            flex-direction: column;
+            height: auto;
+        }
+        
+        .chart-right {
+            height: 300px;
         }
     }
 
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+
+        .content {
+            width: 100%;
+            padding: 15px;
+        }
+
         .dashboard-cards {
-            grid-template-columns: 1fr; /* 1 coluna para telas pequenas */
-            
+            grid-template-columns: 1fr;
+        }
+        
+        .chart {
+            min-height: 300px;
         }
     }
-
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="logo">
-                <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
+            <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
-        <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
+        <h1 id="texto-link">Gestão Midt</h1>
         <div class="right-buttons">
-            <button id="abrir-modal-clima" class="weather-button">
-                <img src="/images/sun-icon.png" alt="Clima" class="weather-icon">
+            <button id="abrir-modal-clima" class="weather-button" title="Previsão do tempo">
+                <i class="fas fa-sun"></i>
             </button>
-            <button class="help-button" id="help-button">?</button>
+            <button class="help-button" id="help-button" title="Ajuda e atalhos">
+                <i class="fas fa-question"></i>
+            </button>
         </div>
     </div>
+    
     <div class="container">
         <div class="sidebar">
             <div class="logoside">
                 <img src="/images/logo.jpeg" alt="Logo da Empresa" id="minha-imagem">
             </div>
-            <!-- Modal -->
+            
+            <!-- Modal de Ajuda -->
             <div id="helpModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h4>Teclas de Atalho:</h4>
-                    <ul>
-                        <li><strong>Cadastro de Produtos</strong>: <em>Ctrl + Shift + 1</em></li>
-                        <li><strong>Cadastro de Clientes</strong>: <em>Ctrl + Shift + 2</em></li>
-                        <li><strong>Cadastro de Fornecedores</strong>: <em>Ctrl + Shift + 3</em></li>
-                        <li><strong>Venda Balcão</strong>: <em>Ctrl + Shift + 4</em></li>
-                        <li><strong>Listar Vendas</strong>: <em>Ctrl + Shift + 5</em></li>
-                        <li><strong>Compras</strong>: <em>Ctrl + Shift + 6</em></li>
-                        <li><strong>Adição de Sítio</strong>: <em>Ctrl + Shift + 7</em></li>
-                        <li><strong>Listar Compras</strong>: <em>Ctrl + Shift + 8</em></li>
-                        <li><strong>Financeiro</strong>: <em>Ctrl + Shift + 9</em></li>
+                    <h3 class="modal-title"><i class="fas fa-keyboard icon"></i> Teclas de Atalho</h3>
+                    <ul class="shortcut-list">
+                        <li><span>Cadastro de Produtos</span> <span class="shortcut-key">Ctrl + Shift + 1</span></li>
+                        <li><span>Cadastro de Clientes</span> <span class="shortcut-key">Ctrl + Shift + 2</span></li>
+                        <li><span>Cadastro de Fornecedores</span> <span class="shortcut-key">Ctrl + Shift + 3</span></li>
+                        <li><span>Venda Balcão</span> <span class="shortcut-key">Ctrl + Shift + 4</span></li>
+                        <li><span>Listar Vendas</span> <span class="shortcut-key">Ctrl + Shift + 5</span></li>
+                        <li><span>Compras</span> <span class="shortcut-key">Ctrl + Shift + 6</span></li>
+                        <li><span>Adição de Sítio</span> <span class="shortcut-key">Ctrl + Shift + 7</span></li>
+                        <li><span>Listar Compras</span> <span class="shortcut-key">Ctrl + Shift + 8</span></li>
+                        <li><span>Financeiro</span> <span class="shortcut-key">Ctrl + Shift + 9</span></li>
                     </ul>
                 </div>
             </div>
-            <!-- Botão expansível para Cadastros -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/cadastro.png" alt="Ícone Cadastros">
-                <span>Cadastros</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/cadastro_produtos">Cadastro de Produtos</a></li>
-                    <li><a href="/cadastro_clientes">Cadastro de Clientes</a></li>
-                    <li><a href="/cadastro_fornecedores">Cadastro de Fornecedores</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Vendas -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/vendas.png" alt="Ícone Vendas">
-                <span>Vendas</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/venda_balcao">Venda Balcão</a></li>
-                    <li><a href="/listar_vendas">Registro de Vendas</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Estoque -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/estoque.png" alt="Ícone Estoque">
-                <span>Estoque</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/compras">Compras</a></li>
-                    <!-- Adiciona a opção "Compras" -->
-                    <li><a href="/adicao_sitio">Adições do Sitio</a></li>
-                    <!-- Adiciona a opção "Adições do Sitio" -->
-                    <li><a href="/listar_compras">Registro de Compras</a></li>
-                    <!-- Adiciona a opção "Registro de Compras" -->
-                </ul>
-            </div>
-            <!-- Botão expansível para Financeiro -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/financeiro.png" alt="Ícone Financeiro">
-                <span>Financeiro</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/financeiro">Caixa</a></li>
-                    <!-- Adiciona a opção "Caixas" -->
-                    <li><a href="/fluxo_caixa">Fluxo de Caixa</a></li>
-                    <!-- Adiciona a opção "Fluxo de Caixa" -->
-                </ul>
-            </div>
-            <!-- Links diretos para listagens -->
+            
+            <!-- Menu de Navegação -->
             <ul class="navigation">
-                <li><a href="/listar_clientes"><span class="icon icon-clientes"></span><img class="icon" src="/images/cliente.png" alt="Ícone Clientes">Clientes</a></li>
-                <li><a href="/listar_fornecedores"><span class="icon icon-fornecedores"></span><img class="icon" src="/images/fornecedor.png" alt="Ícone Fornecedores">Fornecedores</a></li>
-                <li><a href="/listar_produtos"><span class="icon icon-produtos"></span><img class="icon" src="/images/produtos.png" alt="Ícone Produtos">Produtos</a></li>
-                <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
+                <!-- Botão expansível para Cadastros -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-user-plus icon"></i>
+                            <span>Cadastros</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/cadastro_produtos"><i class="fas fa-box icon"></i> Cadastro de Produtos</a></li>
+                            <li><a href="/cadastro_clientes"><i class="fas fa-users icon"></i> Cadastro de Clientes</a></li>
+                            <li><a href="/cadastro_fornecedores"><i class="fas fa-truck icon"></i> Cadastro de Fornecedores</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Vendas -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-shopping-cart icon"></i>
+                            <span>Vendas</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/venda_balcao"><i class="fas fa-cash-register icon"></i> Venda Balcão</a></li>
+                            <li><a href="/listar_vendas"><i class="fas fa-receipt icon"></i> Registro de Vendas</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Estoque -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-warehouse icon"></i>
+                            <span>Estoque</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/compras"><i class="fas fa-shopping-basket icon"></i> Compras</a></li>
+                            <li><a href="/adicao_sitio"><i class="fas fa-parachute-box icon"></i> Adições do Sitio</a></li>
+                            <li><a href="/listar_compras"><i class="fas fa-clipboard-list icon"></i> Registro de Compras</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Financeiro -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-money-bill-wave icon"></i>
+                            <span>Financeiro</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/financeiro"><i class="fas fa-cash-register icon"></i> Caixa</a></li>
+                            <li><a href="/fluxo_caixa"><i class="fas fa-chart-line icon"></i> Fluxo de Caixa</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Links diretos -->
+                <li><a href="/listar_clientes"><i class="fas fa-address-book icon"></i> Clientes</a></li>
+                <li><a href="/listar_fornecedores"><i class="fas fa-truck-loading icon"></i> Fornecedores</a></li>
+                <li><a href="/listar_produtos"><i class="fas fa-boxes icon"></i> Produtos</a></li>
+                <li><a href="/relatorio_vendas"><i class="fas fa-chart-pie icon"></i> Relatórios</a></li>
             </ul>           
         </div>
+        
         <div class="content">
             <div class="dashboard-cards">
-                <div class="card card-green">Vendas do Dia: R$ <span id="vendas-dia">0,00</span></div>
-                <div class="card card-white">Faturamento do Mês: R$ <span id="faturamento-mes">0,00</span></div>
-                <div class="card card-white">Custos dos Produtos: R$ <span id="custos-produtos">0,00</span></div>
-                <div class="card card-blue">Lucro do Mês: R$ <span id="lucro-mes">0,00</span></div>
-            </div>             
-            <div class="charts-container">
-                <!-- Esquerda -->
-                <div class="charts-left">
+                <div class="card card-green">Vendas do Dia: <span id="vendas-dia">0,00</span></div>
+                <div class="card card-white">Faturamento do Mês: <span id="faturamento-mes">0,00</span></div>
+                <div class="card card-white">Custos dos Produtos: <span id="custos-produtos">0,00</span></div>
+                <div class="card card-blue">Lucro do Mês: <span id="lucro-mes">0,00</span></div>
+            </div>
+            
+            <div class="charts-main-container">
+                <div class="charts-left-column">
                     <div class="chart">
+                        <div class="chart-title">Vendas x Custos - Últimos 7 Dias</div>
                         <canvas id="grafico-vendas"></canvas>
                     </div>
+                    
                     <div class="chart">
+                        <div class="chart-title">Caixa Atual</div>
                         <canvas id="grafico-contas"></canvas>
                     </div>
                 </div>
-                <!-- Direita (Meta do mês) -->
-                <div class="chart chart-meta"height="30">
+                
+                <div class="chart-right">
                     <div class="meta-info">
-                        <p class="meta-text">Meta do Mês: R$ <span id="meta-total">20,000</span></p>
-                        <p class="meta-text">Faturamento Atual: R$ <span id="faturamento-atual">12,500</span></p>
-                        <p class="meta-text">Faltando: R$ <span id="faltando">7,500</span></p>
+                        <div class="meta-text">Meta do Mês: R$ <span id="meta-total">20,000</span></div>
+                        <div class="meta-text">Faturamento Atual: R$ <span id="faturamento-atual">12,500</span></div>
+                        <div class="meta-text">Faltando: R$ <span id="faltando">7,500</span></div>
                         <button id="btn-definir-meta" class="btn-definir-meta">Definir Meta</button>
                     </div>
                     <canvas id="grafico-meta"></canvas>
                 </div>
-                <!-- Modal de definição da meta -->
-                <div id="modal-meta" class="modal-meta">
-                    <div class="modal-content">
-                        <h3>Definir Nova Meta</h3>
-                        <input type="number" id="nova-meta" placeholder="Digite o novo valor da meta" />
-                        <button id="btn-confirmar-meta" class="btn-confirmar-meta">Confirmar</button>
-                        <button id="btn-cancelar-meta" class="btn-cancelar-meta">Cancelar</button>
-                    </div>
-                </div>  
-            </div>            
+            </div>
         </div>
-            <!-- Modal do Clima -->
-            <div id="modalClima" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h2>Informações do Clima</h2>
-                    <div class="form-container">
-                        <input type="text" id="cidade" placeholder="Digite o nome da cidade">
-                        <button id="buscar-clima">Buscar Clima</button>
-                        <button id="usar-localizacao">Usar Minha Localização</button>
-                    </div>
-                    <div id="resultado-clima"></div>
-                </div>
+    </div>
+    
+    <!-- Modal do Clima -->
+    <div id="modalClima" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title"><i class="fas fa-cloud-sun icon"></i> Informações do Clima</h3>
+            <div class="form-container">
+                <input type="text" id="cidade" placeholder="Digite o nome da cidade">
+                <button id="buscar-clima"><i class="fas fa-search"></i> Buscar Clima</button>
+                <button id="usar-localizacao"><i class="fas fa-location-arrow"></i> Usar Minha Localização</button>
+            </div>
+            <div id="resultado-clima"></div>
+        </div>
+    </div>
+    
+    <!-- Modal de definição de meta -->
+    <div id="modal-meta" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 class="modal-title"><i class="fas fa-bullseye icon"></i> Definir Nova Meta</h3>
+            <div class="form-container">
+                <input type="number" id="nova-meta" placeholder="Digite o novo valor da meta">
+                <button id="btn-confirmar-meta" class="btn-primary"><i class="fas fa-check"></i> Confirmar</button>
+                <button id="btn-cancelar-meta" class="btn-secondary"><i class="fas fa-times"></i> Cancelar</button>
             </div>
         </div>
     </div>
 
 <script>
-    const expandableBtns = document.querySelectorAll('.expandable-header');
-    expandableBtns.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const body = this.nextElementSibling;
-            this.classList.toggle('active');
-            if (body.style.maxHeight) {
-                body.style.maxHeight = null;
-            } else {
-                body.style.maxHeight = body.scrollHeight + "px";
-            }
-        });
-    });
+    // Variáveis globais
+    const expandableHeaders = document.querySelectorAll('.expandable-header');
+    const helpModal = document.getElementById("helpModal");
+    const climaModal = document.getElementById("modalClima");
+    const metaModal = document.getElementById("modal-meta");
+    const helpButton = document.getElementById("help-button");
+    const climaButton = document.getElementById("abrir-modal-clima");
+    const closeButtons = document.querySelectorAll(".close");
     
-    document.addEventListener("DOMContentLoaded", function () {
-        // Abrir modal do clima
-        const abrirModalClima = document.getElementById("abrir-modal-clima");
-        const modalClima = document.getElementById("modalClima");
-        const spanClima = modalClima.querySelector(".close");
-    
-        abrirModalClima.addEventListener("click", () => {
-            modalClima.style.display = "block";
-        });
-    
-        spanClima.addEventListener("click", () => {
-            modalClima.style.display = "none";
-        });
-    
-        window.addEventListener("click", (event) => {
-            if (event.target === modalClima) {
-                modalClima.style.display = "none";
-            }
-        });
-    
-        // Buscar clima (código existente)
-        function buscarClima(cidade) {
-            if (cidade) {
-                $.getJSON(`/api/clima?cidade=${cidade}`, function(data) {
-                    $('#resultado-clima').html(`
-                        <p>Cidade: ${data.cidade}</p>
-                        <p>Temperatura Atual: ${data.temperatura}°C</p>
-                        <img src="${data.icone_url}" alt="Ícone do clima atual">
-                        <p>Temperatura Máxima: ${data.temperatura_maxima}°C</p>
-                        <p>Temperatura Mínima: ${data.temperatura_minima}°C</p>
-                        <p>Previsão de Chuva: ${data.previsao_chuva ? 'Sim' : 'Não'}</p>
-                        <h3>Previsão para os Próximos Dias</h3>
-                        <ul>
-                            ${data.previsao_dias.map(dia => `
-                                <li>
-                                    <strong>${dia.data}</strong>: ${dia.temperatura_maxima}°C / ${dia.temperatura_minima}°C - ${dia.descricao}
-                                    <img src="${dia.icone_url}" alt="Ícone do clima">
-                                </li>
-                            `).join('')}
-                        </ul>
-                    `);
-                }).fail(function() {
-                    $('#resultado-clima').html('<p>Erro ao buscar informações do clima.</p>');
-                });
-            } else {
-                $('#resultado-clima').html('<p>Por favor, digite o nome da cidade ou use a localização.</p>');
-            }
+    // Função para alternar o menu expansível
+    function toggleExpandable(header) {
+        const listItem = header.closest('li');
+        const body = listItem.querySelector('.expandable-body');
+        const icon = header.querySelector('.fa-chevron-right');
+        
+        header.classList.toggle('active');
+        body.classList.toggle('show');
+        
+        if (header.classList.contains('active')) {
+            icon.style.transform = 'rotate(90deg)';
+        } else {
+            icon.style.transform = 'rotate(0deg)';
         }
+    }
+
+    // Adiciona eventos aos cabeçalhos expansíveis
+    expandableHeaders.forEach(header => {
+        header.addEventListener('click', () => toggleExpandable(header));
+    });
+
+    // Mostrar e esconder modais
+    function showModal(modal) {
+        modal.style.display = "block";
+    }
     
-        $('#buscar-clima').click(function() {
-            const cidade = $('#cidade').val();
-            buscarClima(cidade);
-        });
+    function hideModal(modal) {
+        modal.style.display = "none";
+    }
+
+    helpButton.addEventListener('click', () => showModal(helpModal));
+    climaButton.addEventListener('click', () => showModal(climaModal));
     
-        $('#usar-localizacao').click(function() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const latitude = position.coords.latitude;
-                    const longitude = position.coords.longitude;
-    
-                    $.getJSON(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, function(data) {
-                        const cidade = data.address.city || data.address.town || data.address.village;
-                        buscarClima(cidade);
-                    }).fail(function() {
-                        $('#resultado-clima').html('<p>Erro ao obter a localização.</p>');
-                    });
-                }, function() {
-                    $('#resultado-clima').html('<p>Geolocalização não permitida.</p>');
-                });
-            } else {
-                $('#resultado-clima').html('<p>Geolocalização não é suportada por este navegador.</p>');
-            }
+    closeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const modal = this.closest('.modal');
+            hideModal(modal);
         });
     });
-</script>
 
-<script>
-    $(document).ready(function() {
-    // Definir as teclas de atalho (Ctrl + Shift + number)
-    $(document).keydown(function(event) {
+    window.addEventListener('click', (event) => {
+        if (event.target.classList.contains('modal')) {
+            hideModal(event.target);
+        }
+    });
+
+    // Redirecionamentos
+    document.getElementById('minha-imagem').addEventListener('click', () => {
+        window.location.href = 'inicio';
+    });
+
+    document.getElementById('texto-link').addEventListener('click', () => {
+        window.location.href = 'inicio';
+    });
+
+    // Teclas de atalho
+    document.addEventListener('keydown', (event) => {
         if (event.ctrlKey && event.shiftKey) {
             switch (event.which) {
-                case 49: // Ctrl + Shift + 1
-                    window.location.href = "/cadastro_produtos";
-                    break;
-                case 50: // Ctrl + Shift + 2
-                    window.location.href = "/cadastro_clientes";
-                    break;
-                case 51: // Ctrl + Shift + 3
-                    window.location.href = "/cadastro_fornecedores";
-                    break;
-                case 52: // Ctrl + Shift + 4
-                    window.location.href = "/venda_balcao";
-                    break;
-                case 53: // Ctrl + Shift + 5
-                    window.location.href = "/listar_vendas";
-                    break;
-                case 54: // Ctrl + Shift + 6
-                    window.location.href = "/compras";
-                    break;
-                case 55: // Ctrl + Shift + 7
-                    window.location.href = "/adicao_sitio";
-                    break;
-                case 56: // Ctrl + Shift + 8
-                    window.location.href = "/listar_compras";
-                    break;
-                case 57: // Ctrl + Shift + 9
-                    window.location.href = "/financeiro";
-                    break;
-                default:
-                    break;
+                case 49: window.location.href = "/cadastro_produtos"; break;
+                case 50: window.location.href = "/cadastro_clientes"; break;
+                case 51: window.location.href = "/cadastro_fornecedores"; break;
+                case 52: window.location.href = "/venda_balcao"; break;
+                case 53: window.location.href = "/listar_vendas"; break;
+                case 54: window.location.href = "/compras"; break;
+                case 55: window.location.href = "/adicao_sitio"; break;
+                case 56: window.location.href = "/listar_compras"; break;
+                case 57: window.location.href = "/financeiro"; break;
             }
         }
     });
-});
 
-// Redirecionar ao clicar na imagem
-document.getElementById('minha-imagem').addEventListener('click', function() {
-        window.location.href = 'inicio';
+    // Função para buscar clima
+    function buscarClima(cidade) {
+        if (cidade) {
+            $.getJSON(`/api/clima?cidade=${cidade}`, function(data) {
+                $('#resultado-clima').html(`
+                    <div class="clima-dia">
+                        <img src="${data.icone_url}" alt="Ícone do clima">
+                        <div>
+                            <p><strong>${data.cidade}</strong></p>
+                            <p>Temperatura: ${data.temperatura}°C</p>
+                            <p>Máx: ${data.temperatura_maxima}°C / Mín: ${data.temperatura_minima}°C</p>
+                            <p>Previsão de Chuva: ${data.previsao_chuva ? 'Sim' : 'Não'}</p>
+                        </div>
+                    </div>
+                    <h4>Previsão para os Próximos Dias</h4>
+                    <div class="previsao-container">
+                        ${data.previsao_dias.map(dia => `
+                            <div class="clima-dia">
+                                <img src="${dia.icone_url}" alt="Ícone do clima">
+                                <div>
+                                    <p><strong>${dia.data}</strong></p>
+                                    <p>${dia.temperatura_maxima}°C / ${dia.temperatura_minima}°C</p>
+                                    <p>${dia.descricao}</p>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `);
+            }).fail(function() {
+                $('#resultado-clima').html('<p class="error-message">Erro ao buscar informações do clima.</p>');
+            });
+        } else {
+            $('#resultado-clima').html('<p>Por favor, digite o nome da cidade ou use a localização.</p>');
+        }
+    }
+
+    $('#buscar-clima').click(function() {
+        const cidade = $('#cidade').val();
+        buscarClima(cidade);
     });
 
-    // Redirecionar ao clicar no texto
-    document.getElementById('texto-link').addEventListener('click', function() {
-        window.location.href = 'inicio';
+    $('#usar-localizacao').click(function() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                $.getJSON(`https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`, function(data) {
+                    const cidade = data.address.city || data.address.town || data.address.village;
+                    buscarClima(cidade);
+                }).fail(function() {
+                    $('#resultado-clima').html('<p class="error-message">Erro ao obter a localização.</p>');
+                });
+            }, function() {
+                $('#resultado-clima').html('<p class="error-message">Geolocalização não permitida.</p>');
+            });
+        } else {
+            $('#resultado-clima').html('<p class="error-message">Geolocalização não é suportada por este navegador.</p>');
+        }
     });
 
+    // Gráficos e Meta
+    let metaMensal = 20000;
+    let faturamentoAtual = 0;
+    
+    // Atualizar gráfico de vendas x custos
+    fetch('/dados_grafico_vendas')
+    .then(response => response.json())
+    .then(data => {
+        const ctxVendas = document.getElementById("grafico-vendas").getContext("2d");
 
-    // Mostrar e esconder o modal
-    var modal = document.getElementById("helpModal");
-        var btn = document.getElementById("help-button");
-        var span = document.getElementsByClassName("close")[0];
-
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        span.onclick = function() {
-            modal.style.display = "none";
-        }
-
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
-            }
-        }
-
-        // Redirecionar ao clicar na imagem
-        document.getElementById('minha-imagem').addEventListener('click', function() {
-            window.location.href = 'inicio';
-        });
-
-        // Redirecionar ao clicar no texto
-        document.getElementById('texto-link').addEventListener('click', function() {
-            window.location.href = 'inicio';
-        });
-        
-</script>
-<script>
-
- // Atualizar gráfico de vendas x custos
-fetch('/dados_grafico_vendas')
-.then(response => response.json())
-.then(data => {
-    const ctxVendas = document.getElementById("grafico-vendas").getContext("2d");
-
-    new Chart(ctxVendas, {
-        type: "bar",
-        data: {
-            labels: data.labels,
-            datasets: [
-                { label: "Vendas", data: data.vendas, backgroundColor: "#4CAF50" },
-                { label: "Custos", data: data.custos, backgroundColor: "#FF5733" }
-            ]
-        },
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,  // Impede que a altura seja ajustada automaticamente
-            plugins: {
-                title: {
-                    display: true,
-                    text: "Vendas x Custos - Últimos 7 Dias", // Título do gráfico
-                    font: {
-                        size: 18,
-                        weight: "bold"
+        new Chart(ctxVendas, {
+            type: "bar",
+            data: {
+                labels: data.labels,
+                datasets: [
+                    { 
+                        label: "Vendas", 
+                        data: data.vendas, 
+                        backgroundColor: "#27ae60",
+                        borderRadius: 4
                     },
-                    padding: {
-                        top: 10,
-                        bottom: 20
-                    },
-                    color: "#333"
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(tooltipItem) {
-                            return `R$ ${tooltipItem.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
-                        }
+                    { 
+                        label: "Custos", 
+                        data: data.custos, 
+                        backgroundColor: "#e74c3c",
+                        borderRadius: 4
                     }
-                }
+                ]
             },
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    ticks: {
-                        callback: function(value) {
-                            return `R$ ${value.toLocaleString('pt-BR')}`;
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return `R$ ${tooltipItem.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function(value) {
+                                return `R$ ${value.toLocaleString('pt-BR')}`;
+                            }
                         }
                     }
                 }
             }
-        }
-    });
-})
-.catch(error => console.error("Erro ao carregar os dados do gráfico:", error));
+        });
+    })
+    .catch(error => console.error("Erro ao carregar os dados do gráfico:", error));
 
-// Buscar os dados da API
-fetch('/dados_grafico_contas')
+    // Gráfico de contas
+    fetch('/dados_grafico_contas')
     .then(response => response.json())
     .then(data => {
         const ctxContas = document.getElementById("grafico-contas").getContext("2d");
 
-        // Criar o gráfico atualizado
         new Chart(ctxContas, {
             type: "bar",
             data: {
@@ -952,31 +903,18 @@ fetch('/dados_grafico_contas')
                 datasets: [{
                     label: "Saldo das Contas",
                     data: data.saldos,
-                    backgroundColor: ["#4CAF50", "#2196F3"], // Verde e Azul
-                    borderColor: ["#388E3C", "#1565C0"], // Tons mais escuros para bordas
-                    borderWidth: 2,
-                    borderRadius: 8
+                    backgroundColor: ["#3498db", "#2ecc71"],
+                    borderColor: ["#2980b9", "#27ae60"],
+                    borderWidth: 1,
+                    borderRadius: 4
                 }]
             },
             options: {
                 responsive: true,
-                maintainAspectRatio: false,  // Impede que a altura seja ajustada automaticamente
+                maintainAspectRatio: false,
                 plugins: {
-                    title: {
-                        display: true,
-                        text: "Caixa Atual", // Título do gráfico
-                        font: {
-                            size: 18,
-                            weight: "bold"
-                        },
-                        padding: {
-                            top: 10,
-                            bottom: 20
-                        },
-                        color: "#333"
-                    },
                     legend: {
-                        display: false // Ocultar legenda para não poluir o gráfico
+                        display: false
                     },
                     tooltip: {
                         callbacks: {
@@ -1001,40 +939,42 @@ fetch('/dados_grafico_contas')
     })
     .catch(error => console.error("Erro ao carregar os dados do gráfico:", error));
 
-    let metaMensal = 20000;
-    let faturamentoAtual = 0; // Inicialmente zero, será atualizado com valor real
-    
+    // Gráfico de meta
     const ctxMeta = document.getElementById("grafico-meta").getContext("2d");
     const graficoMeta = new Chart(ctxMeta, {
         type: "doughnut",
         data: {
             labels: ["Faturado", "Faltando"],
             datasets: [{
-                data: [faturamentoAtual, metaMensal - faturamentoAtual],
-                backgroundColor: ["#007bff", "#808080"]
+                data: [faturamentoAtual, Math.max(0, metaMensal - faturamentoAtual)],
+                backgroundColor: ["#3498db", "#ecf0f1"],
+                borderWidth: 0
             }]
         },
         options: {
             responsive: true,
+            maintainAspectRatio: false,
             plugins: {
-                legend: { position: "bottom" },
-                title: {
-                    display: true,
-                    text: "Meta de Faturamento Mensal", // Adiciona título ao gráfico
-                    font: {
-                        size: 18,
-                        weight: "bold"
-                    },
-                    padding: {
-                        top: 10,
-                        bottom: 20
+                legend: { 
+                    position: "bottom",
+                    labels: {
+                        usePointStyle: true,
+                        padding: 20
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            return `R$ ${tooltipItem.raw.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+                        }
                     }
                 }
-            }
+            },
+            cutout: "70%"
         }
     });
-    
-    // ** Função para carregar o faturamento do mês **
+
+    // Funções para meta
     function carregarFaturamento() {
         fetch("/faturamento_mes")
             .then(response => response.json())
@@ -1046,7 +986,6 @@ fetch('/dados_grafico_contas')
             .catch(err => console.error("Erro ao carregar faturamento:", err));
     }
     
-    // ** Função para carregar a meta do banco **
     function carregarMeta() {
         fetch("/api/meta")
             .then(response => response.json())
@@ -1058,104 +997,99 @@ fetch('/dados_grafico_contas')
             .catch(err => console.error("Erro ao carregar meta:", err));
     }
     
-    // ** Atualiza os valores exibidos na tela **
-function atualizarExibicaoMeta() {
-    document.getElementById("meta-total").textContent = metaMensal.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-    document.getElementById("faturamento-atual").textContent = faturamentoAtual.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-    document.getElementById("faltando").textContent = Math.max(0, metaMensal - faturamentoAtual).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
-}
+    function atualizarExibicaoMeta() {
+        document.getElementById("meta-total").textContent = metaMensal.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+        document.getElementById("faturamento-atual").textContent = faturamentoAtual.toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+        document.getElementById("faltando").textContent = Math.max(0, metaMensal - faturamentoAtual).toLocaleString("pt-BR", { minimumFractionDigits: 2 });
+    }
 
-    // ** Atualizar gráfico de meta **
     function atualizarGrafico() {
         graficoMeta.data.datasets[0].data = [faturamentoAtual, Math.max(0, metaMensal - faturamentoAtual)];
         graficoMeta.update();
     }
     
-  // Exibir o modal para definir a meta
-document.getElementById("btn-definir-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "flex";  // Exibe o modal
-});
+    // Modal de meta
+    document.getElementById("btn-definir-meta").addEventListener("click", () => {
+        document.getElementById("nova-meta").value = metaMensal;
+        showModal(metaModal);
+    });
 
-// Fechar o modal ao clicar no botão de cancelar
-document.getElementById("btn-cancelar-meta").addEventListener("click", () => {
-    document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
-});
+    document.getElementById("btn-cancelar-meta").addEventListener("click", () => {
+        hideModal(metaModal);
+    });
 
-// Atualizar meta no banco de dados
-document.getElementById("btn-confirmar-meta").addEventListener("click", () => {
-    const novaMeta = parseFloat(document.getElementById("nova-meta").value);
+    document.getElementById("btn-confirmar-meta").addEventListener("click", () => {
+        const novaMeta = parseFloat(document.getElementById("nova-meta").value);
 
-    if (isNaN(novaMeta) || novaMeta <= 0) {
-        alert("Por favor, insira um valor válido para a meta.");
-        return;
-    }
-
-    fetch("/api/meta", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ meta: novaMeta })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            metaMensal = data.meta;
-            atualizarExibicaoMeta();
-            atualizarGrafico();
-            document.getElementById("modal-meta").style.display = "none"; // Esconde o modal
-            alert(data.mensagem);  // Mensagem de sucesso
-        } else {
-            alert("Erro ao atualizar a meta. Tente novamente.");
+        if (isNaN(novaMeta) || novaMeta <= 0) {
+            alert("Por favor, insira um valor válido para a meta.");
+            return;
         }
-    })
-    .catch(err => console.error("Erro ao atualizar meta:", err));
-});
-    
-    // ** Carregar dados ao iniciar a página **
-    carregarMeta();
-    carregarFaturamento();
-    
-// Função para atualizar os valores do dashboard
-function atualizarDashboard() {
-    // Atualizar as vendas do dia
-    fetch('/vendas_dia')
-    .then(response => response.json())
-    .then(data => {
-        console.log("Vendas do dia:", data);
-        document.getElementById('vendas-dia').textContent = "R$ " + parseFloat(data.total_vendas_dia).toFixed(2);
-    })
-    .catch(error => console.error('Erro ao obter vendas do dia:', error));
 
-    // Atualizar o faturamento do mês
-    fetch('/faturamento_mes')
+        fetch("/api/meta", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ meta: novaMeta })
+        })
         .then(response => response.json())
         .then(data => {
-            document.getElementById('faturamento-mes').textContent = "R$ " + data.total_faturamento_mes;
+            if (data.success) {
+                metaMensal = data.meta;
+                atualizarExibicaoMeta();
+                atualizarGrafico();
+                hideModal(metaModal);
+            } else {
+                alert("Erro ao atualizar a meta. Tente novamente.");
+            }
+        })
+        .catch(err => console.error("Erro ao atualizar meta:", err));
+    });
+
+    // Atualizar dashboard
+    function atualizarDashboard() {
+        // Vendas do dia
+        fetch('/vendas_dia')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('vendas-dia').textContent = parseFloat(data.total_vendas_dia).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
+        })
+        .catch(error => console.error('Erro ao obter vendas do dia:', error));
+
+        // Faturamento do mês
+        fetch('/faturamento_mes')
+        .then(response => response.json())
+        .then(data => {
+            document.getElementById('faturamento-mes').textContent = parseFloat(data.total_faturamento_mes).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         })
         .catch(error => console.error('Erro ao atualizar faturamento do mês:', error));
 
-    // Atualizar o lucro do mês
-    fetch('/lucro_mes')
+        // Lucro do mês
+        fetch('/lucro_mes')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('lucro-mes').textContent = "R$ " + data.total_lucro_mes;
+            document.getElementById('lucro-mes').textContent = parseFloat(data.total_lucro_mes).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         })
         .catch(error => console.error('Erro ao atualizar lucro do mês:', error));
 
-    // Atualizar os custos de produtos
-    fetch('/custos_produtos')
+        // Custos de produtos
+        fetch('/custos_produtos')
         .then(response => response.json())
         .then(data => {
-            document.getElementById('custos-produtos').textContent = "R$ " + data.total_custos_produtos;
+            document.getElementById('custos-produtos').textContent = parseFloat(data.total_custos_produtos).toLocaleString('pt-BR', { minimumFractionDigits: 2 });
         })
         .catch(error => console.error('Erro ao atualizar custos dos produtos:', error));
-}
-// Chamar a função para atualizar o dashboard
-atualizarDashboard();
+    }
 
-// Atualizar os dados do dashboard a cada 30 segundos
-setInterval(atualizarDashboard, 30000);
+    // Carregar dados iniciais
+    carregarMeta();
+    carregarFaturamento();
+    atualizarDashboard();
 
+    // Atualizar a cada 30 segundos
+    setInterval(() => {
+        atualizarDashboard();
+        carregarFaturamento();
+    }, 30000);
 </script>
 </body>
 </html>
-

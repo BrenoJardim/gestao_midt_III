@@ -5,56 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastro de Produtos - Gestão Midt</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" href="../images/icone_gestaomidt.png">
     <style>
+    :root {
+        --primary-color: #131325;
+        --secondary-color: #34495e;
+        --accent-color: #3498db;
+        --success-color: #27ae60;
+        --danger-color: #e74c3c;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --text-color: #333;
+        --text-light: #7f8c8d;
+        --border-radius: 6px;
+        --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
+    }
 
     body {
-        font-family: Arial, sans-serif;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #f9f9f9;
+        background-color: #f5f7fa;
+        color: var(--text-color);
+        line-height: 1.6;
     }
 
     .header {
-        background-color: #131325;
-        color: #fff;
+        background-color: var(--primary-color);
+        color: white;
         display: flex;
         align-items: center;
-        padding: 0px 0px;
+        padding: 15px 30px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: relative;
+        z-index: 100;
     }
 
     .logo img {
-        width: 80px;
-        height: auto;
-        margin-right: 10px;
+        width: 50px;
+        height: 50px;
+        object-fit: contain;
+        margin-right: 15px;
+        border-radius: 50%;
+        transition: var(--transition);
+    }
+
+    .logo img:hover {
+        transform: scale(1.05);
+    }
+
+    .header h1 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+    }
+
+    .header h1:hover {
+        color: var(--light-color);
     }
 
     .logoside {
         display: flex;
-        justify-content: center; /* Para centralizar horizontalmente */
-        align-items: center; /* Para centralizar verticalmente */
-        height: 180px; /* Defina a altura desejada */
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+        background-color: white;
+        border-bottom: 1px solid #e0e0e0;
     }
 
     .logoside img {
-        max-width: 100%; /* Para que a imagem tenha no máximo a largura da sidebar */
-        max-height: 100%; /* Para que a imagem tenha no máximo a altura da sidebar */
-        width: auto;
-        height: auto;
+        max-width: 80%;
+        max-height: 100px;
+        object-fit: contain;
     }
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        min-height: calc(100vh - 80px);
     }
 
     .sidebar {
-        background-color: #ffffff;
-        width: 20%;
-        padding: 20px;
-        box-shadow: 2px 0 5px rgba(13, 13, 25, 0.1);
-        border-right: 1px solid #ccc;
+        background-color: white;
+        width: 250px;
+        padding: 0;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05);
+        border-right: 1px solid #e0e0e0;
         overflow-y: auto;
+        transition: var(--transition);
     }
 
     .navigation {
@@ -64,152 +105,277 @@
     }
 
     .navigation li {
-        margin-bottom: 10px;
-        border-bottom: 1px solid #ccc;
-    }
-
-    .navigation li:last-child {
-        border-bottom: none;
+        margin: 0;
     }
 
     .navigation a {
         text-decoration: none;
-        color: #000000;
-        font-size: 16px;
+        color: var(--text-color);
+        font-size: 0.95rem;
         display: flex;
         align-items: center;
-        padding: 10px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
+        padding: 12px 20px;
+        transition: var(--transition);
+        border-left: 3px solid transparent;
     }
 
     .navigation a:hover {
-        background-color: #d4d4d4;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .navigation a.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+        font-weight: 500;
     }
 
     .expandable-header {
-        background-color: #d4d4d4;
-        padding: 10px;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        font-size: 16px;
+        padding: 12px 20px;
+        margin: 0;
+        font-size: 0.95rem;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        transition: var(--transition);
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        border-left: 3px solid transparent;
     }
 
     .expandable-header:hover {
-        background-color: #929292;
+        background-color: #f8f9fa;
+        color: var(--accent-color);
+    }
+
+    .expandable-header.active {
+        background-color: #f1f5f9;
+        color: var(--accent-color);
+        border-left: 3px solid var(--accent-color);
+    }
+
+    .expandable-header i {
+        transition: var(--transition);
+    }
+
+    .expandable-header.active i {
+        transform: rotate(90deg);
     }
 
     .expandable-body {
         overflow: hidden;
         max-height: 0;
         transition: max-height 0.3s ease;
+        background-color: #f9fafb;
     }
 
-    .expandable-btn.active+.expandable-body {
-        display: block;
+    .expandable-body.show {
         max-height: 1000px;
     }
 
     .content {
-        width: 80%;
-        padding: 20px;
+        flex: 1;
+        padding: 30px;
         overflow-y: auto;
+        background-color: #f5f7fa;
     }
 
     .icon {
-    width: 24px;
-    height: 24px;
-    margin-right: 10px;
+        width: 20px;
+        height: 20px;
+        margin-right: 12px;
+        color: var(--text-light);
     }
 
     .form-container {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        background-color: white;
+        padding: 30px;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        max-width: 800px;
+        margin: 0 auto;
+    }
+
+    .form-header {
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e0e0e0;
+    }
+
+    .form-header h2 {
+        margin: 0;
+        color: var(--primary-color);
+        font-size: 1.5rem;
+    }
+
+    .form-header p {
+        margin: 5px 0 0;
+        color: var(--text-light);
+        font-size: 0.9rem;
     }
 
     .form-group {
-        margin-bottom: 20px;
+        margin-bottom: 25px;
+    }
+
+    .form-row {
+        display: flex;
+        gap: 20px;
+    }
+
+    .form-col {
+        flex: 1;
     }
 
     label {
-        font-weight: bold;
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: var(--dark-color);
+        font-size: 0.9rem;
+    }
+
+    .input-group {
+        position: relative;
+    }
+
+    .input-group .prefix {
+        position: absolute;
+        left: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text-light);
     }
 
     input[type="text"],
     input[type="number"],
-    input[type="submit"] {
+    input[type="email"],
+    input[type="password"],
+    select,
+    textarea {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 16px;
-        transition: border-color 0.3s ease;
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        font-size: 0.95rem;
+        transition: var(--transition);
+        background-color: #f9fafb;
     }
 
     input[type="text"]:focus,
-    input[type="number"]:focus {
-        border-color: #333;
+    input[type="number"]:focus,
+    input[type="email"]:focus,
+    input[type="password"]:focus,
+    select:focus,
+    textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+        background-color: white;
     }
 
-    input[type="submit"] {
-        background-color: #333;
-        color: #fff;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
+    input.with-prefix {
+        padding-left: 35px;
     }
 
-    input[type="submit"]:hover {
-        background-color: #555;
+    /* Adicione esta regra para garantir que os inputs com prefixo fiquem alinhados */
+    .form-row .form-col .input-group {
+        display: flex;
     }
 
     select {
-    
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 15px;
     }
 
-    button[type="submit"] {
-        padding: 15px 30px;
-        font-size: 18px;
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 15px;
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #e0e0e0;
+    }
+
+    button[type="submit"],
+    .btn-primary {
+        padding: 12px 25px;
+        font-size: 0.95rem;
         border: none;
-        border-radius: 5px;
-        background-color: #4CAF50;
+        border-radius: var(--border-radius);
+        background-color: var(--success-color);
         color: white;
         cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    button[type="submit"]:hover {
-        background-color: #45a049;
+    button[type="submit"] i,
+    .btn-primary i {
+        margin-right: 8px; /* Espaço entre ícone e texto */
+    }
+
+    button[type="submit"]:hover,
+    .btn-primary:hover {
+        background-color: #219653;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(39, 174, 96, 0.2);
+    }
+
+    .btn-secondary {
+        padding: 12px 25px;
+        font-size: 0.95rem;
+        border: 1px solid #ddd;
+        border-radius: var(--border-radius);
+        background-color: white;
+        color: var(--text-color);
+        cursor: pointer;
+        transition: var(--transition);
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-secondary i {
+        margin-right: 8px; /* Espaço entre ícone e texto */
+    }
+
+    .btn-secondary:hover {
+        background-color: #f8f9fa;
+        border-color: #ccc;
     }
 
     .help-button {
-        margin-left: auto; /* Alinha o botão à direita */
-        padding: 10px;
-        background-color: #4CAF50;
+        margin-left: auto;
+        width: 36px;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--accent-color);
         color: white;
         border: none;
-        border-radius: 5px;
+        border-radius: 50%;
         cursor: pointer;
-        transition: background-color 0.3s;
-        margin-right: 20px
+        transition: var(--transition);
+        font-weight: bold;
     }
 
     .help-button:hover {
-        background-color: #45a049;
+        background-color: #2980b9;
+        transform: scale(1.1);
     }
 
     .modal {
-        display: none; 
+        display: none;
         position: fixed;
         z-index: 1000;
         left: 0;
@@ -217,164 +383,337 @@
         width: 100%;
         height: 100%;
         overflow: auto;
-        background-color: rgba(0, 0, 0, 0.5); 
-        padding-top: 60px;
+        background-color: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(3px);
     }
 
     .modal-content {
-        background-color: #fefefe;
-        margin: 5% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%;
-        max-width: 600px; 
-        border-radius: 10px; 
+        background-color: white;
+        margin: 10% auto;
+        padding: 25px;
+        border-radius: var(--border-radius);
+        width: 90%;
+        max-width: 500px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        animation: modalFadeIn 0.3s;
+    }
+
+    @keyframes modalFadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .close {
-        color: #aaa;
+        color: var(--text-light);
         float: right;
-        font-size: 28px;
+        font-size: 24px;
         font-weight: bold;
+        transition: var(--transition);
     }
 
     .close:hover,
     .close:focus {
-        color: black;
+        color: var(--danger-color);
         text-decoration: none;
         cursor: pointer;
     }
-    
-        @media (max-width: 768px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-    }
-    .content {
-        width: 100%;
-    }
+
+    .modal-title {
+        margin-top: 0;
+        color: var(--primary-color);
     }
 
+    .shortcut-list {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .shortcut-list li {
+        padding: 10px 0;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .shortcut-list li:last-child {
+        border-bottom: none;
+    }
+
+    .shortcut-key {
+        background-color: #f1f5f9;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-family: monospace;
+        color: var(--primary-color);
+    }
+
+    .status-message {
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: var(--border-radius);
+        display: none;
+    }
+
+    .success-message {
+        background-color: rgba(39, 174, 96, 0.1);
+        border-left: 4px solid var(--success-color);
+        color: var(--success-color);
+    }
+
+    .error-message {
+        background-color: rgba(231, 76, 60, 0.1);
+        border-left: 4px solid var(--danger-color);
+        color: var(--danger-color);
+    }
+
+    @media (max-width: 768px) {
+        .container {
+            flex-direction: column;
+        }
+
+        .sidebar {
+            width: 100%;
+            height: auto;
+            max-height: 300px;
+        }
+
+        .content {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .form-row {
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .modal-content {
+            margin: 20% auto;
+            width: 95%;
+        }
+    }
+
+    /* Adicionando animação de loading para o botão */
+    .btn-loading {
+        position: relative;
+        pointer-events: none;
+    }
+
+    .btn-loading:after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        border: 3px solid transparent;
+        border-top-color: white;
+        border-radius: 50%;
+        animation: btn-loading-spinner 1s linear infinite;
+    }
+
+    @keyframes btn-loading-spinner {
+        from {
+            transform: rotate(0turn);
+        }
+        to {
+            transform: rotate(1turn);
+        }
+    }
     </style>
 </head>
 
 <body>
     <div class="header">
         <div class="logo">
-                <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
+            <img src="/images/icone.png" alt="Logo GestãoMidt" id="minha-imagem">
         </div>
-        <h1 id="texto-link" style="cursor: pointer;">Gestão Midt</h1>
-        <button class="help-button" id="help-button">?</button>
+        <h1 id="texto-link">Gestão Midt</h1>
+        <button class="help-button" id="help-button" title="Ajuda e atalhos">
+            <i class="fas fa-question"></i>
+        </button>
     </div>
     <div class="container">
         <div class="sidebar">
             <div class="logoside">
                 <img src="/images/logo.jpeg" alt="Logo da Empresa" id="minha-imagem">
             </div>
-            <!-- Modal -->
+            
+            <!-- Modal de Ajuda -->
             <div id="helpModal" class="modal">
                 <div class="modal-content">
                     <span class="close">&times;</span>
-                    <h4>Teclas de Atalho:</h4>
-                    <ul>
-                        <li><strong>Cadastro de Produtos</strong>: <em>Ctrl + Shift + 1</em></li>
-                        <li><strong>Cadastro de Clientes</strong>: <em>Ctrl + Shift + 2</em></li>
-                        <li><strong>Cadastro de Fornecedores</strong>: <em>Ctrl + Shift + 3</em></li>
-                        <li><strong>Venda Balcão</strong>: <em>Ctrl + Shift + 4</em></li>
-                        <li><strong>Listar Vendas</strong>: <em>Ctrl + Shift + 5</em></li>
-                        <li><strong>Compras</strong>: <em>Ctrl + Shift + 6</em></li>
-                        <li><strong>Adição de Sítio</strong>: <em>Ctrl + Shift + 7</em></li>
-                        <li><strong>Listar Compras</strong>: <em>Ctrl + Shift + 8</em></li>
-                        <li><strong>Financeiro</strong>: <em>Ctrl + Shift + 9</em></li>
+                    <h3 class="modal-title"><i class="fas fa-keyboard icon"></i> Teclas de Atalho</h3>
+                    <ul class="shortcut-list">
+                        <li><span>Cadastro de Produtos</span> <span class="shortcut-key">Ctrl + Shift + 1</span></li>
+                        <li><span>Cadastro de Clientes</span> <span class="shortcut-key">Ctrl + Shift + 2</span></li>
+                        <li><span>Cadastro de Fornecedores</span> <span class="shortcut-key">Ctrl + Shift + 3</span></li>
+                        <li><span>Venda Balcão</span> <span class="shortcut-key">Ctrl + Shift + 4</span></li>
+                        <li><span>Listar Vendas</span> <span class="shortcut-key">Ctrl + Shift + 5</span></li>
+                        <li><span>Compras</span> <span class="shortcut-key">Ctrl + Shift + 6</span></li>
+                        <li><span>Adição de Sítio</span> <span class="shortcut-key">Ctrl + Shift + 7</span></li>
+                        <li><span>Listar Compras</span> <span class="shortcut-key">Ctrl + Shift + 8</span></li>
+                        <li><span>Financeiro</span> <span class="shortcut-key">Ctrl + Shift + 9</span></li>
                     </ul>
                 </div>
             </div>
-            <!-- Botão expansível para Cadastros -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/cadastro.png" alt="Ícone Cadastros">
-                <span>Cadastros</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/cadastro_produtos">Cadastro de Produtos</a></li>
-                    <li><a href="/cadastro_clientes">Cadastro de Clientes</a></li>
-                    <li><a href="/cadastro_fornecedores">Cadastro de Fornecedores</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Vendas -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/vendas.png" alt="Ícone Vendas">
-                <span>Vendas</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/venda_balcao">Venda Balcão</a></li>
-                    <li><a href="/listar_vendas">Registro de Vendas</a></li>
-                </ul>
-            </div>
-            <!-- Botão expansível para Estoque -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/estoque.png" alt="Ícone Estoque">
-                <span>Estoque</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/compras">Compras</a></li>
-                    <!-- Adiciona a opção "Compras" -->
-                    <li><a href="/adicao_sitio">Adições do Sitio</a></li>
-                    <!-- Adiciona a opção "Adições do Sitio" -->
-                    <li><a href="/listar_compras">Registro de Compras</a></li>
-                    <!-- Adiciona a opção "Registro de Compras" -->
-                </ul>
-            </div>
-            <!-- Botão expansível para Financeiro -->
-            <div class="expandable-header">
-                <img class="icon" src="/images/financeiro.png" alt="Ícone Financeiro">
-                <span>Financeiro</span>
-            </div>
-            <div class="expandable-body">
-                <ul class="navigation">
-                    <li><a href="/financeiro">Caixa</a></li>
-                    <!-- Adiciona a opção "Caixas" -->
-                    <li><a href="/fluxo_caixa">Fluxo de Caixa</a></li>
-                    <!-- Adiciona a opção "Fluxo de Caixa" -->
-                </ul>
-            </div>
-            <!-- Links diretos para listagens -->
+            
+            <!-- Menu de Navegação -->
             <ul class="navigation">
-                <li><a href="/listar_clientes"><span class="icon icon-clientes"></span><img class="icon" src="/images/cliente.png" alt="Ícone Clientes">Clientes</a></li>
-                <li><a href="/listar_fornecedores"><span class="icon icon-fornecedores"></span><img class="icon" src="/images/fornecedor.png" alt="Ícone Fornecedores">Fornecedores</a></li>
-                <li><a href="/listar_produtos"><span class="icon icon-produtos"></span><img class="icon" src="/images/produtos.png" alt="Ícone Produtos">Produtos</a></li>
-                <li><a href="/relatorio_vendas"><span class="icon icon-relatorios"></span><img class="icon" src="/images/relatorio.png" alt="Ícone Relatórios">Relatórios</a></li>
+                <!-- Botão expansível para Cadastros -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-user-plus icon"></i>
+                            <span>Cadastros</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/cadastro_produtos" class="active"><i class="fas fa-box icon"></i> Cadastro de Produtos</a></li>
+                            <li><a href="/cadastro_clientes"><i class="fas fa-users icon"></i> Cadastro de Clientes</a></li>
+                            <li><a href="/cadastro_fornecedores"><i class="fas fa-truck icon"></i> Cadastro de Fornecedores</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Vendas -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-shopping-cart icon"></i>
+                            <span>Vendas</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/venda_balcao"><i class="fas fa-cash-register icon"></i> Venda Balcão</a></li>
+                            <li><a href="/listar_vendas"><i class="fas fa-receipt icon"></i> Registro de Vendas</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Estoque -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-warehouse icon"></i>
+                            <span>Estoque</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/compras"><i class="fas fa-shopping-basket icon"></i> Compras</a></li>
+                            <li><a href="/adicao_sitio"><i class="fas fa-parachute-box icon"></i> Adições do Sitio</a></li>
+                            <li><a href="/listar_compras"><i class="fas fa-clipboard-list icon"></i> Registro de Compras</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Botão expansível para Financeiro -->
+                <li>
+                    <div class="expandable-header">
+                        <div>
+                            <i class="fas fa-money-bill-wave icon"></i>
+                            <span>Financeiro</span>
+                        </div>
+                        <i class="fas fa-chevron-right"></i>
+                    </div>
+                    <div class="expandable-body">
+                        <ul class="navigation">
+                            <li><a href="/financeiro"><i class="fas fa-cash-register icon"></i> Caixa</a></li>
+                            <li><a href="/fluxo_caixa"><i class="fas fa-chart-line icon"></i> Fluxo de Caixa</a></li>
+                        </ul>
+                    </div>
+                </li>
+                
+                <!-- Links diretos -->
+                <li><a href="/listar_clientes"><i class="fas fa-address-book icon"></i> Clientes</a></li>
+                <li><a href="/listar_fornecedores"><i class="fas fa-truck-loading icon"></i> Fornecedores</a></li>
+                <li><a href="/listar_produtos"><i class="fas fa-boxes icon"></i> Produtos</a></li>
+                <li><a href="/relatorio_vendas"><i class="fas fa-chart-pie icon"></i> Relatórios</a></li>
             </ul>           
         </div>
+        
         <div class="content">
-            <h2>Cadastro de Produtos</h2>
             <div class="form-container">
+                <div class="form-header">
+                    <h2><i class="fas fa-box icon"></i> Cadastro de Produtos</h2>
+                    <p>Preencha os campos abaixo para cadastrar um novo produto no sistema</p>
+                </div>
+                
+                <!-- Mensagens de status -->
+                <div id="successMessage" class="status-message success-message">
+                    <i class="fas fa-check-circle"></i> Produto cadastrado com sucesso!
+                </div>
+                
+                <div id="errorMessage" class="status-message error-message">
+                    <i class="fas fa-exclamation-circle"></i> Ocorreu um erro ao cadastrar o produto. Por favor, tente novamente.
+                </div>
+                
                 <form id="formCadastroProduto" method="POST" action="/cadastro_produtos">
-                    <div class="form-group">
-                        <label for="nome">Nome:</label><br>
-                        <input type="text" id="nome" name="nome" required><br>
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="nome">Nome do Produto*</label>
+                                <div class="input-group">
+                                <input type="text" id="nome" name="nome" required placeholder="Ex: Milho KG">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="codigo">Código*</label>
+                                <div class="input-group">
+                                    <span class="prefix">#</span>
+                                    <input type="text" id="codigo" name="codigo" required class="with-prefix" placeholder="12345">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="codigo">Código:</label><br>
-                        <input type="text" id="codigo" name="codigo" required><br>
+                    
+                    <div class="form-row">
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="custo">Custo (R$)*</label>
+                                <div class="input-group">
+                                    <span class="prefix">R$</span>
+                                    <input type="number" id="custo" name="custo" step="0.01" required class="with-prefix" placeholder="0,00" min="0">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-col">
+                            <div class="form-group">
+                                <label for="valor_venda">Valor de Venda (R$)*</label>
+                                <div class="input-group">
+                                    <span class="prefix">R$</span>
+                                    <input type="number" id="valor_venda" name="valor_venda" step="0.01" required class="with-prefix" placeholder="0,00" min="0">
+                                </div>
+                            </div>
+                        </div>
                     </div>
+                    
                     <div class="form-group">
-                        <label for="custo">Custo:</label><br>
-                        <input type="number" id="custo" name="custo" step="0.01" required><br>
-                    </div>
-                    <div class="form-group">
-                        <label for="valor_venda">Valor de Venda:</label><br>
-                        <input type="number" id="valor_venda" name="valor_venda" step="0.01" required><br>
-                    </div>
-                    <div class="form-group">
-                        <label for="tipo_medida">Tipo de Medida:</label><br>
+                        <label for="tipo_medida">Tipo de Medida*</label>
                         <select id="tipo_medida" name="tipo_medida" required>
-                            <option value="KG">KG</option>
-                            <option value="Quant">Quant</option>
+                            <option value="" disabled selected>Selecione o tipo de medida</option>
+                            <option value="KG">Quilograma (KG)</option>
+                            <option value="Quant">Quantidade (Unidades)</option>
                         </select>
                     </div>
+                    
                     <button type="submit">Cadastrar</button>
                 </form>
             </div>
@@ -382,105 +721,131 @@
     </div>
 
     <script>
-        const expandableBtns = document.querySelectorAll('.expandable-header');
-        expandableBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                const body = this.nextElementSibling;
-                this.classList.toggle('active');
-                if (body.style.maxHeight) {
-                    body.style.maxHeight = null;
-                } else {
-                    body.style.maxHeight = body.scrollHeight + "px";
-                }
-            });
-        });
+    // Variáveis globais
+    const expandableHeaders = document.querySelectorAll('.expandable-header');
+    const modal = document.getElementById("helpModal");
+    const helpButton = document.getElementById("help-button");
+    const closeButton = document.querySelector(".close");
+    const form = document.getElementById("formCadastroProduto");
+    const submitButton = document.getElementById("submitButton");
+    const cancelButton = document.getElementById("cancelButton");
+    const successMessage = document.getElementById("successMessage");
+    const errorMessage = document.getElementById("errorMessage");
 
+    // Função para alternar o menu expansível
+    function toggleExpandable(header) {
+        const listItem = header.closest('li');
+        const body = listItem.querySelector('.expandable-body');
+        const icon = header.querySelector('.fa-chevron-right');
         
-    </script>
-
-<script>
-    $(document).ready(function() {
-    // Definir as teclas de atalho (Ctrl + Shift + number)
-    $(document).keydown(function(event) {
-        if (event.ctrlKey && event.shiftKey) {
-            switch (event.which) {
-                case 49: // Ctrl + Shift + 1
-                    window.location.href = "/cadastro_produtos";
-                    break;
-                case 50: // Ctrl + Shift + 2
-                    window.location.href = "/cadastro_clientes";
-                    break;
-                case 51: // Ctrl + Shift + 3
-                    window.location.href = "/cadastro_fornecedores";
-                    break;
-                case 52: // Ctrl + Shift + 4
-                    window.location.href = "/venda_balcao";
-                    break;
-                case 53: // Ctrl + Shift + 5
-                    window.location.href = "/listar_vendas";
-                    break;
-                case 54: // Ctrl + Shift + 6
-                    window.location.href = "/compras";
-                    break;
-                case 55: // Ctrl + Shift + 7
-                    window.location.href = "/adicao_sitio";
-                    break;
-                case 56: // Ctrl + Shift + 8
-                    window.location.href = "/listar_compras";
-                    break;
-                case 57: // Ctrl + Shift + 9
-                    window.location.href = "/financeiro";
-                    break;
-                default:
-                    break;
-            }
+        header.classList.toggle('active');
+        body.classList.toggle('show');
+        
+        if (header.classList.contains('active')) {
+            icon.style.transform = 'rotate(90deg)';
+        } else {
+            icon.style.transform = 'rotate(0deg)';
         }
-    });
-});
+    }
 
-// Redirecionar ao clicar na imagem
-document.getElementById('minha-imagem').addEventListener('click', function() {
-        window.location.href = 'inicio';
-    });
-
-    // Redirecionar ao clicar no texto
-    document.getElementById('texto-link').addEventListener('click', function() {
-        window.location.href = 'inicio';
+    // Adiciona eventos aos cabeçalhos expansíveis
+    expandableHeaders.forEach(header => {
+        header.addEventListener('click', () => toggleExpandable(header));
     });
 
+    // Mostrar e esconder o modal de ajuda
+    helpButton.addEventListener('click', () => {
+        modal.style.display = "block";
+    });
 
-    // Mostrar e esconder o modal
-    var modal = document.getElementById("helpModal");
-        var btn = document.getElementById("help-button");
-        var span = document.getElementsByClassName("close")[0];
+    closeButton.addEventListener('click', () => {
+        modal.style.display = "none";
+    });
 
-        btn.onclick = function() {
-            modal.style.display = "block";
-        }
-
-        span.onclick = function() {
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
             modal.style.display = "none";
         }
+    });
 
-        window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+    // Redirecionamentos
+    document.getElementById('minha-imagem').addEventListener('click', () => {
+        window.location.href = 'inicio';
+    });
+
+    document.getElementById('texto-link').addEventListener('click', () => {
+        window.location.href = 'inicio';
+    });
+
+    cancelButton.addEventListener('click', () => {
+        if (confirm('Deseja cancelar o cadastro? Todos os dados preenchidos serão perdidos.')) {
+            form.reset();
+        }
+    });
+
+    // Teclas de atalho
+    document.addEventListener('keydown', (event) => {
+        if (event.ctrlKey && event.shiftKey) {
+            switch (event.which) {
+                case 49: window.location.href = "/cadastro_produtos"; break;
+                case 50: window.location.href = "/cadastro_clientes"; break;
+                case 51: window.location.href = "/cadastro_fornecedores"; break;
+                case 52: window.location.href = "/venda_balcao"; break;
+                case 53: window.location.href = "/listar_vendas"; break;
+                case 54: window.location.href = "/compras"; break;
+                case 55: window.location.href = "/adicao_sitio"; break;
+                case 56: window.location.href = "/listar_compras"; break;
+                case 57: window.location.href = "/financeiro"; break;
             }
         }
+    });
 
-        // Redirecionar ao clicar na imagem
-        document.getElementById('minha-imagem').addEventListener('click', function() {
-            window.location.href = 'inicio';
-        });
+    // Simulação de envio do formulário (substitua pelo seu código real)
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        // Mostrar estado de loading
+        submitButton.classList.add('btn-loading');
+        submitButton.disabled = true;
+        
+        // Simular requisição AJAX
+        setTimeout(() => {
+            // Aqui você faria a requisição real para o servidor
+            // Por enquanto, vamos simular um sucesso
+            const success = Math.random() > 0.2; // 80% de chance de sucesso
+            
+            if (success) {
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                form.reset();
+            } else {
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+            }
+            
+            // Remover estado de loading
+            submitButton.classList.remove('btn-loading');
+            submitButton.disabled = false;
+            
+            // Esconder mensagem após 5 segundos
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+                errorMessage.style.display = 'none';
+            }, 5000);
+        }, 1500);
+    });
 
-        // Redirecionar ao clicar no texto
-        document.getElementById('texto-link').addEventListener('click', function() {
-            window.location.href = 'inicio';
-        });
-</script>
-    
-    
-    
+    // Validação do formulário
+    form.addEventListener('input', () => {
+        const custo = parseFloat(document.getElementById('custo').value) || 0;
+        const valorVenda = parseFloat(document.getElementById('valor_venda').value) || 0;
+        
+        if (valorVenda < custo) {
+            document.getElementById('valor_venda').style.borderColor = 'var(--danger-color)';
+        } else {
+            document.getElementById('valor_venda').style.borderColor = '';
+        }
+    });
+    </script>
 </body>
-
 </html>
